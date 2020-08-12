@@ -8,16 +8,15 @@
     tools:context=".MainActivity">
 
     <include
-        layout="@layout/activity_main_"
+        android:id="@+id/care_in_main"
+        layout="@layout/care_label_layout"
         android:layout_width="fill_parent"
         android:layout_height="100dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="76dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <!-- Your custom button layout -->
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

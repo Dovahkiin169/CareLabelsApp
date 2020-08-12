@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/half_overlay"
+        android:drawable="@drawable/wash_at_or_below_40_mild_fine_wash"
+        android:width="@dimen/iconSizeLargePhones"
+        android:height="@dimen/iconSizeLargePhones" />
+</layer-list>

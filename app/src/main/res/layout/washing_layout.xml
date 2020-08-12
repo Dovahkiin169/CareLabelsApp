@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/care_label_shape"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/wash_at_or_below_30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/wash_at_or_below_30_sizer"
+        app:layout_constraintEnd_toStartOf="@+id/wash_at_or_below_30_mild_fine_wash"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/wash_at_or_below_40_very_mild_fine_wash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/wash_at_or_below_40_very_mild_fine_wash_sizer"
+        app:layout_constraintEnd_toStartOf="@+id/wash_at_or_below_50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wash_at_or_below_30" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/wash_at_or_below_70"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/wash_at_or_below_70_sizer"
+        app:layout_constraintEnd_toStartOf="@+id/wash_at_or_below_90"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wash_at_or_below_40_very_mild_fine_wash" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/wash_at_or_below_30_very_mild_fine_wash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/wash_at_or_below_30_very_mild_fine_wash_sizer"
+        app:layout_constraintEnd_toStartOf="@+id/wash_at_or_below_40"
+        app:layout_constraintStart_toEndOf="@+id/wash_at_or_below_30_mild_fine_wash"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/wash_at_or_below_50_mild_fine_wash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/wash_at_or_below_50_mild_fine_wash_sizer"
+        app:layout_constraintEnd_toStartOf="@+id/wash_at_or_below_60"
+        app:layout_constraintStart_toEndOf="@+id/wash_at_or_below_50"
+        app:layout_constraintTop_toBottomOf="@+id/wash_at_or_below_30_very_mild_fine_wash" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/wash_at_or_below_40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="1dp"
+        android:background="@drawable/wash_at_or_below_40_sizer"
+        app:layout_constraintEnd_toStartOf="@+id/wash_at_or_below_40_mild_fine_wash"
+        app:layout_constraintStart_toEndOf="@+id/wash_at_or_below_30_very_mild_fine_wash"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/wash_at_or_below_60"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/wash_at_or_below_60_sizer"
+        app:layout_constraintEnd_toStartOf="@+id/wash_at_or_below_60_mild_fine_wash"
+        app:layout_constraintStart_toEndOf="@+id/wash_at_or_below_50_mild_fine_wash"
+        app:layout_constraintTop_toBottomOf="@+id/wash_at_or_below_40" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/wash_at_or_below_40_mild_fine_wash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/wash_at_or_below_40_mild_fine_wash_sizer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/wash_at_or_below_40"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/wash_at_or_below_60_mild_fine_wash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/wash_at_or_below_60_mild_fine_wash_sizer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/wash_at_or_below_60"
+        app:layout_constraintTop_toBottomOf="@+id/wash_at_or_below_40_mild_fine_wash" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/wash_at_or_below_30_mild_fine_wash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/wash_at_or_below_30_mild_fine_wash_sizer"
+        app:layout_constraintEnd_toStartOf="@+id/wash_at_or_below_30_very_mild_fine_wash"
+        app:layout_constraintStart_toEndOf="@+id/wash_at_or_below_30"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/wash_at_or_below_50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/wash_at_or_below_50_sizer"
+        app:layout_constraintEnd_toStartOf="@+id/wash_at_or_below_50_mild_fine_wash"
+        app:layout_constraintStart_toEndOf="@+id/wash_at_or_below_40_very_mild_fine_wash"
+        app:layout_constraintTop_toBottomOf="@+id/wash_at_or_below_30_mild_fine_wash" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/wash_at_or_below_90"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/wash_at_or_below_90_sizer"
+        app:layout_constraintEnd_toStartOf="@+id/wash_at_or_below_50_mild_fine_wash"
+        app:layout_constraintStart_toEndOf="@+id/wash_at_or_below_70"
+        app:layout_constraintTop_toBottomOf="@+id/wash_at_or_below_50" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

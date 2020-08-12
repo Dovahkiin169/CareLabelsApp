@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/half_overlay"
+        android:drawable="@drawable/non_chlorine_bleach_when_needed"
+        android:width="@dimen/iconSizeLargePhones"
+        android:height="@dimen/iconSizeLargePhones"
+        />
+
+</layer-list>
