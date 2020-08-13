@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/half_overlay"
-        android:drawable="@drawable/very_gentle_cleaning_with_PCE"
+        android:drawable="@drawable/very_gentle_cleaning_with_pce"
         android:width="@dimen/iconSizeLargePhones"
         android:height="@dimen/iconSizeLargePhones" />
 </layer-list>

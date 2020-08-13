@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/half_overlay"
-        android:drawable="@drawable/dry_clean_tetrachloroethylene_PCE_only"
+        android:drawable="@drawable/dry_clean_tetrachloroethylene_pce_only"
         android:width="@dimen/iconSizeLargePhones"
         android:height="@dimen/iconSizeLargePhones"
         />

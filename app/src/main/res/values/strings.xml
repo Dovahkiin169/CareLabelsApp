@@ -2,4 +2,13 @@
     <string name="app_name">CareLabelsApp</string>
     <string name="read_my_laundry_care_label">READ MY LAUNDRY CARE LABEL</string>
     <string name="icon_width_height">55dp</string>
+
+    <string name="washing_layout">Washing\n</string>
+    <string name="bleaching_layout">Bleaching\n</string>
+    <string name="drying_layout">Drying\n</string>
+    <string name="ironing_layout">Ironing\n</string>
+    <string name="professional_cleaning_layout">Professional Cleaning\n</string>
+
+    <string name="choose_your_symbol">Choose your symbol</string>
+
 </resources>
