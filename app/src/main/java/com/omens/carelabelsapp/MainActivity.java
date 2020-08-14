@@ -4,10 +4,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+import java.util.HashMap;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+    HashMap<String, String> CLOTHES;
+    HashMap<String, String> Material;
+
     ImageButton WashIcon;
     ImageButton BleachIcon;
     ImageButton DryingIcon;
@@ -63,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageButton very_gentle_cleaning_with_PCE;
     ImageButton do_not_dry_clean;
 
+    Button ButtonNext;
 
     ConstraintLayout CareLabelLayout;
     ConstraintLayout WashingLayout;
@@ -71,14 +83,96 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ConstraintLayout IroningLayout;
     ConstraintLayout ProfessionalCleaningLayout;
 
+    ConstraintLayout DetailsLayout;
+
     TextView ItemDescription;
     TextView NameOfLayoutShowed;
     TextView ChooseYourSymbol;
 
+    TextView brandTextView;
+    TextView colorTextView;
+    TextView specialMarksTextView;
+
+    AutoCompleteTextView clothesTypeAutoCompleteTextView;
+    AutoCompleteTextView mainMaterialAutoCompleteTextView;
+    Spinner clothesSeasonSpinner;
+
+    String[] seasons = { "Summer", "Autumn", "Winter", "Spring", "All Seasons"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        CLOTHES = new HashMap<String, String>()
+        {{
+            put("T-shirt", "1");
+            put("Sweater", "2");
+            put("Jacket", "3");
+            put("Coat", "4");
+            put("Jeans", "5");
+            put("Socks", "6");
+            put("Tracksuit", "7");
+            put("Vest", "8");
+            put("Pyjamas", "9");
+            put("Swimsuit", "10");
+            put("Skirt", "11");
+            put("Dress", "12");
+            put("Blouse", "13");
+            put("Bra", "14");
+            put("Panties", "15");
+            put("Stockings", "16");
+            put("Suit", "17");
+
+            put("Shirt", "18");
+            put("Tie", "19");
+            put("Bow-tie", "20");
+            put("Briefs", "21");
+            put("Hat", "22");
+            put("Bag", "23");
+            put("Mittens", "24");
+            put("Boxers", "25");
+            put("Cardigan", "26");
+            put("Cargo pants", "27");
+            put("Hoodie", "28");
+            put("Leggings", "29");
+            put("Pullover", "30");
+            put("Scarf", "31");
+            put("Shawl", "32");
+            put("Shorts", "32");
+            put("Sweatpants", "33");
+            put("Sweatshirt", "34");
+
+        }};
+
+        Material = new HashMap<String, String>()
+        {{
+            put("Cotton", "1");
+            put("flax", "2");
+            put("wool", "3");
+            put("ramie", "4");
+            put("silk", "5");
+            put("Denim", "6");
+            put("Leather", "7");
+            put("Down", "8");
+            put("Fur", "9");
+            put("Nylon", "10");
+            put("Polyesters", "11");
+            put("Spandex", "12");
+            put("rubber", "13");
+            put("Acetate", "14");
+            put("Cupro", "15");
+            put("Flannel", "16");
+            put("Lyocell", "17");
+            put("Polyvinyl chloride (PVC)", "18");
+            put("Rayon", "19");
+            put("Recycled Cotton", "20");
+            put("Recycled PET", "21");
+            put("Recycled bob", "22");
+            put("Tyvek", "23");
+            put("Bamboo", "24");
+            put("Jute", "25");
+            put("Hemp", "26");
+        }};
 
         WashIcon = findViewById(R.id.iconWashing);
         BleachIcon = findViewById(R.id.iconBleach);
@@ -141,15 +235,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         IroningLayout = findViewById(R.id.ironing);
         ProfessionalCleaningLayout = findViewById(R.id.professional_cleaning_lay);
 
+        DetailsLayout = findViewById(R.id.details_layout);
+
         ItemDescription = findViewById(R.id.item_description);
         NameOfLayoutShowed = findViewById(R.id.nameOfLayoutShowed);
         ChooseYourSymbol = findViewById(R.id.choose_your_symbol);
+
+        ButtonNext = findViewById(R.id.button_next);
+
+        brandTextView = findViewById(R.id.brandTextView);
+        colorTextView = findViewById(R.id.colorTextView);
+        specialMarksTextView = findViewById(R.id.specialMarksTextView);
+        clothesTypeAutoCompleteTextView = findViewById(R.id.clothesTypeAutoCompleteTextView);
+        mainMaterialAutoCompleteTextView = findViewById(R.id.mainMaterialAutoCompleteTextView);
+        clothesSeasonSpinner = findViewById(R.id.clothesSeasonSpinner);
 
         WashIcon.setOnClickListener(this);
         BleachIcon.setOnClickListener(this);
         DryingIcon.setOnClickListener(this);
         IroningIcon.setOnClickListener(this);
         ProfessionalCleaningIcon.setOnClickListener(this);
+        ButtonNext.setOnClickListener(this);
 
         wash_at_or_below_30.setOnClickListener(WashingClickListener);
         wash_at_or_below_30_mild_fine_wash.setOnClickListener(WashingClickListener);
@@ -200,9 +306,69 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         very_gentle_cleaning_with_PCE.setOnClickListener(ProfessionalCleaningIconListener);
         do_not_dry_clean.setOnClickListener(ProfessionalCleaningIconListener);
 
+       /* brandTextView.setOnClickListener(DetailsListener);
+        colorTextView.setOnClickListener(DetailsListener);
+        specialMarksTextView.setOnClickListener(DetailsListener);*/
+
+        setCLOTHES(CLOTHES.keySet().toArray(new String[0]));
+        setClothesMaterial(Material.keySet().toArray(new String[0]));
+        setCLOTHESType(seasons);
+
         CareLabelLayout = findViewById(R.id.care_in_main);
         CareLabelLayout.setOnClickListener(this);
         SetClickable(false);
+    }
+
+    private void setCLOTHES(String[] cData) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, cData);
+        clothesTypeAutoCompleteTextView.setThreshold(1);
+        clothesTypeAutoCompleteTextView.setAdapter(adapter);
+        clothesTypeAutoCompleteTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    if (CLOTHES.get(clothesTypeAutoCompleteTextView.getText() + "") == null) {
+                        clothesTypeAutoCompleteTextView.setText("");
+                        clothesTypeAutoCompleteTextView.setError("Invalid clothes, choose from list");
+                    }
+                }
+            }
+        });
+    }
+
+    private void setClothesMaterial(String[] cData) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, cData);
+        mainMaterialAutoCompleteTextView.setThreshold(1);
+        mainMaterialAutoCompleteTextView.setAdapter(adapter);
+        mainMaterialAutoCompleteTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    if (Material.get(mainMaterialAutoCompleteTextView.getText() + "") == null) {
+                        mainMaterialAutoCompleteTextView.setText("");
+                        mainMaterialAutoCompleteTextView.setError("Invalid material, choose from list");
+                    }
+                }
+            }
+        });
+    }
+
+    private void setCLOTHESType(String[] cData) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cData);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        clothesSeasonSpinner.setAdapter(adapter);
+
+        clothesTypeAutoCompleteTextView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getApplicationContext(),seasons[i] , Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override
@@ -213,27 +379,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     SetClickable(true);
                     CareLabelLayout.setClickable(false);
                     ItemDescription.setVisibility(View.GONE);
+
+                    ButtonPresser(true,false,false,false,false);
+                    SetVisibility(View.VISIBLE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                 }
                 break;
             case R.id.iconWashing:
                 ButtonPresser(true,false,false,false,false);
-                SetVisibility(View.VISIBLE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.washing_layout));
+                SetVisibility(View.VISIBLE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                 break;
             case R.id.iconBleach:
                 ButtonPresser(false,true,false,false,false);
-                SetVisibility(View.GONE, View.VISIBLE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.bleaching_layout));
+                SetVisibility(View.GONE, View.VISIBLE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.bleaching_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                 break;
             case R.id.iconDrying:
                 ButtonPresser(false,false,true,false,false);
-                SetVisibility(View.GONE, View.GONE, View.VISIBLE, View.GONE, View.GONE, getResources().getString(R.string.drying_layout));
+                SetVisibility(View.GONE, View.GONE, View.VISIBLE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.drying_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                 break;
             case R.id.iconIroning:
                 ButtonPresser(false,false,false,true,false);
-                SetVisibility(View.GONE, View.GONE, View.GONE, View.VISIBLE, View.GONE, getResources().getString(R.string.ironing_layout));
+                SetVisibility(View.GONE, View.GONE, View.GONE, View.VISIBLE, View.GONE, View.GONE, getResources().getString(R.string.ironing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                 break;
             case R.id.iconProfessionalCleaning:
                 ButtonPresser(false,false,false,false,true);
-                SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.VISIBLE, getResources().getString(R.string.professional_cleaning_layout));
+                SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.VISIBLE, View.GONE, getResources().getString(R.string.professional_cleaning_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
+                break;
+            case R.id.button_next:
+                ButtonPresser(false,false,false,false,false);
+                ButtonNext.setText(R.string.add_clothes);
+                SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.VISIBLE, getResources().getString(R.string.details),getResources().getString(R.string.enter_more_details), getResources().getString(R.string.add_clothes));
                 break;
         }
     }
@@ -244,15 +418,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         IroningIcon.setClickable(data);
         ProfessionalCleaningIcon.setClickable(data);
     }
-    public void SetVisibility(int one, int two, int three, int four, int five, String Data) {
+    public void SetVisibility(int one, int two, int three, int four, int five, int six, String Data, String Data2, String ButtonNextText) {
+        ButtonNext.setText(ButtonNextText);
         NameOfLayoutShowed.setText(Data);
         NameOfLayoutShowed.setVisibility(View.VISIBLE);
+        ChooseYourSymbol.setText(Data2);
         ChooseYourSymbol.setVisibility(View.VISIBLE);
         WashingLayout.setVisibility(one);
         BleachLayout.setVisibility(two);
         DryingLayout.setVisibility(three);
         IroningLayout.setVisibility(four);
         ProfessionalCleaningLayout.setVisibility(five);
+        DetailsLayout.setVisibility(six);
     }
     public void ButtonPresser(boolean one, boolean two, boolean three, boolean four, boolean five) {
         WashIcon.setSelected(one);
@@ -263,8 +440,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     public void IconSetter(ImageButton imageButton, int drawable) {
         imageButton.setImageResource(drawable);
-    }
+        imageButton.setTag(drawable);
 
+        IconChecker();
+    }
+    public void IconChecker() {
+        if((WashIcon.getTag()!= null && !WashIcon.getTag().equals(R.id.iconWashing))&&(BleachIcon.getTag()!= null && !BleachIcon.getTag().equals(R.id.iconBleach)) && (DryingIcon.getTag()!= null && !DryingIcon.getTag().equals(R.id.iconDrying))
+            && (IroningIcon.getTag()!= null && !IroningIcon.getTag().equals(R.id.iconIroning)) && (ProfessionalCleaningIcon.getTag()!= null &&  !ProfessionalCleaningIcon.getTag().equals(R.id.iconProfessionalCleaning)))
+            ButtonNext.setVisibility(View.VISIBLE);
+        else
+            ButtonNext.setVisibility(View.GONE);
+    }
 
     public View.OnClickListener WashingClickListener = new View.OnClickListener() {
         public void onClick(View v) {

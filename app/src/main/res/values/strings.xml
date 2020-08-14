@@ -3,12 +3,21 @@
     <string name="read_my_laundry_care_label">READ MY LAUNDRY CARE LABEL</string>
     <string name="icon_width_height">55dp</string>
 
-    <string name="washing_layout">Washing\n</string>
-    <string name="bleaching_layout">Bleaching\n</string>
-    <string name="drying_layout">Drying\n</string>
-    <string name="ironing_layout">Ironing\n</string>
-    <string name="professional_cleaning_layout">Professional Cleaning\n</string>
+    <string name="washing_layout">Washing</string>
+    <string name="bleaching_layout">Bleaching</string>
+    <string name="drying_layout">Drying</string>
+    <string name="ironing_layout">Ironing</string>
+    <string name="professional_cleaning_layout">Professional Cleaning</string>
+    <string name="details">Details</string>
 
     <string name="choose_your_symbol">Choose your symbol</string>
+    <string name="enter_more_details">Tell us more about your clothes</string>
 
+    <string name="next">Next</string>
+    <string name="brand">Brand</string>
+    <string name="color">Color</string>
+    <string name="clothes_type">Clothes Type</string>
+    <string name="main_material">Main Material</string>
+    <string name="special_marks">Special Marks</string>
+    <string name="add_clothes">Add</string>
 </resources>
