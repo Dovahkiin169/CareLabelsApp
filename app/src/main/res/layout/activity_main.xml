@@ -75,7 +75,7 @@
 
 
     <include
-        android:id="@+id/professional_cleaning"
+        android:id="@+id/professional_cleaning_lay"
         layout="@layout/professional_cleaning_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
