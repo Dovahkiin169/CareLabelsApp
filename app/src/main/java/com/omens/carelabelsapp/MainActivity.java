@@ -19,7 +19,7 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     HashMap<String, String> CLOTHES;
     HashMap<String, String> Material;
-
+    String empty="empty";
     ImageButton WashIcon;
     ImageButton BleachIcon;
     ImageButton DryingIcon;
@@ -408,11 +408,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_next:
                 ButtonPresser(false,false,false,false,false);
                 if((ButtonNext.getText().toString().equals(getResources().getString(R.string.add_clothes))) && EmptyChecker()){
+                    empty="";
                     IconSetter(WashIcon,R.drawable.washing_symbol_sizer);
+                    empty="";
                     IconSetter(BleachIcon,R.drawable.chlorine_and_non_chlorine_bleach_sizer);
+                    empty="";
                     IconSetter(DryingIcon,R.drawable.drying_symbol_sizer);
+                    empty="";
                     IconSetter(IroningIcon,R.drawable.ironing_sizer);
-                    IconSetter(WashIcon,R.drawable.professional_cleaning_sizer);
+                    empty="";
+                    IconSetter(ProfessionalCleaningIcon,R.drawable.professional_cleaning_sizer);
+                    SetClickable(false);
+                    CareLabelLayout.setClickable(true);
 
                     SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.details),getResources().getString(R.string.enter_more_details), getResources().getString(R.string.add_clothes));
 
@@ -458,7 +465,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     public void IconSetter(ImageButton imageButton, int drawable) {
         imageButton.setImageResource(drawable);
-        imageButton.setTag(drawable);
+        if(empty.equals(""))
+            imageButton.setTag(null);
+        else
+            imageButton.setTag(drawable);
+        empty="not_empty";
 
         IconChecker();
     }
