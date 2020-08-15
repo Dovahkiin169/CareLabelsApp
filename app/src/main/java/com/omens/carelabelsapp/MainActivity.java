@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -426,10 +425,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 else if(ButtonNext.getText().toString().equals(getResources().getString(R.string.next))) {
                     ButtonNext.setText(R.string.add_clothes);
                     SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.VISIBLE, getResources().getString(R.string.details),getResources().getString(R.string.enter_more_details), getResources().getString(R.string.add_clothes));
-                }
-                else
-                {
-
                 }
               break;
         }
