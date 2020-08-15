@@ -3,6 +3,8 @@ package com.omens.carelabelsapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -406,9 +408,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.button_next:
                 ButtonPresser(false,false,false,false,false);
-                ButtonNext.setText(R.string.add_clothes);
-                SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.VISIBLE, getResources().getString(R.string.details),getResources().getString(R.string.enter_more_details), getResources().getString(R.string.add_clothes));
-                break;
+                if((ButtonNext.getText().toString().equals(getResources().getString(R.string.add_clothes))) && EmptyChecker()){
+                    IconSetter(WashIcon,R.drawable.washing_symbol_sizer);
+                    IconSetter(BleachIcon,R.drawable.chlorine_and_non_chlorine_bleach_sizer);
+                    IconSetter(DryingIcon,R.drawable.drying_symbol_sizer);
+                    IconSetter(IroningIcon,R.drawable.ironing_sizer);
+                    IconSetter(WashIcon,R.drawable.professional_cleaning_sizer);
+
+                    SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.details),getResources().getString(R.string.enter_more_details), getResources().getString(R.string.add_clothes));
+
+                    ButtonNext.setVisibility(View.GONE);
+                    NameOfLayoutShowed.setVisibility(View.GONE);
+                    ChooseYourSymbol.setVisibility(View.GONE);
+
+                    ItemDescription.setVisibility(View.VISIBLE);
+                }
+                else if(ButtonNext.getText().toString().equals(getResources().getString(R.string.next))) {
+                    ButtonNext.setText(R.string.add_clothes);
+                    SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.VISIBLE, getResources().getString(R.string.details),getResources().getString(R.string.enter_more_details), getResources().getString(R.string.add_clothes));
+                }
+                else
+                {
+
+                }
+              break;
         }
     }
     public void SetClickable(boolean data) {
@@ -451,7 +474,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else
             ButtonNext.setVisibility(View.GONE);
     }
-
+    public boolean EmptyChecker() {
+        int Verifier=0;
+        if(TextUtils.isEmpty(clothesTypeAutoCompleteTextView.getText().toString())) {
+            clothesTypeAutoCompleteTextView.setError("You need to choose clothes type");
+            Verifier++;
+        }
+        if(TextUtils.isEmpty(mainMaterialAutoCompleteTextView.getText().toString())) {
+            mainMaterialAutoCompleteTextView.setError("You need to choose Material");
+            Verifier++;
+        }
+        if(TextUtils.isEmpty(brandTextView.getText().toString())) {
+            brandTextView.setError("You need to enter brand information");
+            Verifier++;
+        }
+        if(TextUtils.isEmpty(colorTextView.getText().toString())) {
+            colorTextView.setError("You need to enter color");
+            Verifier++;
+        }
+        return Verifier == 0;
+    }
     public View.OnClickListener WashingClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             switch (v.getId()) {
