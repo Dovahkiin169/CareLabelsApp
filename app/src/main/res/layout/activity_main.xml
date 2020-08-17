@@ -140,4 +140,34 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/nameOfLayoutShowed" />
 
+    <Button
+        android:id="@+id/wardrobe_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:background="@drawable/main_button_shape"
+        android:drawableStart="@drawable/search_sizer"
+        android:text="@string/my_wardrobe"
+        android:textAlignment="viewStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/care_in_main" />
+
+    <Button
+        android:id="@+id/icon_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/main_button_shape"
+        android:drawableStart="@drawable/info_labels_icon"
+        android:paddingStart="30dp"
+        android:paddingEnd="32dp"
+        android:text="@string/information_about_laundry_labels"
+        android:textAlignment="viewStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wardrobe_button" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
