@@ -2,6 +2,8 @@ package com.omens.carelabelsapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +22,10 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     HashMap<String, String> CLOTHES;
     HashMap<String, String> Material;
+    HashMap<String, String> Colors;
+
     String empty="empty";
+    String Location = "";
     ImageButton WashIcon;
     ImageButton BleachIcon;
     ImageButton DryingIcon;
@@ -76,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageButton do_not_dry_clean;
 
     Button ButtonNext;
+    Button WardrobeButton;
+    Button IconInfoButton;
 
     ConstraintLayout CareLabelLayout;
     ConstraintLayout WashingLayout;
@@ -84,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ConstraintLayout IroningLayout;
     ConstraintLayout ProfessionalCleaningLayout;
 
+    ImageView colorImage;
+
     ConstraintLayout DetailsLayout;
 
     TextView ItemDescription;
@@ -91,9 +101,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView ChooseYourSymbol;
 
     TextView brandTextView;
-    TextView colorTextView;
     TextView specialMarksTextView;
 
+    AutoCompleteTextView colorTextView;
     AutoCompleteTextView clothesTypeAutoCompleteTextView;
     AutoCompleteTextView mainMaterialAutoCompleteTextView;
     Spinner clothesSeasonSpinner;
@@ -175,6 +185,126 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             put("Hemp", "26");
         }};
 
+        Colors = new HashMap<String, String>()
+        {{
+            //Whites
+            put("White", "#ffffff");
+            put("Antique White", "#faebd7");
+            put("Old Lace", "#fdf5e6");
+            put("Ivory", "#fffff0");
+            put("Seashell", "#fff5ee");
+            put("Ghost White", "#f8f8ff");
+            put("Snow", "#fffafa");
+            put("Linen", "#faf0e6");
+
+            //Grays
+            put("black25Percent", "#404040");
+            put("black50Percent", "#808080");
+            put("black75Percent", "#c0c0c0");
+            put("Black", "#000000");
+            put("Warm Gray", "#857570");
+            put("Cool Gray", "#767a85");
+            put("Charcoal", "#222222");
+
+            //Blues
+            put("Teal", "#1ca0aa");
+            put("Steel Blue", "#6799aa");
+            put("Robin Egg", "#8ddaf7");
+            put("Pastel Blue", "#63a1f7");
+            put("Turquoise", "#70dbdb");
+            put("Sky Blue", "#00b2ee");
+            put("Indigo", "#0d4f8b");
+            put("Denim", "#4372aa");
+            put("Blueberry", "#5971ad");
+            put("Cornflower", "#6495ed");
+            put("Baby Blue", "#bedce6");
+            put("Midnight Blue", "#0d1a23");
+            put("Faded Blue", "#17899b");
+            put("Iceberg", "#c8d5db");
+            put("Wave", "#66a9fb");
+
+            //Greens
+            put("Emerald", "#019875");
+            put("Grass", "#63d64a");
+            put("Pastel Green", "#7ef27c");
+            put("Seafoam", "#4de28c");
+            put("Pale Green", "#b0e2ac");
+            put("Cactus Green", "#636f57");
+            put("Chartreuse", "#458b00");
+            put("Holly Green", "#20570e");
+            put("Olive", "#5b7222");
+            put("Olive Drab", "#6b8e23");
+            put("Money Green", "#86c67c");
+            put("Honeydew", "#d8ffe7");
+            put("Lime", "#38ed38");
+            put("Card Table", "#57796b");
+
+            //Reds
+            put("Salmon", "#e9575f");
+            put("Brick Red", "#971b10");
+            put("Easter Pink", "#f1a7a2");
+            put("Grapefruit", "#e41f36");
+            put("Pink", "#ff5f9a");
+            put("Indian Red", "#cd5c5c");
+            put("Strawberry", "#be2625");
+            put("Coral", "#f08080");
+            put("Maroon", "#50041c");
+            put("Watermelon", "#f2473f");
+            put("Tomato", "#ff6347");
+            put("Pink Lipstick", "#ff69b4");
+            put("Pale Rose", "#ffe4e1");
+            put("Crimson", "#bb1224");
+
+            //Purples
+            put("Eggplant", "#690562");
+            put("Pastel Purple", "#cf64eb");
+            put("Pale Purple", "#e5b4eb");
+            put("Cool Purple", "#8c5de4");
+            put("Violet", "#bf5fff");
+            put("Plum", "#8b668b");
+            put("Lavender", "#cc99cc");
+            put("Raspberry", "#872657");
+            put("Fuschia", "#ff1493");
+            put("Grape", "#360b58");
+            put("Periwinkle", "#879fed");
+            put("Orchid", "#da70d6");
+
+            //Yellows
+            put("Goldenrod", "#d7aa33");
+            put("Yellow Green", "#c0f227");
+            put("Banana", "#e5e33a");
+            put("Mustard", "#cdab2d");
+            put("Buttermilk", "#fef1b5");
+            put("Gold", "#8b7512");
+            put("Cream", "#f0e2bb");
+            put("Light Cream", "#f0eed7");
+            put("Wheat", "#f0eed7");
+            put("Beige", "#f5f5dc");
+
+            //Oranges
+            put("Peach", "#f2bb61");
+            put("Burnt Orange", "#b86625");
+            put("Pastel Orange", "#f8c58f");
+            put("Cantaloupe", "#fa9a4f");
+            put("Carrot", "#ed9121");
+            put("Mandarin", "#f79137");
+
+            //Browns
+            put("Chili Powder", "#c73f17");
+            put("Burnt Sienna", "#8a360f");
+            put("Chocolate", "#5e2605");
+            put("Coffee", "#8d3c0f");
+            put("Cinnamon", "#7b3f09");
+            put("Almond", "#c48e48");
+            put("Eggshell", "#fce6c9");
+            put("Sand", "#deb697");
+            put("Mud", "#462d1d");
+            put("Sienna", "#a0522d");
+            put("Dust", "#ecd6c5");
+        }};
+
+        colorImage = findViewById(R.id.colorView);
+
         WashIcon = findViewById(R.id.iconWashing);
         BleachIcon = findViewById(R.id.iconBleach);
         DryingIcon = findViewById(R.id.iconDrying);
@@ -243,6 +373,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ChooseYourSymbol = findViewById(R.id.choose_your_symbol);
 
         ButtonNext = findViewById(R.id.button_next);
+        WardrobeButton = findViewById(R.id.wardrobe_button);
+        IconInfoButton = findViewById(R.id.icon_info_button);
 
         brandTextView = findViewById(R.id.brandTextView);
         colorTextView = findViewById(R.id.colorTextView);
@@ -257,6 +389,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         IroningIcon.setOnClickListener(this);
         ProfessionalCleaningIcon.setOnClickListener(this);
         ButtonNext.setOnClickListener(this);
+        WardrobeButton.setOnClickListener(this);
+        IconInfoButton.setOnClickListener(this);
 
         wash_at_or_below_30.setOnClickListener(WashingClickListener);
         wash_at_or_below_30_mild_fine_wash.setOnClickListener(WashingClickListener);
@@ -314,6 +448,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setCLOTHES(CLOTHES.keySet().toArray(new String[0]));
         setClothesMaterial(Material.keySet().toArray(new String[0]));
         setCLOTHESType(seasons);
+        setColors(Colors.keySet().toArray(new String[0]));
 
         CareLabelLayout = findViewById(R.id.care_in_main);
         CareLabelLayout.setOnClickListener(this);
@@ -354,6 +489,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    private void setColors(String[] cData) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, cData);
+        colorTextView.setThreshold(1);
+        colorTextView.setAdapter(adapter);
+        colorTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    if (Colors.get(colorTextView.getText() + "") == null) {
+                        colorTextView.setText("");
+                        colorTextView.setError("Invalid material, choose from list");
+                    }
+                }
+            }
+        });
+        colorTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                colorImage.setBackgroundColor(Color.parseColor(Colors.get(colorTextView.getText() + "")));
+            }
+        });
+    }
+
     private void setCLOTHESType(String[] cData) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cData);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -381,59 +540,70 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     CareLabelLayout.setClickable(false);
                     ItemDescription.setVisibility(View.GONE);
 
+                    WardrobeButton.setVisibility(View.GONE);
+                    IconInfoButton.setVisibility(View.GONE);
+
+                    Location = "Washing";
                     ButtonPresser(true,false,false,false,false);
                     SetVisibility(View.VISIBLE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                 }
                 break;
             case R.id.iconWashing:
+                Location = "Washing";
                 ButtonPresser(true,false,false,false,false);
                 SetVisibility(View.VISIBLE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                 break;
             case R.id.iconBleach:
+                Location = "Bleaching";
                 ButtonPresser(false,true,false,false,false);
                 SetVisibility(View.GONE, View.VISIBLE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.bleaching_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                 break;
             case R.id.iconDrying:
+                Location = "Drying";
                 ButtonPresser(false,false,true,false,false);
                 SetVisibility(View.GONE, View.GONE, View.VISIBLE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.drying_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                 break;
             case R.id.iconIroning:
+                Location = "Ironing";
                 ButtonPresser(false,false,false,true,false);
                 SetVisibility(View.GONE, View.GONE, View.GONE, View.VISIBLE, View.GONE, View.GONE, getResources().getString(R.string.ironing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                 break;
             case R.id.iconProfessionalCleaning:
+                Location = "Cleaning";
                 ButtonPresser(false,false,false,false,true);
                 SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.VISIBLE, View.GONE, getResources().getString(R.string.professional_cleaning_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                 break;
             case R.id.button_next:
+                Location = "Details";
                 ButtonPresser(false,false,false,false,false);
                 if((ButtonNext.getText().toString().equals(getResources().getString(R.string.add_clothes))) && EmptyChecker()){
-                    empty="";
-                    IconSetter(WashIcon,R.drawable.washing_symbol_sizer);
-                    empty="";
-                    IconSetter(BleachIcon,R.drawable.chlorine_and_non_chlorine_bleach_sizer);
-                    empty="";
-                    IconSetter(DryingIcon,R.drawable.drying_symbol_sizer);
-                    empty="";
-                    IconSetter(IroningIcon,R.drawable.ironing_sizer);
-                    empty="";
-                    IconSetter(ProfessionalCleaningIcon,R.drawable.professional_cleaning_sizer);
-                    SetClickable(false);
-                    CareLabelLayout.setClickable(true);
-
-                    SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.details),getResources().getString(R.string.enter_more_details), getResources().getString(R.string.add_clothes));
-
-                    ButtonNext.setVisibility(View.GONE);
-                    NameOfLayoutShowed.setVisibility(View.GONE);
-                    ChooseYourSymbol.setVisibility(View.GONE);
-
-                    ItemDescription.setVisibility(View.VISIBLE);
+                    afterElementWasAdd();
                 }
                 else if(ButtonNext.getText().toString().equals(getResources().getString(R.string.next))) {
                     ButtonNext.setText(R.string.add_clothes);
                     SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.VISIBLE, getResources().getString(R.string.details),getResources().getString(R.string.enter_more_details), getResources().getString(R.string.add_clothes));
                 }
               break;
+            case R.id.wardrobe_button:
+                Location = "Wardrobe";
+                WardrobeButton.setVisibility(View.GONE);
+                IconInfoButton.setVisibility(View.GONE);
+                ButtonPresser(false,false,false,false,false);
+                CareLabelLayout.setClickable(false);
+                ItemDescription.setVisibility(View.GONE);
+
+                SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, "", "", "");
+                break;
+            case R.id.icon_info_button:
+                Location = "LabelInfo";
+                WardrobeButton.setVisibility(View.GONE);
+                IconInfoButton.setVisibility(View.GONE);
+                ButtonPresser(false,false,false,false,false);
+                CareLabelLayout.setClickable(false);
+                ItemDescription.setVisibility(View.GONE);
+
+                SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, "", "", "");
+                break;
         }
     }
     public void SetClickable(boolean data) {
@@ -444,11 +614,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ProfessionalCleaningIcon.setClickable(data);
     }
     public void SetVisibility(int one, int two, int three, int four, int five, int six, String Data, String Data2, String ButtonNextText) {
-        ButtonNext.setText(ButtonNextText);
-        NameOfLayoutShowed.setText(Data);
-        NameOfLayoutShowed.setVisibility(View.VISIBLE);
-        ChooseYourSymbol.setText(Data2);
-        ChooseYourSymbol.setVisibility(View.VISIBLE);
+        if(!ButtonNextText.equals("") && IconChecker()) {
+            ButtonNext.setText(ButtonNextText);
+            ButtonNext.setVisibility(View.VISIBLE);
+        }
+        else
+            ButtonNext.setVisibility(View.GONE);
+
+        if(!Data.equals("")) {
+            NameOfLayoutShowed.setText(Data);
+            NameOfLayoutShowed.setVisibility(View.VISIBLE);
+        }
+        else
+            NameOfLayoutShowed.setVisibility(View.GONE);
+
+        if(!Data2.equals("")) {
+            ChooseYourSymbol.setText(Data2);
+            ChooseYourSymbol.setVisibility(View.VISIBLE);
+        }
+        else
+            ChooseYourSymbol.setVisibility(View.GONE);
+
+
+
         WashingLayout.setVisibility(one);
         BleachLayout.setVisibility(two);
         DryingLayout.setVisibility(three);
@@ -471,14 +659,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             imageButton.setTag(drawable);
         empty="not_empty";
 
-        IconChecker();
-    }
-    public void IconChecker() {
-        if((WashIcon.getTag()!= null && !WashIcon.getTag().equals(R.id.iconWashing))&&(BleachIcon.getTag()!= null && !BleachIcon.getTag().equals(R.id.iconBleach)) && (DryingIcon.getTag()!= null && !DryingIcon.getTag().equals(R.id.iconDrying))
-            && (IroningIcon.getTag()!= null && !IroningIcon.getTag().equals(R.id.iconIroning)) && (ProfessionalCleaningIcon.getTag()!= null &&  !ProfessionalCleaningIcon.getTag().equals(R.id.iconProfessionalCleaning)))
+        if(IconChecker())
             ButtonNext.setVisibility(View.VISIBLE);
         else
             ButtonNext.setVisibility(View.GONE);
+
+    }
+    public boolean IconChecker() {
+        return (WashIcon.getTag() != null && !WashIcon.getTag().equals(R.id.iconWashing)) && (BleachIcon.getTag() != null && !BleachIcon.getTag().equals(R.id.iconBleach)) && (DryingIcon.getTag() != null && !DryingIcon.getTag().equals(R.id.iconDrying))
+                && (IroningIcon.getTag() != null && !IroningIcon.getTag().equals(R.id.iconIroning)) && (ProfessionalCleaningIcon.getTag() != null && !ProfessionalCleaningIcon.getTag().equals(R.id.iconProfessionalCleaning));
     }
     public boolean EmptyChecker() {
         int Verifier=0;
@@ -666,4 +855,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     };
+
+
+    public void afterElementWasAdd()
+    {
+        empty="";
+        IconSetter(WashIcon,R.drawable.washing_symbol_sizer);
+        empty="";
+        IconSetter(BleachIcon,R.drawable.chlorine_and_non_chlorine_bleach_sizer);
+        empty="";
+        IconSetter(DryingIcon,R.drawable.drying_symbol_sizer);
+        empty="";
+        IconSetter(IroningIcon,R.drawable.ironing_sizer);
+        empty="";
+        IconSetter(ProfessionalCleaningIcon,R.drawable.professional_cleaning_sizer);
+        ButtonPresser(false,false,false,false,false);
+
+        SetClickable(false);
+        CareLabelLayout.setClickable(true);
+
+        SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, "","", "");
+
+        WardrobeButton.setVisibility(View.VISIBLE);
+        IconInfoButton.setVisibility(View.VISIBLE);
+
+        ItemDescription.setVisibility(View.VISIBLE);
+    }
+    @Override
+    public void onBackPressed() {
+        if(Location.equals("Washing") || Location.equals("Bleaching") || Location.equals("Drying") || Location.equals("Ironing") || Location.equals("Cleaning") || Location.equals("Wardrobe") || Location.equals("LabelInfo"))
+        {
+            afterElementWasAdd();
+        }
+        else if(Location.equals("Details"))
+        {
+            Location = "Cleaning";
+            ButtonPresser(false,false,false,false,true);
+            SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.VISIBLE, View.GONE, getResources().getString(R.string.professional_cleaning_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
+        }
+    }
 }
