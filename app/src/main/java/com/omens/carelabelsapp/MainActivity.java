@@ -2,27 +2,30 @@ package com.omens.carelabelsapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     HashMap<String, String> CLOTHES;
     HashMap<String, String> Material;
-    HashMap<String, String> Colors;
+    HashMap<String, Integer> Colors;
 
     String empty="empty";
     String Location = "";
@@ -106,13 +109,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     AutoCompleteTextView colorTextView;
     AutoCompleteTextView clothesTypeAutoCompleteTextView;
     AutoCompleteTextView mainMaterialAutoCompleteTextView;
+
+    GridView CustomGridView;
+
     Spinner clothesSeasonSpinner;
 
     String[] seasons = { "Summer", "Autumn", "Winter", "Spring", "All Seasons"};
+
+
+    ArrayList<ArrayList<String>> GRID_DATA;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ArrayList<String> listOfSomething;
+
+        GRID_DATA= new ArrayList<>();
+        listOfSomething = new ArrayList<>();
+        listOfSomething.clear();
+        listOfSomething.add("Tommy");
+        listOfSomething.add("Bra");
+        listOfSomething.add("Cotton");
+        listOfSomething.add("All");
+        listOfSomething.add("maroonColor");
+        listOfSomething.add("");
+        GRID_DATA.add(listOfSomething);
+        Log.e("GRID_DATA",String.valueOf(GRID_DATA));
+        listOfSomething = new ArrayList<>();
+        listOfSomething.add("Helfiger");
+        listOfSomething.add("Socks");
+        listOfSomething.add("Cotton");
+        listOfSomething.add("Winter");
+        listOfSomething.add("cornflowerColor");
+        listOfSomething.add("");
+        GRID_DATA.add(listOfSomething);
+        Log.e("GRID_DATA",String.valueOf(GRID_DATA));
+
+
+
+
+
+
+
+
+
+
 
         CLOTHES = new HashMap<String, String>()
         {{
@@ -185,125 +227,127 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             put("Hemp", "26");
         }};
 
-        Colors = new HashMap<String, String>()
+        Colors = new HashMap<String, Integer>()
         {{
             //Whites
-            put("White", "#ffffff");
-            put("Antique White", "#faebd7");
-            put("Old Lace", "#fdf5e6");
-            put("Ivory", "#fffff0");
-            put("Seashell", "#fff5ee");
-            put("Ghost White", "#f8f8ff");
-            put("Snow", "#fffafa");
-            put("Linen", "#faf0e6");
+            put("White", R.color.white);
+            put("Antique White", R.color.antiqueWhiteColor);
+            put("Old Lace", R.color.oldLaceColor);
+            put("Ivory", R.color.ivoryColor);
+            put("Seashell", R.color.seashellColor);
+            put("Ghost White", R.color.ghostWhiteColor);
+            put("Snow", R.color.snowColor);
+            put("Linen", R.color.linenColor);
 
             //Grays
-            put("black25Percent", "#404040");
-            put("black50Percent", "#808080");
-            put("black75Percent", "#c0c0c0");
-            put("Black", "#000000");
-            put("Warm Gray", "#857570");
-            put("Cool Gray", "#767a85");
-            put("Charcoal", "#222222");
+            put("black25Percent", R.color.black25PercentColor);
+            put("black50Percent", R.color.black50PercentColor);
+            put("black75Percent", R.color.black75PercentColor);
+            put("Black", R.color.black );
+            put("Warm Gray", R.color.warmGrayColor);
+            put("Cool Gray", R.color.coolGrayColor);
+            put("Charcoal", R.color. charcoalColor);
 
             //Blues
-            put("Teal", "#1ca0aa");
-            put("Steel Blue", "#6799aa");
-            put("Robin Egg", "#8ddaf7");
-            put("Pastel Blue", "#63a1f7");
-            put("Turquoise", "#70dbdb");
-            put("Sky Blue", "#00b2ee");
-            put("Indigo", "#0d4f8b");
-            put("Denim", "#4372aa");
-            put("Blueberry", "#5971ad");
-            put("Cornflower", "#6495ed");
-            put("Baby Blue", "#bedce6");
-            put("Midnight Blue", "#0d1a23");
-            put("Faded Blue", "#17899b");
-            put("Iceberg", "#c8d5db");
-            put("Wave", "#66a9fb");
+            put("Teal", R.color.tealColor );
+            put("Steel Blue", R.color.steelBlueColor );
+            put("Robin Egg", R.color.robinEggColor );
+            put("Pastel Blue", R.color.pastelBlueColor );
+            put("Turquoise", R.color.turquoiseColor );
+            put("Sky Blue", R.color.skyBlueColor);
+            put("Indigo", R.color.indigoColor);
+            put("Denim", R.color.denimColor);
+            put("Blueberry", R.color.blueberryColor);
+            put("Cornflower", R.color.cornflowerColor);
+            put("Baby Blue", R.color.babyBlueColor);
+            put("Midnight Blue", R.color.midnightBlueColor);
+            put("Faded Blue", R.color.fadedBlueColor);
+            put("Iceberg", R.color.icebergColor);
+            put("Wave", R.color.waveColor);
 
             //Greens
-            put("Emerald", "#019875");
-            put("Grass", "#63d64a");
-            put("Pastel Green", "#7ef27c");
-            put("Seafoam", "#4de28c");
-            put("Pale Green", "#b0e2ac");
-            put("Cactus Green", "#636f57");
-            put("Chartreuse", "#458b00");
-            put("Holly Green", "#20570e");
-            put("Olive", "#5b7222");
-            put("Olive Drab", "#6b8e23");
-            put("Money Green", "#86c67c");
-            put("Honeydew", "#d8ffe7");
-            put("Lime", "#38ed38");
-            put("Card Table", "#57796b");
+            put("Emerald", R.color.emeraldColor);
+            put("Grass", R.color.grassColor);
+            put("Pastel Green", R.color.pastelGreenColor);
+            put("Seafoam", R.color.seafoamColor);
+            put("Pale Green", R.color.paleGreenColor);
+            put("Cactus Green", R.color.cactusGreenColor);
+            put("Chartreuse", R.color.chartreuseColor);
+            put("Holly Green", R.color.hollyGreenColor);
+            put("Olive", R.color.oliveColor);
+            put("Olive Drab", R.color.oliveDrabColor);
+            put("Money Green", R.color.moneyGreenColor);
+            put("Honeydew", R.color.honeydewColor);
+            put("Lime", R.color.limeColor);
+            put("Card Table", R.color.cardTableColor);
 
             //Reds
-            put("Salmon", "#e9575f");
-            put("Brick Red", "#971b10");
-            put("Easter Pink", "#f1a7a2");
-            put("Grapefruit", "#e41f36");
-            put("Pink", "#ff5f9a");
-            put("Indian Red", "#cd5c5c");
-            put("Strawberry", "#be2625");
-            put("Coral", "#f08080");
-            put("Maroon", "#50041c");
-            put("Watermelon", "#f2473f");
-            put("Tomato", "#ff6347");
-            put("Pink Lipstick", "#ff69b4");
-            put("Pale Rose", "#ffe4e1");
-            put("Crimson", "#bb1224");
+            put("Salmon", R.color.salmonColor);
+            put("Brick Red", R.color.brickRedColor);
+            put("Easter Pink", R.color.easterPinkColor);
+            put("Grapefruit", R.color.grapefruitColor);
+            put("Pink", R.color.pinkColor);
+            put("Indian Red", R.color.indianRedColor);
+            put("Strawberry", R.color.strawberryColor);
+            put("Coral", R.color.coralColor);
+            put("Maroon", R.color.maroonColor);
+            put("Watermelon", R.color.watermelonColor);
+            put("Tomato", R.color.tomatoColor);
+            put("Pink Lipstick", R.color.pinkLipstickColor);
+            put("Pale Rose", R.color.paleRoseColor);
+            put("Crimson", R.color.crimsonColor);
 
             //Purples
-            put("Eggplant", "#690562");
-            put("Pastel Purple", "#cf64eb");
-            put("Pale Purple", "#e5b4eb");
-            put("Cool Purple", "#8c5de4");
-            put("Violet", "#bf5fff");
-            put("Plum", "#8b668b");
-            put("Lavender", "#cc99cc");
-            put("Raspberry", "#872657");
-            put("Fuschia", "#ff1493");
-            put("Grape", "#360b58");
-            put("Periwinkle", "#879fed");
-            put("Orchid", "#da70d6");
+            put("Eggplant", R.color.eggplantColor);
+            put("Pastel Purple", R.color.pastelPurpleColor);
+            put("Pale Purple", R.color.palePurpleColor);
+            put("Cool Purple", R.color.coolPurpleColor);
+            put("Violet", R.color.violetColor);
+            put("Plum", R.color.plumColor);
+            put("Lavender", R.color.lavenderColor);
+            put("Raspberry", R.color.raspberryColor);
+            put("Fuschia", R.color.fuschiaColor);
+            put("Grape", R.color.grapeColor);
+            put("Periwinkle", R.color.periwinkleColor);
+            put("Orchid", R.color.orchidColor);
 
             //Yellows
-            put("Goldenrod", "#d7aa33");
-            put("Yellow Green", "#c0f227");
-            put("Banana", "#e5e33a");
-            put("Mustard", "#cdab2d");
-            put("Buttermilk", "#fef1b5");
-            put("Gold", "#8b7512");
-            put("Cream", "#f0e2bb");
-            put("Light Cream", "#f0eed7");
-            put("Wheat", "#f0eed7");
-            put("Beige", "#f5f5dc");
+            put("Goldenrod", R.color.goldenrodColor);
+            put("Yellow Green", R.color.yellowGreenColor);
+            put("Banana", R.color.bananaColor);
+            put("Mustard",R.color.mustardColor);
+            put("Buttermilk", R.color.buttermilkColor);
+            put("Gold", R.color.goldColor);
+            put("Cream", R.color.creamColor);
+            put("Light Cream", R.color.lightCreamColor);
+            put("Wheat", R.color.wheatColor);
+            put("Beige", R.color.beigeColor);
 
             //Oranges
-            put("Peach", "#f2bb61");
-            put("Burnt Orange", "#b86625");
-            put("Pastel Orange", "#f8c58f");
-            put("Cantaloupe", "#fa9a4f");
-            put("Carrot", "#ed9121");
-            put("Mandarin", "#f79137");
+            put("Peach",R.color.peachColor);
+            put("Burnt Orange", R.color.burntOrangeColor);
+            put("Pastel Orange", R.color.pastelOrangeColor);
+            put("Cantaloupe", R.color.cantaloupeColor);
+            put("Carrot", R.color.carrotColor);
+            put("Mandarin", R.color.mandarinColor);
 
             //Browns
-            put("Chili Powder", "#c73f17");
-            put("Burnt Sienna", "#8a360f");
-            put("Chocolate", "#5e2605");
-            put("Coffee", "#8d3c0f");
-            put("Cinnamon", "#7b3f09");
-            put("Almond", "#c48e48");
-            put("Eggshell", "#fce6c9");
-            put("Sand", "#deb697");
-            put("Mud", "#462d1d");
-            put("Sienna", "#a0522d");
-            put("Dust", "#ecd6c5");
+            put("Chili Powder", R.color.chiliPowderColor);
+            put("Burnt Sienna", R.color.burntSiennaColor);
+            put("Chocolate", R.color.chocolateColor);
+            put("Coffee", R.color.coffeeColor);
+            put("Cinnamon", R.color.cinnamonColor);
+            put("Almond", R.color.almondColor);
+            put("Eggshell", R.color.eggshellColor);
+            put("Sand", R.color.sandColor);
+            put("Mud", R.color.mudColor);
+            put("Sienna", R.color.siennaColor);
+            put("Dust", R.color.dustColor);
         }};
 
         colorImage = findViewById(R.id.colorView);
+
+        CustomGridView = findViewById(R.id.grid_view);
 
         WashIcon = findViewById(R.id.iconWashing);
         BleachIcon = findViewById(R.id.iconBleach);
@@ -508,7 +552,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                colorImage.setBackgroundColor(Color.parseColor(Colors.get(colorTextView.getText() + "")));
+                colorImage.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), Colors.get(colorTextView.getText()+"")));
             }
         });
     }
@@ -586,6 +630,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
               break;
             case R.id.wardrobe_button:
                 Location = "Wardrobe";
+
+                CustomGridView.setAdapter(  new CustomGridAdapter( this, GRID_DATA ) );
+
+                CustomGridView.setVisibility(View.VISIBLE);
+
                 WardrobeButton.setVisibility(View.GONE);
                 IconInfoButton.setVisibility(View.GONE);
                 ButtonPresser(false,false,false,false,false);
@@ -885,6 +934,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onBackPressed() {
         if(Location.equals("Washing") || Location.equals("Bleaching") || Location.equals("Drying") || Location.equals("Ironing") || Location.equals("Cleaning") || Location.equals("Wardrobe") || Location.equals("LabelInfo"))
         {
+            CustomGridView.setVisibility(View.GONE);
             afterElementWasAdd();
         }
         else if(Location.equals("Details"))
