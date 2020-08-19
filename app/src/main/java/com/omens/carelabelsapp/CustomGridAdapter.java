@@ -1,16 +1,15 @@
 package com.omens.carelabelsapp;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,7 +25,6 @@ public class CustomGridAdapter extends BaseAdapter {
     TextView mainMaterialText;
     ImageView colorButton;
     ImageView weatherImageView;
-    Button LayoutButton;
 
 
     //Constructor to initialize values
@@ -50,7 +48,7 @@ public class CustomGridAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return 0;
     }
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
 
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -71,9 +69,23 @@ public class CustomGridAdapter extends BaseAdapter {
             mainMaterialText = gridView.findViewById(R.id.mainMaterialText);
             colorButton = gridView.findViewById(R.id.colorButton);
             weatherImageView = gridView.findViewById(R.id.weatherImageView);
-            LayoutButton = gridView.findViewById(R.id.layoutButton);
-            LayoutButton.setOnClickListener(LayoutButtonListener);
 
+            //LayoutButton = gridView.findViewById(R.id.layoutButton);
+            ViewHolder holder = new ViewHolder();
+            holder.LayoutButton = gridView.findViewById(R.id.layoutButton);
+            holder.LayoutButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((GridView)parent).performItemClick(v,position,0);
+                }
+            });
+            holder.EditButton = gridView.findViewById(R.id.editButton);
+            holder.EditButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((GridView)parent).performItemClick(v,position,0);
+                }
+            });
             ArrayList<String> arrLabel = gridValues.get(position);
 
 
@@ -109,10 +121,10 @@ public class CustomGridAdapter extends BaseAdapter {
             gridView =  convertView;
         return gridView;
     }
-    public View.OnClickListener LayoutButtonListener = new View.OnClickListener() {
-        public void onClick(View v) {
-                    Toast.makeText(context, BrandText.getText(), Toast.LENGTH_SHORT).show();
-                }
-    };
 
+    class ViewHolder {
+        Button LayoutButton;
+        Button EditButton;
+        TextView textOne;
+    }
 }

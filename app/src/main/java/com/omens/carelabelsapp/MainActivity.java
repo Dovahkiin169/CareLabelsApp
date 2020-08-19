@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,6 +22,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     HashMap<String, String> CLOTHES;
@@ -125,24 +128,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ArrayList<String> listOfSomething;
 
-        GRID_DATA= new ArrayList<>();
-        listOfSomething = new ArrayList<>();
+        GRID_DATA= new ArrayList<ArrayList<String>>();
+        listOfSomething = new ArrayList<String>();
         listOfSomething.clear();
         listOfSomething.add("Tommy");
         listOfSomething.add("Bra");
         listOfSomething.add("Cotton");
-        listOfSomething.add("All");
+        listOfSomething.add("Autumn");
         listOfSomething.add("maroonColor");
         listOfSomething.add("");
+        listOfSomething.add("wash_at_or_below_30_mild_fine_wash_sizer");
+        listOfSomething.add("bleaching_with_chlorine_allowed_sizer");
+        listOfSomething.add("drip_dry_sizer");
+        listOfSomething.add("ironing_at_low_temp_sizer");
+        listOfSomething.add("very_gentle_cleaning_with_pce_sizer");
         GRID_DATA.add(listOfSomething);
         Log.e("GRID_DATA",String.valueOf(GRID_DATA));
-        listOfSomething = new ArrayList<>();
+        listOfSomething = new ArrayList<String>();
         listOfSomething.add("Helfiger");
         listOfSomething.add("Socks");
         listOfSomething.add("Cotton");
         listOfSomething.add("Winter");
         listOfSomething.add("cornflowerColor");
         listOfSomething.add("");
+        listOfSomething.add("wash_at_or_below_40_mild_fine_wash_sizer");
+        listOfSomething.add("chlorine_and_non_chlorine_bleach_sizer");
+        listOfSomething.add("drip_dry_sizer");
+        listOfSomething.add("ironing_at_low_temp_sizer");
+        listOfSomething.add("very_gentle_cleaning_with_pce_sizer");
         GRID_DATA.add(listOfSomething);
         Log.e("GRID_DATA",String.valueOf(GRID_DATA));
 
@@ -632,7 +645,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Location = "Wardrobe";
 
                 CustomGridView.setAdapter(  new CustomGridAdapter( this, GRID_DATA ) );
+                CustomGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if (view.getId() == R.id.layoutButton) {
+                        ArrayList<String> NewArr = GRID_DATA.get(position);
+                        IconSetter(WashIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(6), "drawable", getApplicationContext().getPackageName()));
+                        IconSetter(BleachIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(7), "drawable", getApplicationContext().getPackageName()));
+                        IconSetter(DryingIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(8), "drawable", getApplicationContext().getPackageName()));
+                        IconSetter(IroningIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(9), "drawable", getApplicationContext().getPackageName()));
+                        IconSetter(ProfessionalCleaningIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(10), "drawable", getApplicationContext().getPackageName()));
+                        SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), "");
+                    }
+                    else if(view.getId() == R.id.editButton)
+                    {
+                        ArrayList<String> NewArr = GRID_DATA.get(position);
+                        IconSetter(WashIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(6), "drawable", getApplicationContext().getPackageName()));
+                        IconSetter(BleachIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(7), "drawable", getApplicationContext().getPackageName()));
+                        IconSetter(DryingIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(8), "drawable", getApplicationContext().getPackageName()));
+                        IconSetter(IroningIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(9), "drawable", getApplicationContext().getPackageName()));
+                        IconSetter(ProfessionalCleaningIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(10), "drawable", getApplicationContext().getPackageName()));
+                        ButtonPresser(true,false,false,false,false);
+                        CustomGridView.setVisibility(View.GONE);
+                        SetVisibility(View.VISIBLE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
 
+                        clothesTypeAutoCompleteTextView.setText(NewArr.get(1));
+                        mainMaterialAutoCompleteTextView.setText(NewArr.get(2));
+                        brandTextView.setText(NewArr.get(0));
+                        colorTextView.setText(getKeyByValue(Colors,getApplicationContext().getResources().getIdentifier(NewArr.get(4), "color", getApplicationContext().getPackageName())));
+                        colorImage.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), Colors.get(colorTextView.getText()+"")));
+                        specialMarksTextView.setText(NewArr.get(5));
+
+                        clothesSeasonSpinner.setSelection(((ArrayAdapter<String>)clothesSeasonSpinner.getAdapter()).getPosition(NewArr.get(3)));
+                    }
+                }
+                });
                 CustomGridView.setVisibility(View.VISIBLE);
 
                 WardrobeButton.setVisibility(View.GONE);
@@ -943,5 +990,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ButtonPresser(false,false,false,false,true);
             SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.VISIBLE, View.GONE, getResources().getString(R.string.professional_cleaning_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
         }
+    }
+
+    public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
+        for (Map.Entry<T, E> entry : map.entrySet()) {
+            if (Objects.equals(value, entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 }
