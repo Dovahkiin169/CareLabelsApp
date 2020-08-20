@@ -631,6 +631,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.VISIBLE, View.GONE, getResources().getString(R.string.professional_cleaning_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                 break;
             case R.id.button_next:
+                if(Location.equals("Wardrobe"))
+                {
+                    ButtonNext.setText(R.string.confirm);
+                    EditElement();
+                }
                 Location = "Details";
                 ButtonPresser(false,false,false,false,false);
                 if((ButtonNext.getText().toString().equals(getResources().getString(R.string.add_clothes))) && EmptyChecker()){
@@ -643,7 +648,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
               break;
             case R.id.wardrobe_button:
                 Location = "Wardrobe";
-
                 CustomGridView.setAdapter(  new CustomGridAdapter( this, GRID_DATA ) );
                 CustomGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -668,7 +672,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         ButtonPresser(true,false,false,false,false);
                         CustomGridView.setVisibility(View.GONE);
                         SetVisibility(View.VISIBLE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
-
+                        SetClickable(true);
                         clothesTypeAutoCompleteTextView.setText(NewArr.get(1));
                         mainMaterialAutoCompleteTextView.setText(NewArr.get(2));
                         brandTextView.setText(NewArr.get(0));
@@ -976,6 +980,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         IconInfoButton.setVisibility(View.VISIBLE);
 
         ItemDescription.setVisibility(View.VISIBLE);
+    }
+    public void EditElement()
+    {
+        ButtonPresser(false,false,false,false,false);
+
+        CustomGridView.setAdapter(  new CustomGridAdapter( this, GRID_DATA ) );
+        CustomGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (view.getId() == R.id.layoutButton) {
+                    ArrayList<String> NewArr = GRID_DATA.get(position);
+                    IconSetter(WashIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(6), "drawable", getApplicationContext().getPackageName()));
+                    IconSetter(BleachIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(7), "drawable", getApplicationContext().getPackageName()));
+                    IconSetter(DryingIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(8), "drawable", getApplicationContext().getPackageName()));
+                    IconSetter(IroningIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(9), "drawable", getApplicationContext().getPackageName()));
+                    IconSetter(ProfessionalCleaningIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(10), "drawable", getApplicationContext().getPackageName()));
+                    SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), "");
+                }
+                else if(view.getId() == R.id.editButton)
+                {
+                    ArrayList<String> NewArr = GRID_DATA.get(position);
+                    IconSetter(WashIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(6), "drawable", getApplicationContext().getPackageName()));
+                    IconSetter(BleachIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(7), "drawable", getApplicationContext().getPackageName()));
+                    IconSetter(DryingIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(8), "drawable", getApplicationContext().getPackageName()));
+                    IconSetter(IroningIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(9), "drawable", getApplicationContext().getPackageName()));
+                    IconSetter(ProfessionalCleaningIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(10), "drawable", getApplicationContext().getPackageName()));
+                    ButtonPresser(true,false,false,false,false);
+                    CustomGridView.setVisibility(View.GONE);
+                    SetVisibility(View.VISIBLE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
+                    SetClickable(true);
+                    clothesTypeAutoCompleteTextView.setText(NewArr.get(1));
+                    mainMaterialAutoCompleteTextView.setText(NewArr.get(2));
+                    brandTextView.setText(NewArr.get(0));
+                    colorTextView.setText(getKeyByValue(Colors,getApplicationContext().getResources().getIdentifier(NewArr.get(4), "color", getApplicationContext().getPackageName())));
+                    colorImage.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), Colors.get(colorTextView.getText()+"")));
+                    specialMarksTextView.setText(NewArr.get(5));
+
+                    clothesSeasonSpinner.setSelection(((ArrayAdapter<String>)clothesSeasonSpinner.getAdapter()).getPosition(NewArr.get(3)));
+                }
+            }
+        });
+        CustomGridView.setVisibility(View.VISIBLE);
+
+        SetClickable(false);
+        CareLabelLayout.setClickable(true);
+        SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, "","", "");
+
     }
     @Override
     public void onBackPressed() {
