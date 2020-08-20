@@ -125,6 +125,5 @@ public class CustomGridAdapter extends BaseAdapter {
     class ViewHolder {
         Button LayoutButton;
         Button EditButton;
-        TextView textOne;
     }
 }

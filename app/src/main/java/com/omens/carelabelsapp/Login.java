@@ -43,7 +43,7 @@ public class Login extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBarLogin);
         Auth = FirebaseAuth.getInstance();
         LoginButton = findViewById(R.id.loginButton);
-        CreateButton = findViewById(R.id.createNewAccountTextView);
+        CreateButton = findViewById(R.id.createAccountText);
         forgotTextLink = findViewById(R.id.forgotPasswordTextView);
 
 
@@ -78,7 +78,8 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                            finish();
                         }
                         else {
                             Toast.makeText(Login.this, "Error ! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();

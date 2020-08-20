@@ -28,9 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class EditProfile extends AppCompatActivity {
-
-    public static final String TAG = "TAG";
-    EditText profileFullName,profileEmail,profilePhone;
+    EditText profileFullName,profileEmail;
     ImageView profileImageView;
     Button saveBtn;
     FirebaseAuth fAuth;
@@ -46,7 +44,6 @@ public class EditProfile extends AppCompatActivity {
         Intent data = getIntent();
         final String fullName = data.getStringExtra("fullName");
         String email = data.getStringExtra("email");
-        String phone = data.getStringExtra("phone");
         
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -85,7 +82,6 @@ public class EditProfile extends AppCompatActivity {
                         Map<String,Object> edited = new HashMap<>();
                         edited.put("email",email);
                         edited.put("fName",profileFullName.getText().toString());
-                        edited.put("phone",profilePhone.getText().toString());
                         docRef.update(edited).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
@@ -109,8 +105,5 @@ public class EditProfile extends AppCompatActivity {
 
         profileEmail.setText(email);
         profileFullName.setText(fullName);
-        profilePhone.setText(phone);
-
-        Log.d(TAG, "onCreate: " + fullName + " " + email + " " + phone);
     }
 }

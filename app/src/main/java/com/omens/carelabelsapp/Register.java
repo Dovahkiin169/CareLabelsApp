@@ -28,7 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Register extends AppCompatActivity {
-    EditText Nickname, Email, Password, Phone;
+    EditText Nickname, Email, Password;
     Button RegisterButton;
     TextView LoginButton;
     FirebaseAuth Auth;
@@ -52,7 +52,7 @@ public class Register extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
         if(Auth.getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+            startActivity(new Intent(getApplicationContext(),MainActivity.class));
             finish();
         }
 
@@ -63,7 +63,6 @@ public class Register extends AppCompatActivity {
                 final String email = Email.getText().toString().trim();
                 final String password = Password.getText().toString().trim();
                 final String nickname = Nickname.getText().toString();
-                final String phone = Phone.getText().toString();
                 if(TextUtils.isEmpty(nickname)){
                     Email.setError("Email is Required.");
                     return;
@@ -109,7 +108,6 @@ public class Register extends AppCompatActivity {
                             Map<String,Object> user = new HashMap<>();
                             user.put("fName",nickname);
                             user.put("email",email);
-                            user.put("phone",phone);
                             documentReference.set(user);
                             startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
                         }

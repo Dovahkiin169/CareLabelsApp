@@ -31,7 +31,7 @@ import java.util.Objects;
 import javax.annotation.Nullable;
 
 public class ProfileActivity extends AppCompatActivity {
-    TextView fullName,email,phone,verifyMsg;
+    TextView fullName,email,verifyMsg;
     FirebaseAuth Auth;
     FirebaseFirestore fStore;
     String userId;
@@ -46,7 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         fullName = findViewById(R.id.profileName);
-        email    = findViewById(R.id.profileEmail);
+        email = findViewById(R.id.profileEmail);
         resetPassLocal = findViewById(R.id.resetPasswordLocal);
 
         changeProfile = findViewById(R.id.editProfile);
@@ -98,7 +98,6 @@ public class ProfileActivity extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 assert documentSnapshot != null;
                 if(documentSnapshot.exists()){
-                    phone.setText(documentSnapshot.getString("phone"));
                     fullName.setText(documentSnapshot.getString("fName"));
                     email.setText(documentSnapshot.getString("email"));
 
@@ -156,7 +155,6 @@ public class ProfileActivity extends AppCompatActivity {
                 Intent i = new Intent(v.getContext(),EditProfile.class);
                 i.putExtra("fullName",fullName.getText().toString());
                 i.putExtra("email",email.getText().toString());
-                i.putExtra("phone",phone.getText().toString());
                 startActivity(i);
 //
 
@@ -169,7 +167,7 @@ public class ProfileActivity extends AppCompatActivity {
     public void logout(View view) {
         FirebaseAuth.getInstance().signOut();//logout
         startActivity(new Intent(getApplicationContext(),Login.class));
-        finish();
+        finishAffinity();
     }
 
 
