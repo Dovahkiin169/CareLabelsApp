@@ -3,7 +3,6 @@ package com.omens.carelabelsapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -82,15 +81,10 @@ public class EditProfile extends AppCompatActivity {
                         Map<String,Object> edited = new HashMap<>();
                         edited.put("email",email);
                         edited.put("fName",profileFullName.getText().toString());
-                        docRef.update(edited).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(EditProfile.this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
-                                finish();
-                            }
-                        });
-                        Toast.makeText(EditProfile.this, "Email is changed.", Toast.LENGTH_SHORT).show();
+                        docRef.update(edited);
+                        Toast.makeText(EditProfile.this, "Information was successfully updated", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                        finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -98,11 +92,8 @@ public class EditProfile extends AppCompatActivity {
                         Toast.makeText(EditProfile.this,   e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
             }
         });
-
         profileEmail.setText(email);
         profileFullName.setText(fullName);
     }
