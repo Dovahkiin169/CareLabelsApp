@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "548625079870",
+    "firebase_url": "https://carelabelsapp.firebaseio.com",
+    "project_id": "carelabelsapp",
+    "storage_bucket": "carelabelsapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548625079870:android:332a7249043d21f62dbb6f",
+        "android_client_info": {
+          "package_name": "com.omens.carelabelsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "548625079870-342vds5sd1qgf2tb78bfmnhpokmimcri.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.omens.carelabelsapp",
+            "certificate_hash": "48b153281729a8ddd69f3e5237f15efa1ac12d26"
+          }
+        },
+        {
+          "client_id": "548625079870-1jjr2ntr563e4ev0m2atr92khqv0e5oa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVFDNMKClfyDuXOkzvWFErdcRp_rTJCYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "548625079870-1jjr2ntr563e4ev0m2atr92khqv0e5oa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

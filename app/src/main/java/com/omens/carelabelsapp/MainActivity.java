@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,7 +25,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    HashMap<String, String> CLOTHES;
+    HashMap<String, String> Clothes;
     HashMap<String, String> Material;
     HashMap<String, Integer> Colors;
 
@@ -128,8 +127,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ArrayList<String> listOfSomething;
 
-        GRID_DATA= new ArrayList<ArrayList<String>>();
-        listOfSomething = new ArrayList<String>();
+        GRID_DATA= new ArrayList<>();
+        listOfSomething = new ArrayList<>();
         listOfSomething.clear();
         listOfSomething.add("Tommy");
         listOfSomething.add("Bra");
@@ -144,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listOfSomething.add("very_gentle_cleaning_with_pce_sizer");
         GRID_DATA.add(listOfSomething);
         Log.e("GRID_DATA",String.valueOf(GRID_DATA));
-        listOfSomething = new ArrayList<String>();
+        listOfSomething = new ArrayList<>();
         listOfSomething.add("Helfiger");
         listOfSomething.add("Socks");
         listOfSomething.add("Cotton");
@@ -169,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-        CLOTHES = new HashMap<String, String>()
+        Clothes = new HashMap<String, String>()
         {{
             put("T-shirt", "1");
             put("Sweater", "2");
@@ -502,9 +501,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         colorTextView.setOnClickListener(DetailsListener);
         specialMarksTextView.setOnClickListener(DetailsListener);*/
 
-        setCLOTHES(CLOTHES.keySet().toArray(new String[0]));
+        setCLOTHES(Clothes.keySet().toArray(new String[0]));
         setClothesMaterial(Material.keySet().toArray(new String[0]));
-        setCLOTHESType(seasons);
+        setClothesType(seasons);
         setColors(Colors.keySet().toArray(new String[0]));
 
         CareLabelLayout = findViewById(R.id.care_in_main);
@@ -520,7 +519,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
-                    if (CLOTHES.get(clothesTypeAutoCompleteTextView.getText() + "") == null) {
+                    if (Clothes.get(clothesTypeAutoCompleteTextView.getText() + "") == null) {
                         clothesTypeAutoCompleteTextView.setText("");
                         clothesTypeAutoCompleteTextView.setError("Invalid clothes, choose from list");
                     }
@@ -570,7 +569,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void setCLOTHESType(String[] cData) {
+    private void setClothesType(String[] cData) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cData);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         clothesSeasonSpinner.setAdapter(adapter);
@@ -1027,6 +1026,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CareLabelLayout.setClickable(true);
         SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, "","", "");
 
+
+        //TODO Edit element and send it to database
     }
     @Override
     public void onBackPressed() {
