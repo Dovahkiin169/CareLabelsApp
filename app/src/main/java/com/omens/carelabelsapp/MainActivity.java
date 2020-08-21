@@ -556,6 +556,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 // Create a query against the collection.
         Query query = citiesRef.whereEqualTo("state", "CA");
+        final HashMap<String, Object> Getter;
+        Getter = new HashMap<String, Object>();
 
         db.collection("clothes")
                 .whereEqualTo("userId", user.getUid())
@@ -564,14 +566,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
+                            int i = 0;
+                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                Getter.put(String.valueOf(i++),document.getData());
                                 Log.e("TAG", document.getId() + " => " + document.getData());
                             }
+                            Log.e("kek",Getter.toString());
+                            Log.e("kek",Getter.toString());
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
                         }
                     }
                 });
+
     }
 
     private void setCLOTHES(String[] cData) {
