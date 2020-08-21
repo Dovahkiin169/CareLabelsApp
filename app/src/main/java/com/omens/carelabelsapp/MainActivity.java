@@ -1,5 +1,6 @@
 package com.omens.carelabelsapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -21,6 +22,20 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -512,6 +527,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CareLabelLayout = findViewById(R.id.care_in_main);
         CareLabelLayout.setOnClickListener(this);
         SetClickable(false);
+
+        FirebaseAuth fAuth;
+        FirebaseUser user;
+        fAuth = FirebaseAuth.getInstance();
+        user = fAuth.getCurrentUser();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> clothesToDataBase = new HashMap<>();
+        clothesToDataBase.put("bleachingIcon", "bleaching_with_chlorine_allowed_sizer");
+        clothesToDataBase.put("brand", "Tommy");
+        clothesToDataBase.put("clothesColor", "maroonColor");
+        clothesToDataBase.put("clothesType", "Bra");
+        clothesToDataBase.put("dryIcon", "drip_dry_sizer");
+        clothesToDataBase.put("ironingIcon", "ironing_at_low_temp_sizer");
+        clothesToDataBase.put("mainMaterial", "Cotton");
+        clothesToDataBase.put("professionalCleaningIcon", "very_gentle_cleaning_with_pce_sizer");
+        clothesToDataBase.put("season", "Autumn");
+        clothesToDataBase.put("specialMarks", "");
+        assert user != null;
+        clothesToDataBase.put("userId", user.getUid());
+        clothesToDataBase.put("washIcon", "wash_at_or_below_30_mild_fine_wash_sizer");
+
+        db.collection("clothes").add(clothesToDataBase);
+
+// Create a reference to the cities collection
+        CollectionReference citiesRef = db.collection("clothes");
+
+// Create a query against the collection.
+        Query query = citiesRef.whereEqualTo("state", "CA");
+
+        db.collection("clothes")
+                .whereEqualTo("userId", user.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("TAG", document.getId() + " => " + document.getData());
+                            }
+                        } else {
+                            Log.d("TAG", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
     private void setCLOTHES(String[] cData) {
@@ -641,6 +701,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Location = "Details";
                 ButtonPresser(false,false,false,false,false);
                 if((ButtonNext.getText().toString().equals(getResources().getString(R.string.add_clothes))) && EmptyChecker()){
+
+
+
+                    /*
+                            listOfSomething.add("Tommy");
+                            listOfSomething.add("Bra");
+                            listOfSomething.add("Cotton");
+                            listOfSomething.add("Autumn");
+                            listOfSomething.add("maroonColor");
+                            listOfSomething.add("");
+                            listOfSomething.add("wash_at_or_below_30_mild_fine_wash_sizer");
+                            listOfSomething.add("bleaching_with_chlorine_allowed_sizer");
+                            listOfSomething.add("drip_dry_sizer");
+                            listOfSomething.add("ironing_at_low_temp_sizer");
+                            listOfSomething.add("very_gentle_cleaning_with_pce_sizer");
+                     */
+
+
                     afterElementWasAdd();
                 }
                 else if(ButtonNext.getText().toString().equals(getResources().getString(R.string.next))) {
