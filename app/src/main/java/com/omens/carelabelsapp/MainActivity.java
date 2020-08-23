@@ -136,7 +136,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     String[] seasons = { "Summer", "Autumn", "Winter", "Spring", "All Seasons"};
 
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
+    FirebaseFirestore firebaseFirestore;
 
+    HashMap<String, Object> Getter;
     ArrayList<ArrayList<String>> GRID_DATA;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listOfSomething.add("ironing_at_low_temp_sizer");
         listOfSomething.add("very_gentle_cleaning_with_pce_sizer");
         GRID_DATA.add(listOfSomething);
-        Log.e("GRID_DATA",String.valueOf(GRID_DATA));
+      //  Log.e("GRID_DATA",String.valueOf(GRID_DATA));
         listOfSomething = new ArrayList<>();
         listOfSomething.add("Helfiger");
         listOfSomething.add("Socks");
@@ -174,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listOfSomething.add("ironing_at_low_temp_sizer");
         listOfSomething.add("very_gentle_cleaning_with_pce_sizer");
         GRID_DATA.add(listOfSomething);
-        Log.e("GRID_DATA",String.valueOf(GRID_DATA));
+       // Log.e("GRID_DATA",String.valueOf(GRID_DATA));
 
 
 
@@ -528,57 +532,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CareLabelLayout.setOnClickListener(this);
         SetClickable(false);
 
-        FirebaseAuth fAuth;
-        FirebaseUser user;
-        fAuth = FirebaseAuth.getInstance();
-        user = fAuth.getCurrentUser();
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String, Object> clothesToDataBase = new HashMap<>();
-        clothesToDataBase.put("bleachingIcon", "bleaching_with_chlorine_allowed_sizer");
-        clothesToDataBase.put("brand", "Tommy");
-        clothesToDataBase.put("clothesColor", "maroonColor");
-        clothesToDataBase.put("clothesType", "Bra");
-        clothesToDataBase.put("dryIcon", "drip_dry_sizer");
-        clothesToDataBase.put("ironingIcon", "ironing_at_low_temp_sizer");
-        clothesToDataBase.put("mainMaterial", "Cotton");
-        clothesToDataBase.put("professionalCleaningIcon", "very_gentle_cleaning_with_pce_sizer");
-        clothesToDataBase.put("season", "Autumn");
-        clothesToDataBase.put("specialMarks", "");
-        assert user != null;
-        clothesToDataBase.put("userId", user.getUid());
-        clothesToDataBase.put("washIcon", "wash_at_or_below_30_mild_fine_wash_sizer");
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
 
-        db.collection("clothes").add(clothesToDataBase);
+        firebaseFirestore= FirebaseFirestore.getInstance();
 
 // Create a reference to the cities collection
-        CollectionReference citiesRef = db.collection("clothes");
+        CollectionReference citiesRef = firebaseFirestore.collection("clothes");
 
-// Create a query against the collection.
-        Query query = citiesRef.whereEqualTo("state", "CA");
-        final HashMap<String, Object> Getter;
-        Getter = new HashMap<String, Object>();
 
-        db.collection("clothes")
-                .whereEqualTo("userId", user.getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            int i = 0;
-                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                Getter.put(String.valueOf(i++),document.getData());
-                                Log.e("TAG", document.getId() + " => " + document.getData());
-                            }
-                            Log.e("kek",Getter.toString());
-                            Log.e("kek",Getter.toString());
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
+        DataGetter();
     }
 
     private void setCLOTHES(String[] cData) {
@@ -625,7 +589,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (!hasFocus) {
                     if (Colors.get(colorTextView.getText() + "") == null) {
                         colorTextView.setText("");
-                        colorTextView.setError("Invalid material, choose from list");
+                        colorTextView.setError("Invalid color, choose from list");
                     }
                 }
             }
@@ -708,23 +672,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Location = "Details";
                 ButtonPresser(false,false,false,false,false);
                 if((ButtonNext.getText().toString().equals(getResources().getString(R.string.add_clothes))) && EmptyChecker()){
-
-
-
-                    /*
-                            listOfSomething.add("Tommy");
-                            listOfSomething.add("Bra");
-                            listOfSomething.add("Cotton");
-                            listOfSomething.add("Autumn");
-                            listOfSomething.add("maroonColor");
-                            listOfSomething.add("");
-                            listOfSomething.add("wash_at_or_below_30_mild_fine_wash_sizer");
-                            listOfSomething.add("bleaching_with_chlorine_allowed_sizer");
-                            listOfSomething.add("drip_dry_sizer");
-                            listOfSomething.add("ironing_at_low_temp_sizer");
-                            listOfSomething.add("very_gentle_cleaning_with_pce_sizer");
-                     */
-
+                    addingElement(BleachIcon.getTag().toString(), brandTextView.getText().toString(),String.valueOf(Colors.get(colorTextView.getText()+"")),clothesTypeAutoCompleteTextView.getText().toString(), DryingIcon.getTag().toString(),
+                                  IroningIcon.getTag().toString(), mainMaterialAutoCompleteTextView.getText().toString(), ProfessionalCleaningIcon.getTag().toString() ,(String) clothesSeasonSpinner.getSelectedItem(),
+                                  specialMarksTextView.getText().toString(), firebaseUser.getUid(), WashIcon.getTag().toString());
 
                     afterElementWasAdd();
                 }
@@ -741,21 +691,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     if (view.getId() == R.id.layoutButton) {
                         ArrayList<String> NewArr = GRID_DATA.get(position);
-                        IconSetter(WashIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(6), "drawable", getApplicationContext().getPackageName()));
-                        IconSetter(BleachIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(7), "drawable", getApplicationContext().getPackageName()));
-                        IconSetter(DryingIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(8), "drawable", getApplicationContext().getPackageName()));
-                        IconSetter(IroningIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(9), "drawable", getApplicationContext().getPackageName()));
-                        IconSetter(ProfessionalCleaningIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(10), "drawable", getApplicationContext().getPackageName()));
+                        IconSetter(WashIcon, Integer.parseInt(NewArr.get(6)));
+                        IconSetter(BleachIcon, Integer.parseInt(NewArr.get(7)));
+                        IconSetter(DryingIcon, Integer.parseInt(NewArr.get(8)));
+                        IconSetter(IroningIcon, Integer.parseInt(NewArr.get(9)));
+                        IconSetter(ProfessionalCleaningIcon, Integer.parseInt(NewArr.get(10)));
                         SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), "");
                     }
                     else if(view.getId() == R.id.editButton)
                     {
                         ArrayList<String> NewArr = GRID_DATA.get(position);
-                        IconSetter(WashIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(6), "drawable", getApplicationContext().getPackageName()));
-                        IconSetter(BleachIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(7), "drawable", getApplicationContext().getPackageName()));
-                        IconSetter(DryingIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(8), "drawable", getApplicationContext().getPackageName()));
-                        IconSetter(IroningIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(9), "drawable", getApplicationContext().getPackageName()));
-                        IconSetter(ProfessionalCleaningIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(10), "drawable", getApplicationContext().getPackageName()));
+                        IconSetter(WashIcon, Integer.parseInt(NewArr.get(6)));
+                        IconSetter(BleachIcon, Integer.parseInt(NewArr.get(7)));
+                        IconSetter(DryingIcon, Integer.parseInt(NewArr.get(8)));
+                        IconSetter(IroningIcon, Integer.parseInt(NewArr.get(9)));
+                        IconSetter(ProfessionalCleaningIcon, Integer.parseInt(NewArr.get(10)));
                         ButtonPresser(true,false,false,false,false);
                         CustomGridView.setVisibility(View.GONE);
                         SetVisibility(View.VISIBLE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
@@ -783,6 +733,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.icon_info_button:
                 Location = "LabelInfo";
+
                 WardrobeButton.setVisibility(View.GONE);
                 IconInfoButton.setVisibility(View.GONE);
                 ButtonPresser(false,false,false,false,false);
@@ -1043,7 +994,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
-
+    public void addingElement(String bleachingIcon, String brand, String clothesColor, String clothesType, String dryIcon,
+                              String ironingIcon, String mainMaterial, String professionalCleaningIcon, String season, String specialMarks,
+                              String userId, String washIcon) {
+        Map<String, Object> clothesToDataBase = new HashMap<>();
+        clothesToDataBase.put("bleachingIcon", bleachingIcon);
+        clothesToDataBase.put("brand", brand);
+        clothesToDataBase.put("clothesColor", clothesColor);
+        clothesToDataBase.put("clothesType", clothesType);
+        clothesToDataBase.put("dryIcon", dryIcon);
+        clothesToDataBase.put("ironingIcon", ironingIcon);
+        clothesToDataBase.put("mainMaterial", mainMaterial);
+        clothesToDataBase.put("professionalCleaningIcon", professionalCleaningIcon);
+        clothesToDataBase.put("season", season);
+        clothesToDataBase.put("specialMarks", specialMarks);
+        assert firebaseUser != null;
+        clothesToDataBase.put("userId", userId);
+        clothesToDataBase.put("washIcon", washIcon);
+        firebaseFirestore.collection("clothes").add(clothesToDataBase);
+    }
     public void afterElementWasAdd()
     {
         empty="";
@@ -1078,21 +1047,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (view.getId() == R.id.layoutButton) {
                     ArrayList<String> NewArr = GRID_DATA.get(position);
-                    IconSetter(WashIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(6), "drawable", getApplicationContext().getPackageName()));
-                    IconSetter(BleachIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(7), "drawable", getApplicationContext().getPackageName()));
-                    IconSetter(DryingIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(8), "drawable", getApplicationContext().getPackageName()));
-                    IconSetter(IroningIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(9), "drawable", getApplicationContext().getPackageName()));
-                    IconSetter(ProfessionalCleaningIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(10), "drawable", getApplicationContext().getPackageName()));
+                    IconSetter(WashIcon, Integer.parseInt(NewArr.get(6)));
+                    IconSetter(BleachIcon, Integer.parseInt(NewArr.get(7)));
+                    IconSetter(DryingIcon, Integer.parseInt(NewArr.get(8)));
+                    IconSetter(IroningIcon, Integer.parseInt(NewArr.get(9)));
+                    IconSetter(ProfessionalCleaningIcon, Integer.parseInt(NewArr.get(10)));
                     SetVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), "");
                 }
                 else if(view.getId() == R.id.editButton)
                 {
                     ArrayList<String> NewArr = GRID_DATA.get(position);
-                    IconSetter(WashIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(6), "drawable", getApplicationContext().getPackageName()));
-                    IconSetter(BleachIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(7), "drawable", getApplicationContext().getPackageName()));
-                    IconSetter(DryingIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(8), "drawable", getApplicationContext().getPackageName()));
-                    IconSetter(IroningIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(9), "drawable", getApplicationContext().getPackageName()));
-                    IconSetter(ProfessionalCleaningIcon,getApplicationContext().getResources().getIdentifier(NewArr.get(10), "drawable", getApplicationContext().getPackageName()));
+                    IconSetter(WashIcon, Integer.parseInt(NewArr.get(6)));
+                    IconSetter(BleachIcon, Integer.parseInt(NewArr.get(7)));
+                    IconSetter(DryingIcon, Integer.parseInt(NewArr.get(8)));
+                    IconSetter(IroningIcon, Integer.parseInt(NewArr.get(9)));
+                    IconSetter(ProfessionalCleaningIcon, Integer.parseInt(NewArr.get(10)));
                     ButtonPresser(true,false,false,false,false);
                     CustomGridView.setVisibility(View.GONE);
                     SetVisibility(View.VISIBLE, View.GONE, View.GONE, View.GONE, View.GONE, View.GONE, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
@@ -1153,5 +1122,88 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
             }
         return super.onOptionsItemSelected(item);
+    }
+    public void DataGetter()
+    {
+        Getter = new HashMap<String, Object>();
+
+        firebaseFirestore.collection("clothes")
+                .whereEqualTo("userId", firebaseUser.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int i = 0;
+                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                Getter.put(String.valueOf(i++),document.getData());
+                            }
+                            Log.e("testGetter", String.valueOf(Getter));
+                            transformReceivedData();
+                        } else {
+                            Log.d("TAG", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void transformReceivedData()
+    {
+        String mainMaterial;
+        String clothesColor;
+        String ironingIcon;
+        String specialMarks;
+        String dryIcon;
+        String washIcon;
+        String season;
+        String bleachingIcon;
+        String professionalCleaningIcon;
+        String clothesType;
+        String brand;
+        GRID_DATA.clear();
+        GRID_DATA= new ArrayList<>();
+        ArrayList<String> dataFormat = new ArrayList<>();
+        for(int i=0; i<Getter.size();i++)
+        {
+            dataFormat = new ArrayList<>();
+            String Element = String.valueOf(Getter.get(String.valueOf(i)));
+            Element = Element.substring(Element.indexOf("=") + 1);
+            mainMaterial = Element.substring(0, Element.indexOf(","));
+            Element = Element.substring(Element.indexOf("=") + 1);
+            clothesColor = Element.substring(0, Element.indexOf(","));
+            Element = Element.substring(Element.indexOf("=") + 1);
+            ironingIcon = Element.substring(0, Element.indexOf(","));
+            Element = Element.substring(Element.indexOf("=") + 1);
+            dryIcon = Element.substring(0, Element.indexOf(","));
+            Element = Element.substring(Element.indexOf("=") + 1);
+            specialMarks = Element.substring(0, Element.indexOf(","));
+            Element = Element.substring(Element.indexOf("=") + 1);
+            season = Element.substring(0, Element.indexOf(","));
+            Element = Element.substring(Element.indexOf("=") + 1);
+            washIcon = Element.substring(0, Element.indexOf(","));
+            Element = Element.substring(Element.indexOf("=") + 1);
+            bleachingIcon = Element.substring(0, Element.indexOf(","));
+            Element = Element.substring(Element.indexOf("=") + 1);
+            professionalCleaningIcon = Element.substring(0, Element.indexOf(","));
+            Element = Element.substring(Element.indexOf("=") + 1);
+            brand = Element.substring(0, Element.indexOf(","));
+            Element = Element.substring(Element.indexOf("=") + 1);
+            clothesType = Element.substring(0, Element.indexOf(","));
+
+            dataFormat.add(brand);
+            dataFormat.add(clothesType);
+            dataFormat.add(mainMaterial);
+            dataFormat.add(season);
+            dataFormat.add(clothesColor);
+            dataFormat.add(specialMarks);
+            dataFormat.add(washIcon);
+            dataFormat.add(bleachingIcon);
+            dataFormat.add(dryIcon);
+            dataFormat.add(ironingIcon);
+            dataFormat.add(professionalCleaningIcon);
+            GRID_DATA.add(dataFormat);
+
+        }
+        Log.e("grird",GRID_DATA.toString());
     }
 }

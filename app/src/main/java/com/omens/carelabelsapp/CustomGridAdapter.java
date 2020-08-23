@@ -112,7 +112,7 @@ public class CustomGridAdapter extends BaseAdapter {
                     weatherImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.all_seasons_sizer));
                     break;
             }
-            int id = context.getResources().getIdentifier(arrLabel.get(4), "color", context.getPackageName());
+            int id = Integer.parseInt(arrLabel.get(4));
 
             GradientDrawable shapeDrawable = (GradientDrawable) colorButton.getBackground();
             shapeDrawable.setColor(ContextCompat.getColor(context,id));
