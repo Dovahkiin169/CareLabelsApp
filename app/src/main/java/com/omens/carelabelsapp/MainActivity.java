@@ -1149,61 +1149,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void transformReceivedData()
     {
-        String mainMaterial;
-        String clothesColor;
-        String ironingIcon;
-        String specialMarks;
-        String dryIcon;
-        String washIcon;
-        String season;
-        String bleachingIcon;
-        String professionalCleaningIcon;
-        String clothesType;
-        String brand;
         GRID_DATA.clear();
         GRID_DATA= new ArrayList<>();
-        ArrayList<String> dataFormat = new ArrayList<>();
-        for(int i=0; i<Getter.size();i++)
+        ArrayList<String> dataFormat;
+        for(int i=0; i<Getter.size(); i++)
         {
             dataFormat = new ArrayList<>();
             String Element = String.valueOf(Getter.get(String.valueOf(i)));
-            Element = Element.substring(Element.indexOf("=") + 1);
-            mainMaterial = Element.substring(0, Element.indexOf(","));
-            Element = Element.substring(Element.indexOf("=") + 1);
-            clothesColor = Element.substring(0, Element.indexOf(","));
-            Element = Element.substring(Element.indexOf("=") + 1);
-            ironingIcon = Element.substring(0, Element.indexOf(","));
-            Element = Element.substring(Element.indexOf("=") + 1);
-            dryIcon = Element.substring(0, Element.indexOf(","));
-            Element = Element.substring(Element.indexOf("=") + 1);
-            specialMarks = Element.substring(0, Element.indexOf(","));
-            Element = Element.substring(Element.indexOf("=") + 1);
-            season = Element.substring(0, Element.indexOf(","));
-            Element = Element.substring(Element.indexOf("=") + 1);
-            washIcon = Element.substring(0, Element.indexOf(","));
-            Element = Element.substring(Element.indexOf("=") + 1);
-            bleachingIcon = Element.substring(0, Element.indexOf(","));
-            Element = Element.substring(Element.indexOf("=") + 1);
-            professionalCleaningIcon = Element.substring(0, Element.indexOf(","));
-            Element = Element.substring(Element.indexOf("=") + 1);
-            brand = Element.substring(0, Element.indexOf(","));
-            Element = Element.substring(Element.indexOf("=") + 1);
-            clothesType = Element.substring(0, Element.indexOf(","));
 
-            dataFormat.add(brand);
-            dataFormat.add(clothesType);
-            dataFormat.add(mainMaterial);
-            dataFormat.add(season);
-            dataFormat.add(clothesColor);
-            dataFormat.add(specialMarks);
-            dataFormat.add(washIcon);
-            dataFormat.add(bleachingIcon);
-            dataFormat.add(dryIcon);
-            dataFormat.add(ironingIcon);
-            dataFormat.add(professionalCleaningIcon);
+            dataFormat.add(getSpecificData(Element,"brand"));
+            dataFormat.add(getSpecificData(Element,"clothesType"));
+            dataFormat.add(getSpecificData(Element,"mainMaterial"));
+            dataFormat.add(getSpecificData(Element,"season"));
+            dataFormat.add(getSpecificData(Element,"clothesColor"));
+            dataFormat.add(getSpecificData(Element,"specialMarks"));
+            dataFormat.add(getSpecificData(Element,"washIcon"));
+            dataFormat.add(getSpecificData(Element,"bleachingIcon"));
+            dataFormat.add(getSpecificData(Element,"dryIcon"));
+            dataFormat.add(getSpecificData(Element,"ironingIcon"));
+            dataFormat.add(getSpecificData(Element,"professionalCleaningIcon"));
             GRID_DATA.add(dataFormat);
-
         }
-        Log.e("grird",GRID_DATA.toString());
+    }
+
+    public String getSpecificData(String RawData, String typeOfData)
+    {
+        String result = RawData.substring(RawData.indexOf(typeOfData) + typeOfData.length()+1);
+        if(result.contains(","))
+            return result.substring(0, result.indexOf(","));
+        else if(result.contains("}"))
+            return result.substring(0, result.indexOf("}"));
+        else return "";
     }
 }
