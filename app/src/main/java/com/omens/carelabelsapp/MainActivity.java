@@ -46,86 +46,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     String empty="empty";
     String Location = "";
-    ImageButton WashIcon;
-    ImageButton BleachIcon;
-    ImageButton DryingIcon;
-    ImageButton IroningIcon;
-    ImageButton ProfessionalCleaningIcon;
+    ImageButton WashIcon,BleachIcon,DryingIcon,IroningIcon,ProfessionalCleaningIcon;
 
-    ImageButton wash_at_or_below_30;
-    ImageButton wash_at_or_below_30_mild_fine_wash;
-    ImageButton wash_at_or_below_30_very_mild_fine_wash;
-    ImageButton wash_at_or_below_40;
-    ImageButton wash_at_or_below_40_mild_fine_wash;
-    ImageButton wash_at_or_below_40_very_mild_fine_wash;
-    ImageButton wash_at_or_below_50;
-    ImageButton wash_at_or_below_50_mild_fine_wash;
-    ImageButton wash_at_or_below_60;
-    ImageButton wash_at_or_below_60_mild_fine_wash;
-    ImageButton wash_at_or_below_70;
-    ImageButton wash_at_or_below_90;
+    ImageButton wash_at_or_below_30,wash_at_or_below_30_mild_fine_wash,wash_at_or_below_30_very_mild_fine_wash,
+                wash_at_or_below_40,wash_at_or_below_40_mild_fine_wash,wash_at_or_below_40_very_mild_fine_wash,
+                wash_at_or_below_50,wash_at_or_below_50_mild_fine_wash,
+                wash_at_or_below_60, wash_at_or_below_60_mild_fine_wash,
+                wash_at_or_below_70,wash_at_or_below_90;
 
-    ImageButton bleaching_with_chlorine_allowed;
-    ImageButton non_chlorine_bleach_when_needed;
-    ImageButton do_not_bleach;
-    ImageButton do_not_bleach2;
+    ImageButton bleaching_with_chlorine_allowed,non_chlorine_bleach_when_needed,do_not_bleach,do_not_bleach2;
 
-    ImageButton tumble_drying;
-    ImageButton tumble_drying_low_temps;
-    ImageButton tumble_drying_normal;
-    ImageButton do_not_tumble_drying;
-    ImageButton line_dry;
-    ImageButton dry_flat;
-    ImageButton dry_flat_in_the_shade;
-    ImageButton dry_in_the_shade;
-    ImageButton line_dry_in_the_shade;
-    ImageButton drip_dry;
-    ImageButton drip_dry_in_the_shade;
+    ImageButton tumble_drying,tumble_drying_low_temps,tumble_drying_normal,
+                do_not_tumble_drying,
+                line_dry,line_dry_in_the_shade,
+                dry_flat,dry_flat_in_the_shade,dry_in_the_shade,
+                drip_dry,drip_dry_in_the_shade;
 
-    ImageButton ironing_at_low_temp;
-    ImageButton ironing_at_med_temp;
-    ImageButton ironing_at_high_temp;
-    ImageButton no_steam;
-    ImageButton do_not_iron;
+    ImageButton ironing_at_low_temp,ironing_at_med_temp,ironing_at_high_temp,no_steam,do_not_iron;
 
-    ImageButton professional_wet_cleaning;
-    ImageButton gentle_wet_cleaning;
-    ImageButton very_gentle_wet_cleaning;
-    ImageButton do_not_wet_clean;
-    ImageButton dry_clean_any_solvent;
-    ImageButton dry_clean_hydrocarbon_solvent_only_HCS;
-    ImageButton gentle_cleaning_with_hydrocarbon_solvents;
-    ImageButton very_gentle_cleaning_with_hydrocarbon_solvents;
-    ImageButton dry_clean_tetrachloroethylene_PCE_only;
-    ImageButton gentle_cleaning_with_PCE;
-    ImageButton very_gentle_cleaning_with_PCE;
-    ImageButton do_not_dry_clean;
+    ImageButton professional_wet_cleaning,
+                gentle_wet_cleaning,gentle_cleaning_with_hydrocarbon_solvents,gentle_cleaning_with_PCE,
+                very_gentle_wet_cleaning,very_gentle_cleaning_with_hydrocarbon_solvents,very_gentle_cleaning_with_PCE,
+                dry_clean_any_solvent,dry_clean_hydrocarbon_solvent_only_HCS,dry_clean_tetrachloroethylene_PCE_only,
+                do_not_wet_clean,do_not_dry_clean;
 
-    Button ButtonNext;
-    Button WardrobeButton;
-    Button IconInfoButton;
+    Button ButtonNext,WardrobeButton,IconInfoButton;
 
-    ConstraintLayout CareLabelLayout;
-    ConstraintLayout WashingLayout;
-    ConstraintLayout BleachLayout;
-    ConstraintLayout DryingLayout;
-    ConstraintLayout IroningLayout;
-    ConstraintLayout ProfessionalCleaningLayout;
+    ConstraintLayout CareLabelLayout,WashingLayout,BleachLayout,DryingLayout,IroningLayout,ProfessionalCleaningLayout;
 
     ImageView colorImage;
 
     ConstraintLayout DetailsLayout;
 
-    TextView ItemDescription;
-    TextView NameOfLayoutShowed;
-    TextView ChooseYourSymbol;
+    TextView ItemDescription,NameOfLayoutShowed,ChooseYourSymbol;
 
-    TextView brandTextView;
-    TextView specialMarksTextView;
+    TextView brandTextView,specialMarksTextView;
 
-    AutoCompleteTextView colorTextView;
-    AutoCompleteTextView clothesTypeAutoCompleteTextView;
-    AutoCompleteTextView mainMaterialAutoCompleteTextView;
+    AutoCompleteTextView colorTextView,clothesTypeAutoCompleteTextView,mainMaterialAutoCompleteTextView;
 
     GridView CustomGridView;
 
