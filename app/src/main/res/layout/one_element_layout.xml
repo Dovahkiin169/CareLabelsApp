@@ -29,6 +29,7 @@
         android:layout_marginTop="2dp"
         android:layout_marginBottom="6dp"
         android:hint="@string/special_marks"
+        android:maxLength="24"
         android:importantForAutofill="no"
         android:textAlignment="center"
         android:textSize="16sp"

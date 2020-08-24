@@ -24,16 +24,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.common.base.CharMatcher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -44,6 +40,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     HashMap<String, String> Clothes;
+    HashMap<String, String> ClothesTest;
     HashMap<String, String> Material;
     HashMap<String, Integer> Colors;
 
@@ -147,89 +144,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ArrayList<String> listOfSomething;
 
-        GRID_DATA= new ArrayList<>();
-        listOfSomething = new ArrayList<>();
-        listOfSomething.clear();
-        listOfSomething.add("Tommy");
-        listOfSomething.add("Bra");
-        listOfSomething.add("Cotton");
-        listOfSomething.add("Autumn");
-        listOfSomething.add("maroonColor");
-        listOfSomething.add("");
-        listOfSomething.add("wash_at_or_below_30_mild_fine_wash_sizer");
-        listOfSomething.add("bleaching_with_chlorine_allowed_sizer");
-        listOfSomething.add("drip_dry_sizer");
-        listOfSomething.add("ironing_at_low_temp_sizer");
-        listOfSomething.add("very_gentle_cleaning_with_pce_sizer");
-        GRID_DATA.add(listOfSomething);
-      //  Log.e("GRID_DATA",String.valueOf(GRID_DATA));
-        listOfSomething = new ArrayList<>();
-        listOfSomething.add("Helfiger");
-        listOfSomething.add("Socks");
-        listOfSomething.add("Cotton");
-        listOfSomething.add("Winter");
-        listOfSomething.add("cornflowerColor");
-        listOfSomething.add("");
-        listOfSomething.add("wash_at_or_below_40_mild_fine_wash_sizer");
-        listOfSomething.add("chlorine_and_non_chlorine_bleach_sizer");
-        listOfSomething.add("drip_dry_sizer");
-        listOfSomething.add("ironing_at_low_temp_sizer");
-        listOfSomething.add("very_gentle_cleaning_with_pce_sizer");
-        GRID_DATA.add(listOfSomething);
-       // Log.e("GRID_DATA",String.valueOf(GRID_DATA));
+        Clothes = HashMapSetter(getApplicationContext().getResources().getString(R.string.clothes_string),",");
 
-
-
-
-
-
-
-
-
-
-
-        Clothes = new HashMap<String, String>()
-        {{
-            put("T-shirt", "1");
-            put("Sweater", "2");
-            put("Jacket", "3");
-            put("Coat", "4");
-            put("Jeans", "5");
-            put("Socks", "6");
-            put("Tracksuit", "7");
-            put("Vest", "8");
-            put("Pyjamas", "9");
-            put("Swimsuit", "10");
-            put("Skirt", "11");
-            put("Dress", "12");
-            put("Blouse", "13");
-            put("Bra", "14");
-            put("Panties", "15");
-            put("Stockings", "16");
-            put("Suit", "17");
-
-            put("Shirt", "18");
-            put("Tie", "19");
-            put("Bow-tie", "20");
-            put("Briefs", "21");
-            put("Hat", "22");
-            put("Bag", "23");
-            put("Mittens", "24");
-            put("Boxers", "25");
-            put("Cardigan", "26");
-            put("Cargo pants", "27");
-            put("Hoodie", "28");
-            put("Leggings", "29");
-            put("Pullover", "30");
-            put("Scarf", "31");
-            put("Shawl", "32");
-            put("Shorts", "32");
-            put("Sweatpants", "33");
-            put("Sweatshirt", "34");
-
-        }};
 
         Material = new HashMap<String, String>()
         {{
@@ -1149,7 +1066,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void transformReceivedData()
     {
-        GRID_DATA.clear();
+       // GRID_DATA.clear();
         GRID_DATA= new ArrayList<>();
         ArrayList<String> dataFormat;
         for(int i=0; i<Getter.size(); i++)
@@ -1180,5 +1097,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if(result.contains("}"))
             return result.substring(0, result.indexOf("}"));
         else return "";
+    }
+
+    public  HashMap<String, String> HashMapSetter(String RawData, String separator)
+    {
+        HashMap<String, String> Result = new HashMap<String, String>();
+        String string;
+        int CharMatchers = CharMatcher.is(',').countIn(getApplicationContext().getResources().getString(R.string.clothes_string))+1;
+        for(int i=0; i<CharMatchers+1; i++)
+        {
+            if(RawData.contains(","))
+            {
+                string = RawData.substring( 0, RawData.indexOf(","));
+                Result.put(string,String.valueOf(i+1));
+                RawData = RawData.substring(RawData.indexOf(",")+1, RawData.length());
+            }
+            else
+                Result.put(RawData,String.valueOf(i));
+        }
+        return Result;
     }
 }

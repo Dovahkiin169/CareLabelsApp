@@ -18,7 +18,7 @@
     <string name="color">Color</string>
     <string name="clothes_type">Clothes Type</string>
     <string name="main_material">Main Material</string>
-    <string name="special_marks">Special Marks</string>
+    <string name="special_marks">Special Marks\n</string>
     <string name="add_clothes">Add</string>
     <string name="edit">Edit</string>
     <string name="clothes_season">Clothes Season</string>
@@ -47,4 +47,7 @@
     <string name="save">Save</string>
     <string name="my_profile">My Profile</string>
     <string name="login">Login</string>
+
+    <string name="clothes_string">T-shirt,Sweater,Jacket,Coat,Jeans,Socks,Tracksuit,Vest,Pyjamas,Swimsuit,Skirt,Dress,Blouse,Bra,Panties,Stockings,Suit,Shirt,Tie,Bow-tie,Briefs,Hat,Bag,Mittens,Boxers,Cardigan,Cargo pants,Hoodie,Leggings,Pullover,Scarf,Shawl,Shorts,Sweatpants,Sweatshirt</string>
+    <string name="material_string">Cotton,Flax,Wool,Ramie,Silk,Denim,Leather,Down,Fur,Nylon,Polyesters,Spandex,Rubber,Acetate,Cupro,Flannel,Lyocell,Polyvinyl chloride (PVC),Rayon,Recycled Cotton,Recycled PET,Recycled bob,Tyvek,Bamboo,Jute,Hemp</string>
 </resources>
