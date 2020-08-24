@@ -20,9 +20,9 @@
     <color name="linenColor">#faf0e6</color>
 
     <!-- Grays -->
-    <color name="black25PercentColor">#404040</color>
-    <color name="black50PercentColor">#808080</color>
-    <color name="black75PercentColor">#c0c0c0</color>
+    <color name="grayColor">#404040</color>
+    <color name="lightGrayColor">#808080</color>
+    <color name="whiteGrayColor">#c0c0c0</color>
     <color name="black">#000000</color>
     <color name="warmGrayColor">#857570</color>
     <color name="coolGrayColor">#767a85</color>

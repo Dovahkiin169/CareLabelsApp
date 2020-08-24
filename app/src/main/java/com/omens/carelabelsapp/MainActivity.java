@@ -39,9 +39,10 @@ import java.util.Map;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    HashMap<String, String> Clothes;
-    HashMap<String, String> Material;
+    HashMap<String, Integer> Clothes;
+    HashMap<String, Integer> Material;
     HashMap<String, Integer> Colors;
+
 
     String empty="empty";
     String Location = "";
@@ -143,127 +144,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Clothes = HashMapSetter(getApplicationContext().getResources().getString(R.string.clothes_string),',');
-        Material = HashMapSetter(getApplicationContext().getResources().getString(R.string.material_string),',');
-
-
-        Colors = new HashMap<String, Integer>()
-        {{
-            //Whites
-            put("White", R.color.white);
-            put("Antique White", R.color.antiqueWhiteColor);
-            put("Old Lace", R.color.oldLaceColor);
-            put("Ivory", R.color.ivoryColor);
-            put("Seashell", R.color.seashellColor);
-            put("Ghost White", R.color.ghostWhiteColor);
-            put("Snow", R.color.snowColor);
-            put("Linen", R.color.linenColor);
-
-            //Grays
-            put("black25Percent", R.color.black25PercentColor);
-            put("black50Percent", R.color.black50PercentColor);
-            put("black75Percent", R.color.black75PercentColor);
-            put("Black", R.color.black );
-            put("Warm Gray", R.color.warmGrayColor);
-            put("Cool Gray", R.color.coolGrayColor);
-            put("Charcoal", R.color. charcoalColor);
-
-            //Blues
-            put("Teal", R.color.tealColor );
-            put("Steel Blue", R.color.steelBlueColor );
-            put("Robin Egg", R.color.robinEggColor );
-            put("Pastel Blue", R.color.pastelBlueColor );
-            put("Turquoise", R.color.turquoiseColor );
-            put("Sky Blue", R.color.skyBlueColor);
-            put("Indigo", R.color.indigoColor);
-            put("Denim", R.color.denimColor);
-            put("Blueberry", R.color.blueberryColor);
-            put("Cornflower", R.color.cornflowerColor);
-            put("Baby Blue", R.color.babyBlueColor);
-            put("Midnight Blue", R.color.midnightBlueColor);
-            put("Faded Blue", R.color.fadedBlueColor);
-            put("Iceberg", R.color.icebergColor);
-            put("Wave", R.color.waveColor);
-
-            //Greens
-            put("Emerald", R.color.emeraldColor);
-            put("Grass", R.color.grassColor);
-            put("Pastel Green", R.color.pastelGreenColor);
-            put("Seafoam", R.color.seafoamColor);
-            put("Pale Green", R.color.paleGreenColor);
-            put("Cactus Green", R.color.cactusGreenColor);
-            put("Chartreuse", R.color.chartreuseColor);
-            put("Holly Green", R.color.hollyGreenColor);
-            put("Olive", R.color.oliveColor);
-            put("Olive Drab", R.color.oliveDrabColor);
-            put("Money Green", R.color.moneyGreenColor);
-            put("Honeydew", R.color.honeydewColor);
-            put("Lime", R.color.limeColor);
-            put("Card Table", R.color.cardTableColor);
-
-            //Reds
-            put("Salmon", R.color.salmonColor);
-            put("Brick Red", R.color.brickRedColor);
-            put("Easter Pink", R.color.easterPinkColor);
-            put("Grapefruit", R.color.grapefruitColor);
-            put("Pink", R.color.pinkColor);
-            put("Indian Red", R.color.indianRedColor);
-            put("Strawberry", R.color.strawberryColor);
-            put("Coral", R.color.coralColor);
-            put("Maroon", R.color.maroonColor);
-            put("Watermelon", R.color.watermelonColor);
-            put("Tomato", R.color.tomatoColor);
-            put("Pink Lipstick", R.color.pinkLipstickColor);
-            put("Pale Rose", R.color.paleRoseColor);
-            put("Crimson", R.color.crimsonColor);
-
-            //Purples
-            put("Eggplant", R.color.eggplantColor);
-            put("Pastel Purple", R.color.pastelPurpleColor);
-            put("Pale Purple", R.color.palePurpleColor);
-            put("Cool Purple", R.color.coolPurpleColor);
-            put("Violet", R.color.violetColor);
-            put("Plum", R.color.plumColor);
-            put("Lavender", R.color.lavenderColor);
-            put("Raspberry", R.color.raspberryColor);
-            put("Fuschia", R.color.fuschiaColor);
-            put("Grape", R.color.grapeColor);
-            put("Periwinkle", R.color.periwinkleColor);
-            put("Orchid", R.color.orchidColor);
-
-            //Yellows
-            put("Goldenrod", R.color.goldenrodColor);
-            put("Yellow Green", R.color.yellowGreenColor);
-            put("Banana", R.color.bananaColor);
-            put("Mustard",R.color.mustardColor);
-            put("Buttermilk", R.color.buttermilkColor);
-            put("Gold", R.color.goldColor);
-            put("Cream", R.color.creamColor);
-            put("Light Cream", R.color.lightCreamColor);
-            put("Wheat", R.color.wheatColor);
-            put("Beige", R.color.beigeColor);
-
-            //Oranges
-            put("Peach",R.color.peachColor);
-            put("Burnt Orange", R.color.burntOrangeColor);
-            put("Pastel Orange", R.color.pastelOrangeColor);
-            put("Cantaloupe", R.color.cantaloupeColor);
-            put("Carrot", R.color.carrotColor);
-            put("Mandarin", R.color.mandarinColor);
-
-            //Browns
-            put("Chili Powder", R.color.chiliPowderColor);
-            put("Burnt Sienna", R.color.burntSiennaColor);
-            put("Chocolate", R.color.chocolateColor);
-            put("Coffee", R.color.coffeeColor);
-            put("Cinnamon", R.color.cinnamonColor);
-            put("Almond", R.color.almondColor);
-            put("Eggshell", R.color.eggshellColor);
-            put("Sand", R.color.sandColor);
-            put("Mud", R.color.mudColor);
-            put("Sienna", R.color.siennaColor);
-            put("Dust", R.color.dustColor);
-        }};
+        Clothes = HashMapSetter(getApplicationContext().getResources().getString(R.string.clothes_string),',',false);
+        Material = HashMapSetter(getApplicationContext().getResources().getString(R.string.material_string),',',false);
+        Colors = HashMapSetter(getApplicationContext().getResources().getString(R.string.colors_string),',',true);
 
         colorImage = findViewById(R.id.colorView);
 
@@ -1068,21 +951,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else return "";
     }
 
-    public  HashMap<String, String> HashMapSetter(String RawData, char separator)
+    public HashMap<String, Integer> HashMapSetter(String RawData, char separator, boolean ifColor)
     {
-        HashMap<String, String> Result = new HashMap<>();
+        HashMap<String, Integer> Result = new HashMap<>();
         String string;
+        String colorName;
         int CharMatchers = CharMatcher.is(separator).countIn(RawData)+1;
         for(int i=0; i<CharMatchers+1; i++)
         {
-            if(RawData.contains(","))
+            if(RawData.contains(",") && !ifColor)
             {
                 string = RawData.substring( 0, RawData.indexOf(","));
-                Result.put(string,String.valueOf(i+1));
+                Result.put(string,i+1);
                 RawData = RawData.substring(RawData.indexOf(",")+1);
             }
-            else
-                Result.put(RawData,String.valueOf(i));
+            else if(!RawData.contains(",") && !ifColor)
+                Result.put(RawData,i);
+            else if(RawData.contains(",") && ifColor)
+            {
+                string = RawData.substring( 0, RawData.indexOf(","));
+                colorName = string;
+                string = string.replace("Color","");
+                string = string.substring(0, 1).toUpperCase() + string.substring(1);
+                string = string.replaceAll("([^_])([A-Z])", "$1 $2");
+                Result.put(string,getApplicationContext().getResources().getIdentifier(colorName, "color", getApplicationContext().getPackageName()));
+                RawData = RawData.substring(RawData.indexOf(",")+1);
+            }
+            else if(!RawData.contains(",") && ifColor) {
+                string = RawData;
+                string = string.replace("Color","");
+                string = string.substring(0, 1).toUpperCase() + string.substring(1);
+                string = string.replaceAll("([^_])([A-Z])", "$1 $2");
+                Result.put(string, getApplicationContext().getResources().getIdentifier(RawData, "color", getApplicationContext().getPackageName()));
+            }
         }
         return Result;
     }
