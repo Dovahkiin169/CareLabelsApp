@@ -40,7 +40,6 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     HashMap<String, String> Clothes;
-    HashMap<String, String> ClothesTest;
     HashMap<String, String> Material;
     HashMap<String, Integer> Colors;
 
@@ -144,39 +143,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Clothes = HashMapSetter(getApplicationContext().getResources().getString(R.string.clothes_string),',');
+        Material = HashMapSetter(getApplicationContext().getResources().getString(R.string.material_string),',');
 
-        Clothes = HashMapSetter(getApplicationContext().getResources().getString(R.string.clothes_string),",");
-
-
-        Material = new HashMap<String, String>()
-        {{
-            put("Cotton", "1");
-            put("flax", "2");
-            put("wool", "3");
-            put("ramie", "4");
-            put("silk", "5");
-            put("Denim", "6");
-            put("Leather", "7");
-            put("Down", "8");
-            put("Fur", "9");
-            put("Nylon", "10");
-            put("Polyesters", "11");
-            put("Spandex", "12");
-            put("rubber", "13");
-            put("Acetate", "14");
-            put("Cupro", "15");
-            put("Flannel", "16");
-            put("Lyocell", "17");
-            put("Polyvinyl chloride (PVC)", "18");
-            put("Rayon", "19");
-            put("Recycled Cotton", "20");
-            put("Recycled PET", "21");
-            put("Recycled bob", "22");
-            put("Tyvek", "23");
-            put("Bamboo", "24");
-            put("Jute", "25");
-            put("Hemp", "26");
-        }};
 
         Colors = new HashMap<String, Integer>()
         {{
@@ -1099,18 +1068,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else return "";
     }
 
-    public  HashMap<String, String> HashMapSetter(String RawData, String separator)
+    public  HashMap<String, String> HashMapSetter(String RawData, char separator)
     {
-        HashMap<String, String> Result = new HashMap<String, String>();
+        HashMap<String, String> Result = new HashMap<>();
         String string;
-        int CharMatchers = CharMatcher.is(',').countIn(getApplicationContext().getResources().getString(R.string.clothes_string))+1;
+        int CharMatchers = CharMatcher.is(separator).countIn(RawData)+1;
         for(int i=0; i<CharMatchers+1; i++)
         {
             if(RawData.contains(","))
             {
                 string = RawData.substring( 0, RawData.indexOf(","));
                 Result.put(string,String.valueOf(i+1));
-                RawData = RawData.substring(RawData.indexOf(",")+1, RawData.length());
+                RawData = RawData.substring(RawData.indexOf(",")+1);
             }
             else
                 Result.put(RawData,String.valueOf(i));
