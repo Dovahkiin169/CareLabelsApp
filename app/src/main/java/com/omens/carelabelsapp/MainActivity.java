@@ -20,7 +20,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.common.base.CharMatcher;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,29 +40,7 @@ public class MainActivity extends AppCompatActivity{
     String EditItemId="";
     String empty="empty";
     String Location = "";
-    ImageButton WashIcon,BleachIcon,DryingIcon,IroningIcon,ProfessionalCleaningIcon;
-
-    ImageButton wash_at_or_below_30,wash_at_or_below_30_mild_fine_wash,wash_at_or_below_30_very_mild_fine_wash,
-                wash_at_or_below_40,wash_at_or_below_40_mild_fine_wash,wash_at_or_below_40_very_mild_fine_wash,
-                wash_at_or_below_50,wash_at_or_below_50_mild_fine_wash,
-                wash_at_or_below_60, wash_at_or_below_60_mild_fine_wash,
-                wash_at_or_below_70,wash_at_or_below_90;
-
-    ImageButton bleaching_with_chlorine_allowed,non_chlorine_bleach_when_needed,do_not_bleach,do_not_bleach2;
-
-    ImageButton tumble_drying,tumble_drying_low_temps,tumble_drying_normal,
-                do_not_tumble_drying,
-                line_dry,line_dry_in_the_shade,
-                dry_flat,dry_flat_in_the_shade,dry_in_the_shade,
-                drip_dry,drip_dry_in_the_shade;
-
-    ImageButton ironing_at_low_temp,ironing_at_med_temp,ironing_at_high_temp,no_steam,do_not_iron;
-
-    ImageButton professional_wet_cleaning,
-                gentle_wet_cleaning,gentle_cleaning_with_hydrocarbon_solvents,gentle_cleaning_with_PCE,
-                very_gentle_wet_cleaning,very_gentle_cleaning_with_hydrocarbon_solvents,very_gentle_cleaning_with_PCE,
-                dry_clean_any_solvent,dry_clean_hydrocarbon_solvent_only_HCS,dry_clean_tetrachloroethylene_PCE_only,
-                do_not_wet_clean,do_not_dry_clean;
+    ImageButton iconWashing, iconBleach, iconDrying, iconIroning, iconProfessionalCleaning;
 
     Button ButtonNext,WardrobeButton,IconInfoButton;
 
@@ -108,60 +85,11 @@ public class MainActivity extends AppCompatActivity{
 
         CustomGridView = findViewById(R.id.grid_view);
 
-        WashIcon = findViewById(R.id.iconWashing);
-        BleachIcon = findViewById(R.id.iconBleach);
-        DryingIcon = findViewById(R.id.iconDrying);
-        IroningIcon = findViewById(R.id.iconIroning);
-        ProfessionalCleaningIcon = findViewById(R.id.iconProfessionalCleaning);
-
-        wash_at_or_below_30 = findViewById(R.id.wash_at_or_below_30);
-        wash_at_or_below_30_mild_fine_wash = findViewById(R.id.wash_at_or_below_30_mild_fine_wash);
-        wash_at_or_below_30_very_mild_fine_wash = findViewById(R.id.wash_at_or_below_30_very_mild_fine_wash);
-        wash_at_or_below_40 = findViewById(R.id.wash_at_or_below_40);
-        wash_at_or_below_40_mild_fine_wash = findViewById(R.id.wash_at_or_below_40_mild_fine_wash);
-        wash_at_or_below_40_very_mild_fine_wash = findViewById(R.id.wash_at_or_below_40_very_mild_fine_wash);
-        wash_at_or_below_50 = findViewById(R.id.wash_at_or_below_50);
-        wash_at_or_below_50_mild_fine_wash = findViewById(R.id.wash_at_or_below_50_mild_fine_wash);
-        wash_at_or_below_60 = findViewById(R.id.wash_at_or_below_60);
-        wash_at_or_below_60_mild_fine_wash = findViewById(R.id.wash_at_or_below_60_mild_fine_wash);
-        wash_at_or_below_70 = findViewById(R.id.wash_at_or_below_70);
-        wash_at_or_below_90 = findViewById(R.id.wash_at_or_below_90);
-
-        tumble_drying = findViewById(R.id.tumble_drying);
-        tumble_drying_low_temps = findViewById(R.id.tumble_drying_low_temps);
-        tumble_drying_normal = findViewById(R.id.tumble_drying_normal);
-        do_not_tumble_drying = findViewById(R.id.do_not_tumble_drying_sizer);
-        line_dry = findViewById(R.id.line_dry);
-        dry_flat = findViewById(R.id.dry_flat);
-        dry_flat_in_the_shade = findViewById(R.id.dry_flat_in_the_shade);
-        dry_in_the_shade = findViewById(R.id.dry_in_the_shade);
-        line_dry_in_the_shade = findViewById(R.id.line_dry_in_the_shade);
-        drip_dry = findViewById(R.id.drip_dry);
-        drip_dry_in_the_shade = findViewById(R.id.drip_dry_in_the_shade);
-
-        bleaching_with_chlorine_allowed = findViewById(R.id.bleaching_with_chlorine_allowed);
-        non_chlorine_bleach_when_needed = findViewById(R.id.non_chlorine_bleach_when_needed);
-        do_not_bleach = findViewById(R.id.do_not_bleach);
-        do_not_bleach2 = findViewById(R.id.do_not_bleach2);
-
-        ironing_at_low_temp = findViewById(R.id.ironing_at_low_temp);
-        ironing_at_med_temp = findViewById(R.id.ironing_at_med_temp);
-        ironing_at_high_temp = findViewById(R.id.ironing_at_high_temp);
-        no_steam = findViewById(R.id.no_steam);
-        do_not_iron = findViewById(R.id.do_not_iron);
-
-        professional_wet_cleaning = findViewById(R.id.professional_wet_cleaning);
-        gentle_wet_cleaning = findViewById(R.id.gentle_wet_cleaning);
-        very_gentle_wet_cleaning = findViewById(R.id.very_gentle_wet_cleaning);
-        do_not_wet_clean = findViewById(R.id.do_not_wet_clean);
-        dry_clean_any_solvent = findViewById(R.id.dry_clean_any_solvent);
-        dry_clean_hydrocarbon_solvent_only_HCS = findViewById(R.id.dry_clean_hydrocarbon_solvent_only_HCS);
-        gentle_cleaning_with_hydrocarbon_solvents = findViewById(R.id.gentle_cleaning_with_hydrocarbon_solvents);
-        very_gentle_cleaning_with_hydrocarbon_solvents = findViewById(R.id.very_gentle_cleaning_with_hydrocarbon_solvents);
-        dry_clean_tetrachloroethylene_PCE_only = findViewById(R.id.dry_clean_tetrachloroethylene_PCE_only);
-        gentle_cleaning_with_PCE = findViewById(R.id.gentle_cleaning_with_PCE);
-        very_gentle_cleaning_with_PCE = findViewById(R.id.very_gentle_cleaning_with_PCE);
-        do_not_dry_clean = findViewById(R.id.do_not_dry_clean);
+        iconWashing = findViewById(R.id.iconWashing);
+        iconBleach = findViewById(R.id.iconBleach);
+        iconDrying = findViewById(R.id.iconDrying);
+        iconIroning = findViewById(R.id.iconIroning);
+        iconProfessionalCleaning = findViewById(R.id.iconProfessionalCleaning);
 
         WashingLayout = findViewById(R.id.washing);
         BleachLayout = findViewById(R.id.bleaching);
@@ -176,6 +104,7 @@ public class MainActivity extends AppCompatActivity{
         ChooseYourSymbol = findViewById(R.id.choose_your_symbol);
 
         ButtonNext = findViewById(R.id.button_next);
+
         WardrobeButton = findViewById(R.id.wardrobe_button);
         IconInfoButton = findViewById(R.id.icon_info_button);
 
@@ -186,64 +115,22 @@ public class MainActivity extends AppCompatActivity{
         mainMaterialAutoCompleteTextView = findViewById(R.id.mainMaterialAutoCompleteTextView);
         clothesSeasonSpinner = findViewById(R.id.clothesSeasonSpinner);
 
-        WashIcon.setOnClickListener(mainClickListener);
-        BleachIcon.setOnClickListener(mainClickListener);
-        DryingIcon.setOnClickListener(mainClickListener);
-        IroningIcon.setOnClickListener(mainClickListener);
-        ProfessionalCleaningIcon.setOnClickListener(mainClickListener);
+        iconWashing.setOnClickListener(mainClickListener);
+        iconBleach.setOnClickListener(mainClickListener);
+        iconDrying.setOnClickListener(mainClickListener);
+        iconIroning.setOnClickListener(mainClickListener);
+        iconProfessionalCleaning.setOnClickListener(mainClickListener);
+
         ButtonNext.setOnClickListener(mainClickListener);
+
         WardrobeButton.setOnClickListener(mainClickListener);
         IconInfoButton.setOnClickListener(mainClickListener);
 
-        wash_at_or_below_30.setOnClickListener(WashingClickListener);
-        wash_at_or_below_30_mild_fine_wash.setOnClickListener(WashingClickListener);
-        wash_at_or_below_30_very_mild_fine_wash.setOnClickListener(WashingClickListener);
-        wash_at_or_below_40.setOnClickListener(WashingClickListener);
-        wash_at_or_below_40_mild_fine_wash.setOnClickListener(WashingClickListener);
-        wash_at_or_below_40_very_mild_fine_wash.setOnClickListener(WashingClickListener);
-        wash_at_or_below_50.setOnClickListener(WashingClickListener);
-        wash_at_or_below_50_mild_fine_wash.setOnClickListener(WashingClickListener);
-        wash_at_or_below_60.setOnClickListener(WashingClickListener);
-        wash_at_or_below_60_mild_fine_wash.setOnClickListener(WashingClickListener);
-        wash_at_or_below_70.setOnClickListener(WashingClickListener);
-        wash_at_or_below_90.setOnClickListener(WashingClickListener);
-
-        bleaching_with_chlorine_allowed.setOnClickListener(BleachingClickListener);
-        non_chlorine_bleach_when_needed.setOnClickListener(BleachingClickListener);
-        do_not_bleach.setOnClickListener(BleachingClickListener);
-        do_not_bleach2.setOnClickListener(BleachingClickListener);
-
-        tumble_drying.setOnClickListener(DryingClickListener);
-        tumble_drying_low_temps.setOnClickListener(DryingClickListener);
-        tumble_drying_normal.setOnClickListener(DryingClickListener);
-        do_not_tumble_drying.setOnClickListener(DryingClickListener);
-        line_dry.setOnClickListener(DryingClickListener);
-        dry_flat.setOnClickListener(DryingClickListener);
-        dry_flat_in_the_shade.setOnClickListener(DryingClickListener);
-        dry_in_the_shade.setOnClickListener(DryingClickListener);
-        line_dry_in_the_shade.setOnClickListener(DryingClickListener);
-        drip_dry.setOnClickListener(DryingClickListener);
-        drip_dry_in_the_shade.setOnClickListener(DryingClickListener);
-
-        ironing_at_low_temp.setOnClickListener(IroningClickListener);
-        ironing_at_med_temp.setOnClickListener(IroningClickListener);
-        ironing_at_high_temp.setOnClickListener(IroningClickListener);
-        no_steam.setOnClickListener(IroningClickListener);
-        do_not_iron.setOnClickListener(IroningClickListener);
-
-        professional_wet_cleaning.setOnClickListener(ProfessionalCleaningIconListener);
-        gentle_wet_cleaning.setOnClickListener(ProfessionalCleaningIconListener);
-        very_gentle_wet_cleaning.setOnClickListener(ProfessionalCleaningIconListener);
-        do_not_wet_clean.setOnClickListener(ProfessionalCleaningIconListener);
-        dry_clean_any_solvent.setOnClickListener(ProfessionalCleaningIconListener);
-        dry_clean_hydrocarbon_solvent_only_HCS.setOnClickListener(ProfessionalCleaningIconListener);
-        gentle_cleaning_with_hydrocarbon_solvents.setOnClickListener(ProfessionalCleaningIconListener);
-        very_gentle_cleaning_with_hydrocarbon_solvents.setOnClickListener(ProfessionalCleaningIconListener);
-        dry_clean_tetrachloroethylene_PCE_only.setOnClickListener(ProfessionalCleaningIconListener);
-        gentle_cleaning_with_PCE.setOnClickListener(ProfessionalCleaningIconListener);
-        very_gentle_cleaning_with_PCE.setOnClickListener(ProfessionalCleaningIconListener);
-        do_not_dry_clean.setOnClickListener(ProfessionalCleaningIconListener);
-
+        findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.wash_image_buttons_string),',', WashingClickListener);
+        findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.dry_image_buttons_string),',', DryingClickListener);
+        findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.bleach_image_buttons_string),',', BleachingClickListener);
+        findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.iron_image_buttons_string),',', IroningClickListener);
+        findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.professional_wet_clean_image_buttons_string),',', ProfessionalCleaningIconListener);
 
         setClothesOrMaterialOrColor(clothesTypeAutoCompleteTextView,Clothes,"clothes");
         setClothesOrMaterialOrColor(mainMaterialAutoCompleteTextView,Material,"material");
@@ -261,6 +148,26 @@ public class MainActivity extends AppCompatActivity{
         firebaseFirestore= FirebaseFirestore.getInstance();
 
         DataGetter();
+    }
+
+    public void findViewByIdAndSetListener(String RawData, char separator, View.OnClickListener ClickListener)
+    {
+        String string;
+        ArrayList<ImageButton> ButtonArray =new ArrayList<>();
+        int CharMatchers = CharMatcher.is(separator).countIn(RawData)+1;
+        for(int i=0; i<CharMatchers; i++) {
+            if(RawData.contains(",")) {
+                string = RawData.substring( 0, RawData.indexOf(","));
+                ButtonArray.add(findViewById(getApplicationContext().getResources().getIdentifier(string, "id", getApplicationContext().getPackageName())));
+                RawData = RawData.substring(RawData.indexOf(",")+1);
+                ButtonArray.get(i).setOnClickListener(ClickListener);
+            }
+            else if(!RawData.contains(",")) {
+                ButtonArray.add(findViewById(getApplicationContext().getResources().getIdentifier(RawData, "id", getApplicationContext().getPackageName())));
+                ButtonArray.get(i).setOnClickListener(ClickListener);
+            }
+        }
+        ButtonArray.clear();
     }
 
     private void setClothesOrMaterialOrColor(AutoCompleteTextView textView, HashMap<String, Integer> hashMap, String flag) {
@@ -285,11 +192,11 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void SetClickable(boolean data) {
-        WashIcon.setClickable(data);
-        BleachIcon.setClickable(data);
-        DryingIcon.setClickable(data);
-        IroningIcon.setClickable(data);
-        ProfessionalCleaningIcon.setClickable(data);
+        iconWashing.setClickable(data);
+        iconBleach.setClickable(data);
+        iconDrying.setClickable(data);
+        iconIroning.setClickable(data);
+        iconProfessionalCleaning.setClickable(data);
     }
     public void SetVisibility(int numberToView, String Data, String Data2, String ButtonNextText) {
         if(!ButtonNextText.equals("") && IconChecker()) {
@@ -331,11 +238,11 @@ public class MainActivity extends AppCompatActivity{
     }
     public void ButtonPresser(int itemSetToTrue) {
         ArrayList<ImageButton> ButtonArray =new ArrayList<>();
-        ButtonArray.add(WashIcon);
-        ButtonArray.add(BleachIcon);
-        ButtonArray.add(DryingIcon);
-        ButtonArray.add(IroningIcon);
-        ButtonArray.add(ProfessionalCleaningIcon);
+        ButtonArray.add(iconWashing);
+        ButtonArray.add(iconBleach);
+        ButtonArray.add(iconDrying);
+        ButtonArray.add(iconIroning);
+        ButtonArray.add(iconProfessionalCleaning);
 
         for(int i=0; i<ButtonArray.size();i++)
         {
@@ -360,8 +267,8 @@ public class MainActivity extends AppCompatActivity{
 
     }
     public boolean IconChecker() {
-        return (WashIcon.getTag() != null && !WashIcon.getTag().equals(R.id.iconWashing)) && (BleachIcon.getTag() != null && !BleachIcon.getTag().equals(R.id.iconBleach)) && (DryingIcon.getTag() != null && !DryingIcon.getTag().equals(R.id.iconDrying))
-                && (IroningIcon.getTag() != null && !IroningIcon.getTag().equals(R.id.iconIroning)) && (ProfessionalCleaningIcon.getTag() != null && !ProfessionalCleaningIcon.getTag().equals(R.id.iconProfessionalCleaning));
+        return (iconWashing.getTag() != null && !iconWashing.getTag().equals(R.id.iconWashing)) && (iconBleach.getTag() != null && !iconBleach.getTag().equals(R.id.iconBleach)) && (iconDrying.getTag() != null && !iconDrying.getTag().equals(R.id.iconDrying))
+                && (iconIroning.getTag() != null && !iconIroning.getTag().equals(R.id.iconIroning)) && (iconProfessionalCleaning.getTag() != null && !iconProfessionalCleaning.getTag().equals(R.id.iconProfessionalCleaning));
     }
     public boolean EmptyChecker() {
         int Verifier=0;
@@ -422,15 +329,15 @@ public class MainActivity extends AppCompatActivity{
     public void afterElementWasAdd()
     {
         empty="";
-        IconSetter(WashIcon,R.drawable.washing_symbol_sizer);
+        IconSetter(iconWashing,R.drawable.washing_symbol_sizer);
         empty="";
-        IconSetter(BleachIcon,R.drawable.chlorine_and_non_chlorine_bleach_sizer);
+        IconSetter(iconBleach,R.drawable.chlorine_and_non_chlorine_bleach_sizer);
         empty="";
-        IconSetter(DryingIcon,R.drawable.drying_symbol_sizer);
+        IconSetter(iconDrying,R.drawable.drying_symbol_sizer);
         empty="";
-        IconSetter(IroningIcon,R.drawable.ironing_sizer);
+        IconSetter(iconIroning,R.drawable.ironing_sizer);
         empty="";
-        IconSetter(ProfessionalCleaningIcon,R.drawable.professional_cleaning_sizer);
+        IconSetter(iconProfessionalCleaning,R.drawable.professional_cleaning_sizer);
         ButtonPresser(viewNothing);
 
         SetClickable(false);
@@ -454,8 +361,8 @@ public class MainActivity extends AppCompatActivity{
         CustomGridView.setOnItemClickListener(this::onItemClick);
         CustomGridView.setVisibility(View.VISIBLE);
         SetVisibility(viewNothing, "","", "");
-        //TODO Edit element and send it to database
     }
+
     @Override
     public void onBackPressed() {
         if(Location.equals("Washing") || Location.equals("Bleaching") || Location.equals("Drying") || Location.equals("Ironing") || Location.equals("Cleaning") || Location.equals("Wardrobe") || Location.equals("LabelInfo"))
@@ -493,14 +400,11 @@ public class MainActivity extends AppCompatActivity{
             }
         return super.onOptionsItemSelected(item);
     }
+
     public void DataGetter()
     {
         Getter = new HashMap<>();
-
-        firebaseFirestore.collection("clothes")
-                .whereEqualTo("userId", firebaseUser.getUid())
-                .get()
-                .addOnCompleteListener(task -> {
+        firebaseFirestore.collection("clothes").whereEqualTo("userId", firebaseUser.getUid()).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                             String start = "DocumentSnapshot{key=clothes/";
@@ -550,30 +454,24 @@ public class MainActivity extends AppCompatActivity{
         else return "";
     }
 
-    public HashMap<String, Integer> HashMapSetter(String RawData, char separator, boolean ifColor)
-    {
+    public HashMap<String, Integer> HashMapSetter(String RawData, char separator, boolean ifColor) {
         HashMap<String, Integer> Result = new HashMap<>();
         String string;
-        String colorName;
         int CharMatchers = CharMatcher.is(separator).countIn(RawData)+1;
-        for(int i=0; i<CharMatchers+1; i++)
-        {
-            if(RawData.contains(",") && !ifColor)
-            {
+        for(int i=0; i<CharMatchers+1; i++) {
+            if(RawData.contains(",") && !ifColor) {
                 string = RawData.substring( 0, RawData.indexOf(","));
                 Result.put(string,i+1);
                 RawData = RawData.substring(RawData.indexOf(",")+1);
             }
             else if(!RawData.contains(",") && !ifColor)
                 Result.put(RawData,i);
-            else if(RawData.contains(",") && ifColor)
-            {
+            else if(RawData.contains(",") && ifColor) {
                 string = RawData.substring( 0, RawData.indexOf(","));
-                colorName = string;
                 string = string.replace("Color","");
                 string = string.substring(0, 1).toUpperCase() + string.substring(1);
                 string = string.replaceAll("([^_])([A-Z])", "$1 $2");
-                Result.put(string,getApplicationContext().getResources().getIdentifier(colorName, "color", getApplicationContext().getPackageName()));
+                Result.put(string,getApplicationContext().getResources().getIdentifier(RawData.substring( 0, RawData.indexOf(",")), "color", getApplicationContext().getPackageName()));
                 RawData = RawData.substring(RawData.indexOf(",")+1);
             }
             else if(!RawData.contains(",") && ifColor) {
@@ -672,9 +570,9 @@ public class MainActivity extends AppCompatActivity{
                     Location = "Details";
                     Log.e("TestTT",ButtonNext.getText().toString());
                     if ((ButtonNext.getText().toString().equals(getResources().getString(R.string.add_clothes))) && EmptyChecker()) {
-                        addingElement(BleachIcon.getTag().toString(), brandTextView.getText().toString(), String.valueOf(Colors.get(colorTextView.getText() + "")), clothesTypeAutoCompleteTextView.getText().toString(), DryingIcon.getTag().toString(),
-                                IroningIcon.getTag().toString(), mainMaterialAutoCompleteTextView.getText().toString(), ProfessionalCleaningIcon.getTag().toString(), (String) clothesSeasonSpinner.getSelectedItem(),
-                                specialMarksTextView.getText().toString(), firebaseUser.getUid(), WashIcon.getTag().toString(),true);
+                        addingElement(iconBleach.getTag().toString(), brandTextView.getText().toString(), String.valueOf(Colors.get(colorTextView.getText() + "")), clothesTypeAutoCompleteTextView.getText().toString(), iconDrying.getTag().toString(),
+                                iconIroning.getTag().toString(), mainMaterialAutoCompleteTextView.getText().toString(), iconProfessionalCleaning.getTag().toString(), (String) clothesSeasonSpinner.getSelectedItem(),
+                                specialMarksTextView.getText().toString(), firebaseUser.getUid(), iconWashing.getTag().toString(),true);
 
                         afterElementWasAdd();
                     } else if (ButtonNext.getText().toString().equals(getResources().getString(R.string.next))) {
@@ -682,9 +580,9 @@ public class MainActivity extends AppCompatActivity{
                         SetVisibility(viewSixth, getResources().getString(R.string.details), getResources().getString(R.string.enter_more_details), getResources().getString(R.string.add_clothes));
                     }
                     else if (ButtonNext.getText().toString().equals(getResources().getString(R.string.confirm))) {
-                        addingElement(BleachIcon.getTag().toString(), brandTextView.getText().toString(), String.valueOf(Colors.get(colorTextView.getText() + "")), clothesTypeAutoCompleteTextView.getText().toString(), DryingIcon.getTag().toString(),
-                                IroningIcon.getTag().toString(), mainMaterialAutoCompleteTextView.getText().toString(), ProfessionalCleaningIcon.getTag().toString(), (String) clothesSeasonSpinner.getSelectedItem(),
-                                specialMarksTextView.getText().toString(), firebaseUser.getUid(), WashIcon.getTag().toString(),false);
+                        addingElement(iconBleach.getTag().toString(), brandTextView.getText().toString(), String.valueOf(Colors.get(colorTextView.getText() + "")), clothesTypeAutoCompleteTextView.getText().toString(), iconDrying.getTag().toString(),
+                                iconIroning.getTag().toString(), mainMaterialAutoCompleteTextView.getText().toString(), iconProfessionalCleaning.getTag().toString(), (String) clothesSeasonSpinner.getSelectedItem(),
+                                specialMarksTextView.getText().toString(), firebaseUser.getUid(), iconWashing.getTag().toString(),false);
                         afterElementWasAdd();
                     }
 
@@ -717,40 +615,40 @@ public class MainActivity extends AppCompatActivity{
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.wash_at_or_below_30:
-                    IconSetter(WashIcon,R.drawable.wash_at_or_below_30_sizer);
+                    IconSetter(iconWashing,R.drawable.wash_at_or_below_30_sizer);
                     break;
                 case R.id.wash_at_or_below_30_mild_fine_wash:
-                    IconSetter(WashIcon,R.drawable.wash_at_or_below_30_mild_fine_wash_sizer);
+                    IconSetter(iconWashing,R.drawable.wash_at_or_below_30_mild_fine_wash_sizer);
                     break;
                 case R.id.wash_at_or_below_30_very_mild_fine_wash:
-                    IconSetter(WashIcon,R.drawable.wash_at_or_below_30_very_mild_fine_wash_sizer);
+                    IconSetter(iconWashing,R.drawable.wash_at_or_below_30_very_mild_fine_wash_sizer);
                     break;
                 case R.id.wash_at_or_below_40:
-                    IconSetter(WashIcon,R.drawable.wash_at_or_below_40_sizer);
+                    IconSetter(iconWashing,R.drawable.wash_at_or_below_40_sizer);
                     break;
                 case R.id.wash_at_or_below_40_mild_fine_wash:
-                    IconSetter(WashIcon,R.drawable.wash_at_or_below_40_mild_fine_wash_sizer);
+                    IconSetter(iconWashing,R.drawable.wash_at_or_below_40_mild_fine_wash_sizer);
                     break;
                 case R.id.wash_at_or_below_40_very_mild_fine_wash:
-                    IconSetter(WashIcon,R.drawable.wash_at_or_below_40_very_mild_fine_wash_sizer);
+                    IconSetter(iconWashing,R.drawable.wash_at_or_below_40_very_mild_fine_wash_sizer);
                     break;
                 case R.id.wash_at_or_below_50:
-                    IconSetter(WashIcon,R.drawable.wash_at_or_below_50_sizer);
+                    IconSetter(iconWashing,R.drawable.wash_at_or_below_50_sizer);
                     break;
                 case R.id.wash_at_or_below_50_mild_fine_wash:
-                    IconSetter(WashIcon,R.drawable.wash_at_or_below_50_mild_fine_wash_sizer);
+                    IconSetter(iconWashing,R.drawable.wash_at_or_below_50_mild_fine_wash_sizer);
                     break;
                 case R.id.wash_at_or_below_60:
-                    IconSetter(WashIcon,R.drawable.wash_at_or_below_60_sizer);
+                    IconSetter(iconWashing,R.drawable.wash_at_or_below_60_sizer);
                     break;
                 case R.id.wash_at_or_below_60_mild_fine_wash:
-                    IconSetter(WashIcon,R.drawable.wash_at_or_below_60_mild_fine_wash_sizer);
+                    IconSetter(iconWashing,R.drawable.wash_at_or_below_60_mild_fine_wash_sizer);
                     break;
                 case R.id.wash_at_or_below_70:
-                    IconSetter(WashIcon,R.drawable.wash_at_or_below_70_sizer);
+                    IconSetter(iconWashing,R.drawable.wash_at_or_below_70_sizer);
                     break;
                 case R.id.wash_at_or_below_90:
-                    IconSetter(WashIcon,R.drawable.wash_at_or_below_90_sizer);
+                    IconSetter(iconWashing,R.drawable.wash_at_or_below_90_sizer);
                     break;
             }
         }
@@ -760,16 +658,16 @@ public class MainActivity extends AppCompatActivity{
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.bleaching_with_chlorine_allowed:
-                    IconSetter(BleachIcon,R.drawable.bleaching_with_chlorine_allowed_sizer);
+                    IconSetter(iconBleach,R.drawable.bleaching_with_chlorine_allowed_sizer);
                     break;
                 case R.id.non_chlorine_bleach_when_needed:
-                    IconSetter(BleachIcon,R.drawable.non_chlorine_bleach_when_needed_sizer);
+                    IconSetter(iconBleach,R.drawable.non_chlorine_bleach_when_needed_sizer);
                     break;
                 case R.id.do_not_bleach:
-                    IconSetter(BleachIcon,R.drawable.do_not_bleach_sizer);
+                    IconSetter(iconBleach,R.drawable.do_not_bleach_sizer);
                     break;
                 case R.id.do_not_bleach2:
-                    IconSetter(BleachIcon,R.drawable.do_not_bleach2_sizer);
+                    IconSetter(iconBleach,R.drawable.do_not_bleach2_sizer);
                     break;
             }
         }
@@ -779,37 +677,37 @@ public class MainActivity extends AppCompatActivity{
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.tumble_drying:
-                    IconSetter(DryingIcon,R.drawable.tumble_drying_sizer);
+                    IconSetter(iconDrying,R.drawable.tumble_drying_sizer);
                     break;
                 case R.id.tumble_drying_low_temps:
-                    IconSetter(DryingIcon,R.drawable.tumble_drying_low_temps_sizer);
+                    IconSetter(iconDrying,R.drawable.tumble_drying_low_temps_sizer);
                     break;
                 case R.id.tumble_drying_normal:
-                    IconSetter(DryingIcon,R.drawable.tumble_drying_normal_sizer);
+                    IconSetter(iconDrying,R.drawable.tumble_drying_normal_sizer);
                     break;
-                case R.id.do_not_tumble_drying_sizer:
-                    IconSetter(DryingIcon,R.drawable.do_not_tumble_drying_sizer);
+                case R.id.do_not_tumble_drying:
+                    IconSetter(iconDrying,R.drawable.do_not_tumble_drying_sizer);
                     break;
                 case R.id.line_dry:
-                    IconSetter(DryingIcon,R.drawable.line_dry_sizer);
+                    IconSetter(iconDrying,R.drawable.line_dry_sizer);
                     break;
                 case R.id.dry_flat:
-                    IconSetter(DryingIcon,R.drawable.dry_flat_sizer);
+                    IconSetter(iconDrying,R.drawable.dry_flat_sizer);
                     break;
                 case R.id.dry_flat_in_the_shade:
-                    IconSetter(DryingIcon,R.drawable.dry_flat_in_the_shade_sizer);
+                    IconSetter(iconDrying,R.drawable.dry_flat_in_the_shade_sizer);
                     break;
                 case R.id.dry_in_the_shade:
-                    IconSetter(DryingIcon,R.drawable.dry_in_the_shade_sizer);
+                    IconSetter(iconDrying,R.drawable.dry_in_the_shade_sizer);
                     break;
                 case R.id.line_dry_in_the_shade:
-                    IconSetter(DryingIcon,R.drawable.line_dry_in_the_shade_sizer);
+                    IconSetter(iconDrying,R.drawable.line_dry_in_the_shade_sizer);
                     break;
                 case R.id.drip_dry:
-                    IconSetter(DryingIcon,R.drawable.drip_dry_sizer);
+                    IconSetter(iconDrying,R.drawable.drip_dry_sizer);
                     break;
                 case R.id.drip_dry_in_the_shade:
-                    IconSetter(DryingIcon,R.drawable.drip_dry_in_the_shade_sizer);
+                    IconSetter(iconDrying,R.drawable.drip_dry_in_the_shade_sizer);
                     break;
             }
         }
@@ -819,19 +717,19 @@ public class MainActivity extends AppCompatActivity{
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.ironing_at_low_temp:
-                    IconSetter(IroningIcon,R.drawable.ironing_at_low_temp_sizer);
+                    IconSetter(iconIroning,R.drawable.ironing_at_low_temp_sizer);
                     break;
                 case R.id.ironing_at_med_temp:
-                    IconSetter(IroningIcon,R.drawable.ironing_at_med_temp_sizer);
+                    IconSetter(iconIroning,R.drawable.ironing_at_med_temp_sizer);
                     break;
                 case R.id.ironing_at_high_temp:
-                    IconSetter(IroningIcon,R.drawable.ironing_at_high_temp_sizer);
+                    IconSetter(iconIroning,R.drawable.ironing_at_high_temp_sizer);
                     break;
                 case R.id.no_steam:
-                    IconSetter(IroningIcon,R.drawable.no_steam_sizer);
+                    IconSetter(iconIroning,R.drawable.no_steam_sizer);
                     break;
                 case R.id.do_not_iron:
-                    IconSetter(IroningIcon,R.drawable.do_not_iron_sizer);
+                    IconSetter(iconIroning,R.drawable.do_not_iron_sizer);
                     break;
             }
         }
@@ -841,51 +739,51 @@ public class MainActivity extends AppCompatActivity{
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.professional_wet_cleaning:
-                    IconSetter(ProfessionalCleaningIcon,R.drawable.professional_wet_cleaning_sizer);
+                    IconSetter(iconProfessionalCleaning,R.drawable.professional_wet_cleaning_sizer);
                     break;
                 case R.id.gentle_wet_cleaning:
-                    IconSetter(ProfessionalCleaningIcon,R.drawable.gentle_wet_cleaning_sizer);
+                    IconSetter(iconProfessionalCleaning,R.drawable.gentle_wet_cleaning_sizer);
                     break;
                 case R.id.very_gentle_wet_cleaning:
-                    IconSetter(ProfessionalCleaningIcon,R.drawable.very_gentle_wet_cleaning_sizer);
+                    IconSetter(iconProfessionalCleaning,R.drawable.very_gentle_wet_cleaning_sizer);
                     break;
                 case R.id.do_not_wet_clean:
-                    IconSetter(ProfessionalCleaningIcon,R.drawable.do_not_wet_clean_sizer);
+                    IconSetter(iconProfessionalCleaning,R.drawable.do_not_wet_clean_sizer);
                     break;
                 case R.id.dry_clean_any_solvent:
-                    IconSetter(ProfessionalCleaningIcon,R.drawable.dry_clean_any_solvent_sizer);
+                    IconSetter(iconProfessionalCleaning,R.drawable.dry_clean_any_solvent_sizer);
                     break;
                 case R.id.dry_clean_hydrocarbon_solvent_only_HCS:
-                    IconSetter(ProfessionalCleaningIcon,R.drawable.dry_clean_hydrocarbon_solvent_only_hcs_sizer);
+                    IconSetter(iconProfessionalCleaning,R.drawable.dry_clean_hydrocarbon_solvent_only_hcs_sizer);
                     break;
                 case R.id.gentle_cleaning_with_hydrocarbon_solvents:
-                    IconSetter(ProfessionalCleaningIcon,R.drawable.gentle_cleaning_with_hydrocarbon_solvents_sizer);
+                    IconSetter(iconProfessionalCleaning,R.drawable.gentle_cleaning_with_hydrocarbon_solvents_sizer);
                     break;
                 case R.id.very_gentle_cleaning_with_hydrocarbon_solvents:
-                    IconSetter(ProfessionalCleaningIcon,R.drawable.very_gentle_cleaning_with_hydrocarbon_solvents_sizer);
+                    IconSetter(iconProfessionalCleaning,R.drawable.very_gentle_cleaning_with_hydrocarbon_solvents_sizer);
                     break;
                 case R.id.dry_clean_tetrachloroethylene_PCE_only:
-                    IconSetter(ProfessionalCleaningIcon,R.drawable.dry_clean_tetrachloroethylene_pce_only_sizer);
+                    IconSetter(iconProfessionalCleaning,R.drawable.dry_clean_tetrachloroethylene_pce_only_sizer);
                     break;
                 case R.id.gentle_cleaning_with_PCE:
-                    IconSetter(ProfessionalCleaningIcon,R.drawable.gentle_cleaning_with_pce_sizer);
+                    IconSetter(iconProfessionalCleaning,R.drawable.gentle_cleaning_with_pce_sizer);
                     break;
                 case R.id.very_gentle_cleaning_with_PCE:
-                    IconSetter(ProfessionalCleaningIcon,R.drawable.very_gentle_cleaning_with_pce_sizer);
+                    IconSetter(iconProfessionalCleaning,R.drawable.very_gentle_cleaning_with_pce_sizer);
                     break;
                 case R.id.do_not_dry_clean:
-                    IconSetter(ProfessionalCleaningIcon,R.drawable.do_not_dry_clean_sizer);
+                    IconSetter(iconProfessionalCleaning,R.drawable.do_not_dry_clean_sizer);
                     break;
             }
         }
     };
 
     private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        IconSetter(WashIcon, Integer.parseInt(GRID_DATA.get(position).get(6)));
-        IconSetter(BleachIcon, Integer.parseInt(GRID_DATA.get(position).get(7)));
-        IconSetter(DryingIcon, Integer.parseInt(GRID_DATA.get(position).get(8)));
-        IconSetter(IroningIcon, Integer.parseInt(GRID_DATA.get(position).get(9)));
-        IconSetter(ProfessionalCleaningIcon, Integer.parseInt(GRID_DATA.get(position).get(10)));
+        IconSetter(iconWashing, Integer.parseInt(GRID_DATA.get(position).get(6)));
+        IconSetter(iconBleach, Integer.parseInt(GRID_DATA.get(position).get(7)));
+        IconSetter(iconDrying, Integer.parseInt(GRID_DATA.get(position).get(8)));
+        IconSetter(iconIroning, Integer.parseInt(GRID_DATA.get(position).get(9)));
+        IconSetter(iconProfessionalCleaning, Integer.parseInt(GRID_DATA.get(position).get(10)));
         if (view.getId() == R.id.layoutButton)
             SetVisibility(viewNothing, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), "");
         else if (view.getId() == R.id.editButton) {
