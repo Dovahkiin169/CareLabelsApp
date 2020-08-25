@@ -378,9 +378,9 @@ public class MainActivity extends AppCompatActivity{
         LayoutArray.add(ProfessionalCleaningLayout);
         LayoutArray.add(DetailsLayout);
 
-        for(int i=1; i<=LayoutArray.size();i++)
+        for(int i=0; i<LayoutArray.size();i++)
         {
-            if((i)== numberToView)
+            if((i+1)== numberToView)
                 LayoutArray.get(i).setVisibility(View.VISIBLE);
             else
                 LayoutArray.get(i).setVisibility(View.GONE);
@@ -394,9 +394,9 @@ public class MainActivity extends AppCompatActivity{
         ButtonArray.add(IroningIcon);
         ButtonArray.add(ProfessionalCleaningIcon);
 
-        for(int i=1; i<=ButtonArray.size();i++)
+        for(int i=0; i<ButtonArray.size();i++)
         {
-            if((i)== itemSetToTrue)
+            if((i+1)== itemSetToTrue)
                 ButtonArray.get(i).setSelected(true);
             else
                 ButtonArray.get(i).setSelected(false);

@@ -170,5 +170,9 @@ public class ProfileActivity extends AppCompatActivity {
         finishAffinity();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+        finishAffinity();
+    }
 }
