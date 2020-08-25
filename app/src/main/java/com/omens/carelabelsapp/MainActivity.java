@@ -1,13 +1,11 @@
 package com.omens.carelabelsapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -24,21 +22,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.common.base.CharMatcher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
@@ -100,6 +91,10 @@ public class MainActivity extends AppCompatActivity{
 
     HashMap<String, Object> Getter;
     ArrayList<ArrayList<String>> GRID_DATA;
+
+    int viewNothing =0, viewFirst =1, viewSecond =2, viewThird =3, viewFourth =4, viewFifth =5, viewSixth =6;
+
+    String LastButtonNext ="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -250,10 +245,10 @@ public class MainActivity extends AppCompatActivity{
         do_not_dry_clean.setOnClickListener(ProfessionalCleaningIconListener);
 
 
-        setCLOTHES(Clothes.keySet().toArray(new String[0]));
-        setClothesMaterial(Material.keySet().toArray(new String[0]));
-        setClothesType(seasons);
-        setColors(Colors.keySet().toArray(new String[0]));
+        setClothesOrMaterialOrColor(clothesTypeAutoCompleteTextView,Clothes,"clothes");
+        setClothesOrMaterialOrColor(mainMaterialAutoCompleteTextView,Material,"material");
+        setClothesOrMaterialOrColor(colorTextView,Colors,"color");
+        setSeasonType(seasons);
 
         CareLabelLayout = findViewById(R.id.care_in_main);
         CareLabelLayout.setOnClickListener(mainClickListener);
@@ -268,80 +263,25 @@ public class MainActivity extends AppCompatActivity{
         DataGetter();
     }
 
-    private void setCLOTHES(String[] cData) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, cData);
-        clothesTypeAutoCompleteTextView.setThreshold(1);
-        clothesTypeAutoCompleteTextView.setAdapter(adapter);
-        clothesTypeAutoCompleteTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-                    if (Clothes.get(clothesTypeAutoCompleteTextView.getText() + "") == null) {
-                        clothesTypeAutoCompleteTextView.setText("");
-                        clothesTypeAutoCompleteTextView.setError("Invalid clothes, choose from list");
-                    }
-                }
+    private void setClothesOrMaterialOrColor(AutoCompleteTextView textView, HashMap<String, Integer> hashMap, String flag) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, hashMap.keySet().toArray(new String[0]));
+        textView.setThreshold(1);
+        textView.setAdapter(adapter);
+        textView.setOnFocusChangeListener((view, hasFocus) -> {
+            if (!hasFocus) {
+                if (hashMap.get(textView.getText() + "") == null)
+                    SetInvalid(textView,flag);
             }
         });
+
+        if(flag.equals("color"))
+            colorTextView.setOnItemClickListener((parent, view, position, id) -> colorImage.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), Objects.requireNonNull(Colors.get(colorTextView.getText()+"")))));
     }
 
-    private void setClothesMaterial(String[] cData) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, cData);
-        mainMaterialAutoCompleteTextView.setThreshold(1);
-        mainMaterialAutoCompleteTextView.setAdapter(adapter);
-        mainMaterialAutoCompleteTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-                    if (Material.get(mainMaterialAutoCompleteTextView.getText() + "") == null) {
-                        mainMaterialAutoCompleteTextView.setText("");
-                        mainMaterialAutoCompleteTextView.setError("Invalid material, choose from list");
-                    }
-                }
-            }
-        });
-    }
-
-    private void setColors(String[] cData) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, cData);
-        colorTextView.setThreshold(1);
-        colorTextView.setAdapter(adapter);
-        colorTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-                    if (Colors.get(colorTextView.getText() + "") == null) {
-                        colorTextView.setText("");
-                        colorTextView.setError("Invalid color, choose from list");
-                    }
-                }
-            }
-        });
-        colorTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                colorImage.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), Colors.get(colorTextView.getText()+"")));
-            }
-        });
-    }
-
-    private void setClothesType(String[] cData) {
+    private void setSeasonType(String[] cData) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cData);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         clothesSeasonSpinner.setAdapter(adapter);
-
-        clothesTypeAutoCompleteTextView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(),seasons[i] , Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
 
     public void SetClickable(boolean data) {
@@ -511,34 +451,7 @@ public class MainActivity extends AppCompatActivity{
         ButtonPresser(viewNothing);
 
         CustomGridView.setAdapter(  new CustomGridAdapter( this, GRID_DATA ) );
-        CustomGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                IconSetter(WashIcon, Integer.parseInt(GRID_DATA.get(position).get(6)));
-                IconSetter(BleachIcon, Integer.parseInt(GRID_DATA.get(position).get(7)));
-                IconSetter(DryingIcon, Integer.parseInt(GRID_DATA.get(position).get(8)));
-                IconSetter(IroningIcon, Integer.parseInt(GRID_DATA.get(position).get(9)));
-                IconSetter(ProfessionalCleaningIcon, Integer.parseInt(GRID_DATA.get(position).get(10)));
-                if (view.getId() == R.id.layoutButton)
-                    SetVisibility(viewNothing, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), "");
-                else if(view.getId() == R.id.editButton)
-                {
-                    ButtonPresser(viewFirst);
-
-                    CustomGridView.setVisibility(View.GONE);
-                    SetVisibility(viewFirst, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
-                    SetClickable(true);
-                    clothesTypeAutoCompleteTextView.setText(GRID_DATA.get(position).get(1));
-                    mainMaterialAutoCompleteTextView.setText(GRID_DATA.get(position).get(2));
-                    brandTextView.setText(GRID_DATA.get(position).get(0));
-                    colorTextView.setText(getKeyByValue(Colors,getApplicationContext().getResources().getIdentifier(GRID_DATA.get(position).get(4), "color", getApplicationContext().getPackageName())));
-                    colorImage.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), Colors.get(colorTextView.getText()+"")));
-                    specialMarksTextView.setText(GRID_DATA.get(position).get(5));
-                    EditItemId = GRID_DATA.get(position).get(11);
-                    clothesSeasonSpinner.setSelection(((ArrayAdapter<String>)clothesSeasonSpinner.getAdapter()).getPosition(GRID_DATA.get(position).get(3)));
-                }
-            }
-        });
+        CustomGridView.setOnItemClickListener(this::onItemClick);
         CustomGridView.setVisibility(View.VISIBLE);
         SetVisibility(viewNothing, "","", "");
         //TODO Edit element and send it to database
@@ -582,23 +495,20 @@ public class MainActivity extends AppCompatActivity{
     }
     public void DataGetter()
     {
-        Getter = new HashMap<String, Object>();
+        Getter = new HashMap<>();
 
         firebaseFirestore.collection("clothes")
                 .whereEqualTo("userId", firebaseUser.getUid())
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                String start = "DocumentSnapshot{key=clothes/";
-                                Getter.put(document.toString().substring( document.toString().indexOf(start)+"DocumentSnapshot{key=clothes/".length(), document.toString().indexOf(", ")),document.getData());
-                            }
-                            transformReceivedData();
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            String start = "DocumentSnapshot{key=clothes/";
+                            Getter.put(document.toString().substring( document.toString().indexOf(start)+"DocumentSnapshot{key=clothes/".length(), document.toString().indexOf(", ")),document.getData());
                         }
+                        transformReceivedData();
+                    } else {
+                        Log.d("TAG", "Error getting documents: ", task.getException());
                     }
                 });
     }
@@ -677,6 +587,11 @@ public class MainActivity extends AppCompatActivity{
         return Result;
     }
 
+    private void SetInvalid(TextView textView, String ErrorText)
+    {
+        textView.setText("");
+        textView.setError("Invalid"+ ErrorText+", choose from list");
+    }
 
 
 
@@ -697,10 +612,6 @@ public class MainActivity extends AppCompatActivity{
 
 
 
-
-int viewNothing =0, viewFirst =1, viewSecond =2, viewThird =3, viewFourth =4, viewFifth =5, viewSixth =6;
-
-String NextButtonNext="";
 
 
 
@@ -720,7 +631,7 @@ String NextButtonNext="";
 
                         WardrobeButton.setVisibility(View.GONE);
                         IconInfoButton.setVisibility(View.GONE);
-                        NextButtonNext="";
+                        LastButtonNext ="";
                         Location = "Washing";
                         ButtonPresser(viewFirst);
                         SetVisibility(viewFirst, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
@@ -752,7 +663,7 @@ String NextButtonNext="";
                     SetVisibility(viewFifth, getResources().getString(R.string.professional_cleaning_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                     break;
                 case R.id.button_next:
-                    if (NextButtonNext.equals("Wardrobe") && !(ButtonNext.getText().toString().equals(getResources().getString(R.string.confirm)))) {
+                    if (LastButtonNext.equals("Wardrobe") && !(ButtonNext.getText().toString().equals(getResources().getString(R.string.confirm)))) {
                         SetVisibility(viewSixth, getResources().getString(R.string.details), getResources().getString(R.string.enter_more_details), getResources().getString(R.string.add_clothes));
                         ButtonNext.setText(getResources().getString(R.string.confirm));
                         ButtonPresser(viewNothing);
@@ -780,7 +691,7 @@ String NextButtonNext="";
                     break;
                 case R.id.wardrobe_button:
                     Location = "Wardrobe";
-                    NextButtonNext = "Wardrobe";
+                    LastButtonNext = "Wardrobe";
                     EditElement();
                     WardrobeButton.setVisibility(View.GONE);
                     IconInfoButton.setVisibility(View.GONE);
@@ -789,7 +700,7 @@ String NextButtonNext="";
                     break;
                 case R.id.icon_info_button:
                     Location = "LabelInfo";
-                    NextButtonNext="";
+                    LastButtonNext ="";
                     WardrobeButton.setVisibility(View.GONE);
                     IconInfoButton.setVisibility(View.GONE);
                     ButtonPresser(viewNothing);
@@ -968,4 +879,33 @@ String NextButtonNext="";
             }
         }
     };
+
+    private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        IconSetter(WashIcon, Integer.parseInt(GRID_DATA.get(position).get(6)));
+        IconSetter(BleachIcon, Integer.parseInt(GRID_DATA.get(position).get(7)));
+        IconSetter(DryingIcon, Integer.parseInt(GRID_DATA.get(position).get(8)));
+        IconSetter(IroningIcon, Integer.parseInt(GRID_DATA.get(position).get(9)));
+        IconSetter(ProfessionalCleaningIcon, Integer.parseInt(GRID_DATA.get(position).get(10)));
+        if (view.getId() == R.id.layoutButton)
+            SetVisibility(viewNothing, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), "");
+        else if (view.getId() == R.id.editButton) {
+            ButtonPresser(viewFirst);
+
+            CustomGridView.setVisibility(View.GONE);
+            SetVisibility(viewFirst, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
+            SetClickable(true);
+            clothesTypeAutoCompleteTextView.setText(GRID_DATA.get(position).get(1));
+            mainMaterialAutoCompleteTextView.setText(GRID_DATA.get(position).get(2));
+            brandTextView.setText(GRID_DATA.get(position).get(0));
+            colorTextView.setText(getKeyByValue(Colors, getApplicationContext().getResources().getIdentifier(GRID_DATA.get(position).get(4), "color", getApplicationContext().getPackageName())));
+            colorImage.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), Objects.requireNonNull(Colors.get(colorTextView.getText() + ""))));
+
+            specialMarksTextView.setText(GRID_DATA.get(position).get(5));
+            EditItemId = GRID_DATA.get(position).get(11);
+
+
+            clothesSeasonSpinner.setSelection(((ArrayAdapter<String>) clothesSeasonSpinner.getAdapter()).getPosition(GRID_DATA.get(position).get(3)));
+
+        }
+    }
 }
