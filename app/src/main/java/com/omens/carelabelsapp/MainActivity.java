@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity{
     HashMap<String, Integer> Material;
     HashMap<String, Integer> Colors;
 
-
+    String EditItemId="";
     String empty="empty";
     String Location = "";
     ImageButton WashIcon,BleachIcon,DryingIcon,IroningIcon,ProfessionalCleaningIcon;
@@ -464,8 +464,20 @@ public class MainActivity extends AppCompatActivity{
         clothesToDataBase.put("washIcon", washIcon);
         if(Add)
             firebaseFirestore.collection("clothes").add(clothesToDataBase);
-        else
-            firebaseFirestore.collection("clothes").document("uid").update("nick", "test123" );
+        else {
+            firebaseFirestore.collection("clothes").document(EditItemId).update("bleachingIcon", bleachingIcon);
+            firebaseFirestore.collection("clothes").document(EditItemId).update("brand", brand );
+            firebaseFirestore.collection("clothes").document(EditItemId).update("clothesColor", clothesColor );
+            firebaseFirestore.collection("clothes").document(EditItemId).update("clothesType", clothesType );
+            firebaseFirestore.collection("clothes").document(EditItemId).update("dryIcon", dryIcon );
+            firebaseFirestore.collection("clothes").document(EditItemId).update("ironingIcon", ironingIcon );
+            firebaseFirestore.collection("clothes").document(EditItemId).update("mainMaterial", mainMaterial );
+            firebaseFirestore.collection("clothes").document(EditItemId).update("professionalCleaningIcon", professionalCleaningIcon );
+            firebaseFirestore.collection("clothes").document(EditItemId).update("season", season );
+            firebaseFirestore.collection("clothes").document(EditItemId).update("specialMarks", specialMarks );
+            firebaseFirestore.collection("clothes").document(EditItemId).update("userId", userId );
+            firebaseFirestore.collection("clothes").document(EditItemId).update("washIcon", washIcon );
+        }
     }
     public void afterElementWasAdd()
     {
@@ -490,7 +502,10 @@ public class MainActivity extends AppCompatActivity{
         IconInfoButton.setVisibility(View.VISIBLE);
 
         ItemDescription.setVisibility(View.VISIBLE);
+        DataGetter();
     }
+
+
     public void EditElement()
     {
         ButtonPresser(viewNothing);
@@ -519,7 +534,7 @@ public class MainActivity extends AppCompatActivity{
                     colorTextView.setText(getKeyByValue(Colors,getApplicationContext().getResources().getIdentifier(GRID_DATA.get(position).get(4), "color", getApplicationContext().getPackageName())));
                     colorImage.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), Colors.get(colorTextView.getText()+"")));
                     specialMarksTextView.setText(GRID_DATA.get(position).get(5));
-
+                    EditItemId = GRID_DATA.get(position).get(11);
                     clothesSeasonSpinner.setSelection(((ArrayAdapter<String>)clothesSeasonSpinner.getAdapter()).getPosition(GRID_DATA.get(position).get(3)));
                 }
             }
@@ -577,9 +592,8 @@ public class MainActivity extends AppCompatActivity{
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                Log.e("document",document.toString());
                                 String start = "DocumentSnapshot{key=clothes/";
-                                Getter.put(document.toString().substring( document.toString().indexOf(start)+start.length(), document.toString().indexOf(", ")),document.getData());
+                                Getter.put(document.toString().substring( document.toString().indexOf(start)+"DocumentSnapshot{key=clothes/".length(), document.toString().indexOf(", ")),document.getData());
                             }
                             transformReceivedData();
                         } else {
@@ -591,7 +605,6 @@ public class MainActivity extends AppCompatActivity{
 
     public void transformReceivedData()
     {
-       // GRID_DATA.clear();
         GRID_DATA= new ArrayList<>();
         ArrayList<String> dataFormat;
 
@@ -612,28 +625,9 @@ public class MainActivity extends AppCompatActivity{
             dataFormat.add(getSpecificData(Element,"dryIcon"));
             dataFormat.add(getSpecificData(Element,"ironingIcon"));
             dataFormat.add(getSpecificData(Element,"professionalCleaningIcon"));
-            dataFormat.add(getSpecificData(pair.getKey(),"keyID"));
+            dataFormat.add(11,pair.getKey());
             GRID_DATA.add(dataFormat);
         }
-
-        /*for(int i=0; i<Getter.size(); i++)
-        {
-            dataFormat = new ArrayList<>();
-            String Element = String.valueOf(Getter.get(String.valueOf(i)));
-
-            dataFormat.add(getSpecificData(Element,"brand"));
-            dataFormat.add(getSpecificData(Element,"clothesType"));
-            dataFormat.add(getSpecificData(Element,"mainMaterial"));
-            dataFormat.add(getSpecificData(Element,"season"));
-            dataFormat.add(getSpecificData(Element,"clothesColor"));
-            dataFormat.add(getSpecificData(Element,"specialMarks"));
-            dataFormat.add(getSpecificData(Element,"washIcon"));
-            dataFormat.add(getSpecificData(Element,"bleachingIcon"));
-            dataFormat.add(getSpecificData(Element,"dryIcon"));
-            dataFormat.add(getSpecificData(Element,"ironingIcon"));
-            dataFormat.add(getSpecificData(Element,"professionalCleaningIcon"));
-            GRID_DATA.add(dataFormat);
-        }*/
     }
 
     public String getSpecificData(String RawData, String typeOfData)
@@ -758,10 +752,11 @@ String NextButtonNext="";
                     SetVisibility(viewFifth, getResources().getString(R.string.professional_cleaning_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                     break;
                 case R.id.button_next:
-                    if (NextButtonNext.equals("Wardrobe")) {
+                    if (NextButtonNext.equals("Wardrobe") && !(ButtonNext.getText().toString().equals(getResources().getString(R.string.confirm)))) {
                         SetVisibility(viewSixth, getResources().getString(R.string.details), getResources().getString(R.string.enter_more_details), getResources().getString(R.string.add_clothes));
                         ButtonNext.setText(getResources().getString(R.string.confirm));
                         ButtonPresser(viewNothing);
+                        break;
                     }
                     Location = "Details";
                     Log.e("TestTT",ButtonNext.getText().toString());
@@ -776,7 +771,10 @@ String NextButtonNext="";
                         SetVisibility(viewSixth, getResources().getString(R.string.details), getResources().getString(R.string.enter_more_details), getResources().getString(R.string.add_clothes));
                     }
                     else if (ButtonNext.getText().toString().equals(getResources().getString(R.string.confirm))) {
-
+                        addingElement(BleachIcon.getTag().toString(), brandTextView.getText().toString(), String.valueOf(Colors.get(colorTextView.getText() + "")), clothesTypeAutoCompleteTextView.getText().toString(), DryingIcon.getTag().toString(),
+                                IroningIcon.getTag().toString(), mainMaterialAutoCompleteTextView.getText().toString(), ProfessionalCleaningIcon.getTag().toString(), (String) clothesSeasonSpinner.getSelectedItem(),
+                                specialMarksTextView.getText().toString(), firebaseUser.getUid(), WashIcon.getTag().toString(),false);
+                        afterElementWasAdd();
                     }
 
                     break;
