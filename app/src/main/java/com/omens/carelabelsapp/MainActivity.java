@@ -25,17 +25,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.base.CharMatcher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
@@ -444,7 +447,7 @@ public class MainActivity extends AppCompatActivity{
 
     public void addingElement(String bleachingIcon, String brand, String clothesColor, String clothesType, String dryIcon,
                               String ironingIcon, String mainMaterial, String professionalCleaningIcon, String season, String specialMarks,
-                              String userId, String washIcon) {
+                              String userId, String washIcon, boolean Add) {
         Map<String, Object> clothesToDataBase = new HashMap<>();
         clothesToDataBase.put("bleachingIcon", bleachingIcon);
         clothesToDataBase.put("brand", brand);
@@ -459,7 +462,10 @@ public class MainActivity extends AppCompatActivity{
         assert firebaseUser != null;
         clothesToDataBase.put("userId", userId);
         clothesToDataBase.put("washIcon", washIcon);
-        firebaseFirestore.collection("clothes").add(clothesToDataBase);
+        if(Add)
+            firebaseFirestore.collection("clothes").add(clothesToDataBase);
+        else
+            firebaseFirestore.collection("clothes").document("uid").update("nick", "test123" );
     }
     public void afterElementWasAdd()
     {
@@ -503,6 +509,7 @@ public class MainActivity extends AppCompatActivity{
                 else if(view.getId() == R.id.editButton)
                 {
                     ButtonPresser(viewFirst);
+
                     CustomGridView.setVisibility(View.GONE);
                     SetVisibility(viewFirst, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                     SetClickable(true);
@@ -569,11 +576,11 @@ public class MainActivity extends AppCompatActivity{
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            int i = 0;
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                Getter.put(String.valueOf(i++),document.getData());
+                                Log.e("document",document.toString());
+                                String start = "DocumentSnapshot{key=clothes/";
+                                Getter.put(document.toString().substring( document.toString().indexOf(start)+start.length(), document.toString().indexOf(", ")),document.getData());
                             }
-                            Log.e("testGetter", String.valueOf(Getter));
                             transformReceivedData();
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
@@ -587,7 +594,29 @@ public class MainActivity extends AppCompatActivity{
        // GRID_DATA.clear();
         GRID_DATA= new ArrayList<>();
         ArrayList<String> dataFormat;
-        for(int i=0; i<Getter.size(); i++)
+
+        for (HashMap.Entry<String, Object> pair : Getter.entrySet()) {
+            System.out.println(pair.getKey() + " = " + pair.getValue());
+
+            dataFormat = new ArrayList<>();
+            String Element = String.valueOf(Getter.get(String.valueOf(pair.getKey())));
+
+            dataFormat.add(getSpecificData(Element,"brand"));
+            dataFormat.add(getSpecificData(Element,"clothesType"));
+            dataFormat.add(getSpecificData(Element,"mainMaterial"));
+            dataFormat.add(getSpecificData(Element,"season"));
+            dataFormat.add(getSpecificData(Element,"clothesColor"));
+            dataFormat.add(getSpecificData(Element,"specialMarks"));
+            dataFormat.add(getSpecificData(Element,"washIcon"));
+            dataFormat.add(getSpecificData(Element,"bleachingIcon"));
+            dataFormat.add(getSpecificData(Element,"dryIcon"));
+            dataFormat.add(getSpecificData(Element,"ironingIcon"));
+            dataFormat.add(getSpecificData(Element,"professionalCleaningIcon"));
+            dataFormat.add(getSpecificData(pair.getKey(),"keyID"));
+            GRID_DATA.add(dataFormat);
+        }
+
+        /*for(int i=0; i<Getter.size(); i++)
         {
             dataFormat = new ArrayList<>();
             String Element = String.valueOf(Getter.get(String.valueOf(i)));
@@ -604,7 +633,7 @@ public class MainActivity extends AppCompatActivity{
             dataFormat.add(getSpecificData(Element,"ironingIcon"));
             dataFormat.add(getSpecificData(Element,"professionalCleaningIcon"));
             GRID_DATA.add(dataFormat);
-        }
+        }*/
     }
 
     public String getSpecificData(String RawData, String typeOfData)
@@ -677,7 +706,7 @@ public class MainActivity extends AppCompatActivity{
 
 int viewNothing =0, viewFirst =1, viewSecond =2, viewThird =3, viewFourth =4, viewFifth =5, viewSixth =6;
 
-
+String NextButtonNext="";
 
 
 
@@ -697,7 +726,7 @@ int viewNothing =0, viewFirst =1, viewSecond =2, viewThird =3, viewFourth =4, vi
 
                         WardrobeButton.setVisibility(View.GONE);
                         IconInfoButton.setVisibility(View.GONE);
-
+                        NextButtonNext="";
                         Location = "Washing";
                         ButtonPresser(viewFirst);
                         SetVisibility(viewFirst, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
@@ -729,28 +758,31 @@ int viewNothing =0, viewFirst =1, viewSecond =2, viewThird =3, viewFourth =4, vi
                     SetVisibility(viewFifth, getResources().getString(R.string.professional_cleaning_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                     break;
                 case R.id.button_next:
-                    if (Location.equals("Wardrobe")) {
-                        ButtonNext.setText(R.string.confirm);
-                        EditElement();
-
-                        SetClickable(false);
-                        CareLabelLayout.setClickable(true);
+                    if (NextButtonNext.equals("Wardrobe")) {
+                        SetVisibility(viewSixth, getResources().getString(R.string.details), getResources().getString(R.string.enter_more_details), getResources().getString(R.string.add_clothes));
+                        ButtonNext.setText(getResources().getString(R.string.confirm));
+                        ButtonPresser(viewNothing);
                     }
                     Location = "Details";
-                    ButtonPresser(viewNothing);
+                    Log.e("TestTT",ButtonNext.getText().toString());
                     if ((ButtonNext.getText().toString().equals(getResources().getString(R.string.add_clothes))) && EmptyChecker()) {
                         addingElement(BleachIcon.getTag().toString(), brandTextView.getText().toString(), String.valueOf(Colors.get(colorTextView.getText() + "")), clothesTypeAutoCompleteTextView.getText().toString(), DryingIcon.getTag().toString(),
                                 IroningIcon.getTag().toString(), mainMaterialAutoCompleteTextView.getText().toString(), ProfessionalCleaningIcon.getTag().toString(), (String) clothesSeasonSpinner.getSelectedItem(),
-                                specialMarksTextView.getText().toString(), firebaseUser.getUid(), WashIcon.getTag().toString());
+                                specialMarksTextView.getText().toString(), firebaseUser.getUid(), WashIcon.getTag().toString(),true);
 
                         afterElementWasAdd();
                     } else if (ButtonNext.getText().toString().equals(getResources().getString(R.string.next))) {
                         ButtonNext.setText(R.string.add_clothes);
                         SetVisibility(viewSixth, getResources().getString(R.string.details), getResources().getString(R.string.enter_more_details), getResources().getString(R.string.add_clothes));
                     }
+                    else if (ButtonNext.getText().toString().equals(getResources().getString(R.string.confirm))) {
+
+                    }
+
                     break;
                 case R.id.wardrobe_button:
                     Location = "Wardrobe";
+                    NextButtonNext = "Wardrobe";
                     EditElement();
                     WardrobeButton.setVisibility(View.GONE);
                     IconInfoButton.setVisibility(View.GONE);
@@ -759,7 +791,7 @@ int viewNothing =0, viewFirst =1, viewSecond =2, viewThird =3, viewFourth =4, vi
                     break;
                 case R.id.icon_info_button:
                     Location = "LabelInfo";
-
+                    NextButtonNext="";
                     WardrobeButton.setVisibility(View.GONE);
                     IconInfoButton.setVisibility(View.GONE);
                     ButtonPresser(viewNothing);
