@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity{
 
     TextView brandTextView,specialMarksTextView;
 
+    TextView details_info;
+
     AutoCompleteTextView colorTextView,clothesTypeAutoCompleteTextView,mainMaterialAutoCompleteTextView;
 
     GridView CustomGridView;
@@ -130,6 +132,8 @@ public class MainActivity extends AppCompatActivity{
         clothesTypeAutoCompleteTextView = findViewById(R.id.clothesTypeAutoCompleteTextView);
         mainMaterialAutoCompleteTextView = findViewById(R.id.mainMaterialAutoCompleteTextView);
         clothesSeasonSpinner = findViewById(R.id.clothesSeasonSpinner);
+
+        details_info = findViewById(R.id.details_info);
 
         iconWashing.setOnClickListener(mainClickListener);
         iconBleach.setOnClickListener(mainClickListener);
@@ -286,10 +290,13 @@ public class MainActivity extends AppCompatActivity{
     public void IconSetterForDetails(HashMap<String, ImageButton>  IconsArray, String Icon) {
         Location = "LabelInfo";
         for (Map.Entry<String, ImageButton> entry : IconsArray.entrySet()) {
-            if(Icon.equals(entry.getKey()))
-                entry.getValue().setSelected(true);
+            if(Icon.equals(entry.getKey())) {
+                entry.getValue().setSelected(true);//getApplicationContext().getResources().getString(R.string.wash_image_buttons_string)
+                details_info.setText(getApplicationContext().getResources().getIdentifier(Icon, "string", getApplicationContext().getPackageName()));
+            }
             else
                 entry.getValue().setSelected(false);
+
         }
     }
 
@@ -398,7 +405,18 @@ public class MainActivity extends AppCompatActivity{
             case "Ironing":
             case "Cleaning":
             case "Wardrobe":
+                CustomGridView.setVisibility(View.GONE);
+                afterElementWasAdd();
+                Location = "";
+                break;
             case "LabelInfo":
+
+                details_info.setText("");
+                IconSetterForDetails(WashIconsArray,"");
+                IconSetterForDetails(BleachIconsArray,"");
+                IconSetterForDetails(DryIconsArray,"");
+                IconSetterForDetails(IronIconsArray,"");
+                IconSetterForDetails(ProfessionalCleanIconsArray,"");
                 CustomGridView.setVisibility(View.GONE);
                 afterElementWasAdd();
                 Location = "";
@@ -548,7 +566,7 @@ public class MainActivity extends AppCompatActivity{
 
 
 public void LocationLabelsInfoDetector() {
-    if(Location.equals("LabelInfo"))
+    if(Location.equals("LabelInfo") || LastButtonNext.equals("LabelInfo"))
         LastButtonNext ="LabelInfo";
     else
         LastButtonNext ="";

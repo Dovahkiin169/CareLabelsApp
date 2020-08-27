@@ -60,4 +60,56 @@
     <string name="iron_image_buttons_string">ironing_at_low_temp,ironing_at_med_temp,ironing_at_high_temp,no_steam,do_not_iron</string>
     <string name="professional_wet_clean_image_buttons_string">professional_wet_cleaning,gentle_wet_cleaning,gentle_cleaning_with_hydrocarbon_solvents,gentle_cleaning_with_PCE,very_gentle_wet_cleaning,very_gentle_cleaning_with_hydrocarbon_solvents,very_gentle_cleaning_with_PCE,dry_clean_any_solvent,dry_clean_hydrocarbon_solvent_only_HCS,dry_clean_tetrachloroethylene_PCE_only,do_not_wet_clean,do_not_dry_clean</string>
     <string name="main_icons_image_buttons_string">iconWashing,iconBleach,iconDrying,iconIroning,iconProfessionalCleaning</string>
+
+
+    <string name="wash_at_or_below_30">wash_at_or_below_30</string>
+    <string name="wash_at_or_below_30_mild_fine_wash">wash_at_or_below_30_mild_fine_wash</string>
+    <string name="wash_at_or_below_30_very_mild_fine_wash">wash_at_or_below_30_very_mild_fine_wash</string>
+    <string name="wash_at_or_below_40">wash_at_or_below_40</string>
+    <string name="wash_at_or_below_40_mild_fine_wash">wash_at_or_below_40_mild_fine_wash</string>
+    <string name="wash_at_or_below_40_very_mild_fine_wash">wash_at_or_below_40_very_mild_fine_wash</string>
+    <string name="wash_at_or_below_50">wash_at_or_below_50</string>
+    <string name="wash_at_or_below_50_mild_fine_wash">wash_at_or_below_50_mild_fine_wash</string>
+    <string name="wash_at_or_below_60">wash_at_or_below_60</string>
+    <string name="wash_at_or_below_60_mild_fine_wash">wash_at_or_below_60_mild_fine_wash</string>
+    <string name="wash_at_or_below_70">wash_at_or_below_70</string>
+    <string name="wash_at_or_below_90">wash_at_or_below_90</string>
+
+    <string name="tumble_drying">tumble_drying</string>
+    <string name="tumble_drying_low_temps">tumble_drying_low_temps</string>
+    <string name="tumble_drying_normal">tumble_drying_normal</string>
+    <string name="do_not_tumble_drying">do_not_tumble_drying</string>
+    <string name="line_dry">line_dry</string>
+    <string name="line_dry_in_the_shade">line_dry_in_the_shade</string>
+    <string name="dry_flat">dry_flat</string>
+    <string name="dry_flat_in_the_shade">dry_flat_in_the_shade</string>
+    <string name="drip_dry">drip_dry</string>
+    <string name="drip_dry_in_the_shade">drip_dry_in_the_shade</string>
+
+
+    <string name="bleaching_with_chlorine_allowed">bleaching_with_chlorine_allowed</string>
+    <string name="non_chlorine_bleach_when_needed">non_chlorine_bleach_when_needed</string>
+    <string name="do_not_bleach">do_not_bleach</string>
+    <string name="do_not_bleach2">do_not_bleach2</string>
+
+
+    <string name="ironing_at_low_temp">ironing_at_low_temp</string>
+    <string name="ironing_at_med_temp">ironing_at_med_temp</string>
+    <string name="ironing_at_high_temp">ironing_at_high_temp</string>
+    <string name="no_steam">no_steam</string>
+    <string name="do_not_iron">do_not_iron</string>
+
+
+    <string name="professional_wet_cleaning">professional_wet_cleaning</string>
+    <string name="gentle_wet_cleaning">gentle_wet_cleaning</string>
+    <string name="gentle_cleaning_with_hydrocarbon_solvents">gentle_cleaning_with_hydrocarbon_solvents</string>
+    <string name="gentle_cleaning_with_PCE">gentle_cleaning_with_PCE</string>
+    <string name="very_gentle_wet_cleaning">very_gentle_wet_cleaning</string>
+    <string name="very_gentle_cleaning_with_hydrocarbon_solvents">very_gentle_cleaning_with_hydrocarbon_solvents</string>
+    <string name="very_gentle_cleaning_with_PCE">very_gentle_cleaning_with_PCE</string>
+    <string name="dry_clean_any_solvent">dry_clean_any_solvent</string>
+    <string name="dry_clean_hydrocarbon_solvent_only_HCS">dry_clean_hydrocarbon_solvent_only_HCS</string>
+    <string name="dry_clean_tetrachloroethylene_PCE_only">dry_clean_tetrachloroethylene_PCE_only</string>
+    <string name="do_not_wet_clean">do_not_wet_clean</string>
+    <string name="do_not_dry_clean">do_not_dry_clean</string>
 </resources>
