@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/care_label_shape"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -70,9 +71,9 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/wash_at_or_below_50_mild_fine_wash_sizer"
         android:background="@drawable/button_transparent_icon_shape"
-        app:layout_constraintBottom_toTopOf="@+id/wash_at_or_below_90"
+        android:src="@drawable/wash_at_or_below_50_mild_fine_wash_sizer"
+        app:layout_constraintBottom_toTopOf="@+id/hand_wash"
         app:layout_constraintEnd_toStartOf="@+id/wash_at_or_below_60"
         app:layout_constraintStart_toEndOf="@+id/wash_at_or_below_50"
         app:layout_constraintTop_toBottomOf="@+id/wash_at_or_below_30_very_mild_fine_wash" />
@@ -99,9 +100,9 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/wash_at_or_below_60_sizer"
         android:background="@drawable/button_transparent_icon_shape"
-        app:layout_constraintBottom_toTopOf="@+id/wash_at_or_below_90"
+        android:src="@drawable/wash_at_or_below_60_sizer"
+        app:layout_constraintBottom_toTopOf="@+id/do_not_wash"
         app:layout_constraintEnd_toStartOf="@+id/wash_at_or_below_60_mild_fine_wash"
         app:layout_constraintStart_toEndOf="@+id/wash_at_or_below_50_mild_fine_wash"
         app:layout_constraintTop_toBottomOf="@+id/wash_at_or_below_40" />
@@ -177,6 +178,35 @@
         app:layout_constraintEnd_toStartOf="@+id/wash_at_or_below_50_mild_fine_wash"
         app:layout_constraintStart_toEndOf="@+id/wash_at_or_below_70"
         app:layout_constraintTop_toBottomOf="@+id/wash_at_or_below_50" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/hand_wash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/button_transparent_icon_shape"
+        android:src="@drawable/hand_wash_sizer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/wash_at_or_below_60"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toEndOf="@+id/wash_at_or_below_90"
+        app:layout_constraintTop_toBottomOf="@+id/wash_at_or_below_50_mild_fine_wash" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/do_not_wash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/button_transparent_icon_shape"
+        android:src="@drawable/do_not_wash_sizer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/wash_at_or_below_60_mild_fine_wash"
+        app:layout_constraintStart_toEndOf="@+id/hand_wash"
+        app:layout_constraintTop_toBottomOf="@+id/wash_at_or_below_60" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

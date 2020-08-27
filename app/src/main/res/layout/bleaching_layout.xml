@@ -6,6 +6,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/chlorine_and_non_chlorine_bleach"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/button_transparent_icon_shape"
+        android:src="@drawable/chlorine_and_non_chlorine_bleach_sizer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bleaching_with_chlorine_allowed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/bleaching_with_chlorine_allowed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,11 +29,11 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/bleaching_with_chlorine_allowed_sizer"
         android:background="@drawable/button_transparent_icon_shape"
+        android:src="@drawable/bleaching_with_chlorine_allowed_sizer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/non_chlorine_bleach_when_needed"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/chlorine_and_non_chlorine_bleach"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
@@ -28,8 +44,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/do_not_bleach_sizer"
         android:background="@drawable/button_transparent_icon_shape"
+        android:src="@drawable/do_not_bleach_sizer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/do_not_bleach2"
         app:layout_constraintStart_toEndOf="@+id/non_chlorine_bleach_when_needed"
@@ -43,8 +59,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/do_not_bleach2_sizer"
         android:background="@drawable/button_transparent_icon_shape"
+        android:src="@drawable/do_not_bleach2_sizer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/do_not_bleach"
@@ -58,8 +74,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/non_chlorine_bleach_when_needed_sizer"
         android:background="@drawable/button_transparent_icon_shape"
+        android:src="@drawable/non_chlorine_bleach_when_needed_sizer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/do_not_bleach"
         app:layout_constraintStart_toEndOf="@+id/bleaching_with_chlorine_allowed"
