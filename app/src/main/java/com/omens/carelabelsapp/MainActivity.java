@@ -12,7 +12,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 
 import android.graphics.drawable.StateListDrawable;
@@ -57,6 +56,7 @@ public class MainActivity extends AppCompatActivity{
     Button ButtonNext,WardrobeButton,IconInfoButton;
 
     ConstraintLayout CareLabelLayout,WashingLayout,BleachLayout,DryingLayout,IroningLayout,ProfessionalCleaningLayout;
+    HashMap<String, ImageButton>  WashIconsArray,BleachIconsArray,DryIconsArray,IronIconsArray,ProfessionalCleanIconsArray;
 
     ImageView colorImage;
 
@@ -142,11 +142,11 @@ public class MainActivity extends AppCompatActivity{
         WardrobeButton.setOnClickListener(mainClickListener);
         IconInfoButton.setOnClickListener(mainClickListener);
 
-        findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.wash_image_buttons_string),',', WashingClickListener);
-        findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.dry_image_buttons_string),',', DryingClickListener);
-        findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.bleach_image_buttons_string),',', BleachingClickListener);
-        findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.iron_image_buttons_string),',', IroningClickListener);
-        findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.professional_wet_clean_image_buttons_string),',', ProfessionalCleaningIconListener);
+        WashIconsArray = findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.wash_image_buttons_string),',', WashingClickListener);
+        DryIconsArray = findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.dry_image_buttons_string),',', DryingClickListener);
+        BleachIconsArray = findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.bleach_image_buttons_string),',', BleachingClickListener);
+        IronIconsArray = findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.iron_image_buttons_string),',', IroningClickListener);
+        ProfessionalCleanIconsArray = findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.professional_wet_clean_image_buttons_string),',', ProfessionalCleaningIconListener);
 
 
         setClothesOrMaterialOrColor(clothesTypeAutoCompleteTextView,Clothes,"clothes");
@@ -167,24 +167,23 @@ public class MainActivity extends AppCompatActivity{
         DataGetter();
     }
 
-    public void findViewByIdAndSetListener(String RawData, char separator, View.OnClickListener ClickListener)
-    {
+    public HashMap<String, ImageButton> findViewByIdAndSetListener(String RawData, char separator, View.OnClickListener ClickListener) {
         String string;
-        ArrayList<ImageButton> ButtonArray =new ArrayList<>();
+        HashMap<String, ImageButton> ButtonArray = new HashMap<>();
         int CharMatchers = CharMatcher.is(separator).countIn(RawData)+1;
         for(int i=0; i<CharMatchers; i++) {
             if(RawData.contains(",")) {
                 string = RawData.substring( 0, RawData.indexOf(","));
-                ButtonArray.add(findViewById(getApplicationContext().getResources().getIdentifier(string, "id", getApplicationContext().getPackageName())));
+                ButtonArray.put(string, (ImageButton) findViewById(getApplicationContext().getResources().getIdentifier(string, "id", getApplicationContext().getPackageName())));
                 RawData = RawData.substring(RawData.indexOf(",")+1);
-                ButtonArray.get(i).setOnClickListener(ClickListener);
+                Objects.requireNonNull(ButtonArray.get(string)).setOnClickListener(ClickListener);
             }
             else if(!RawData.contains(",")) {
-                ButtonArray.add(findViewById(getApplicationContext().getResources().getIdentifier(RawData, "id", getApplicationContext().getPackageName())));
-                ButtonArray.get(i).setOnClickListener(ClickListener);
+                ButtonArray.put(RawData, (ImageButton) findViewById(getApplicationContext().getResources().getIdentifier(RawData, "id", getApplicationContext().getPackageName())));
+                Objects.requireNonNull(ButtonArray.get(RawData)).setOnClickListener(ClickListener);
             }
         }
-        ButtonArray.clear();
+        return ButtonArray;
     }
 
     private void setClothesOrMaterialOrColor(AutoCompleteTextView textView, HashMap<String, Integer> hashMap, String flag) {
@@ -269,20 +268,32 @@ public class MainActivity extends AppCompatActivity{
                 ButtonArray.get(i).setSelected(false);
         }
     }
+
     public void IconSetter(ImageButton imageButton, int drawable) {
-        imageButton.setImageResource(drawable);
-        if(empty.equals(""))
-            imageButton.setTag(null);
-        else
-            imageButton.setTag(drawable);
-        empty="not_empty";
+            imageButton.setImageResource(drawable);
+            if (empty.equals(""))
+                imageButton.setTag(null);
+            else
+                imageButton.setTag(drawable);
+            empty = "not_empty";
 
-        if(IconChecker())
-            ButtonNext.setVisibility(View.VISIBLE);
-        else
-            ButtonNext.setVisibility(View.GONE);
-
+            if (IconChecker())
+                ButtonNext.setVisibility(View.VISIBLE);
+            else
+                ButtonNext.setVisibility(View.GONE);
     }
+    //TODO
+    public void IconSetterForDetails(HashMap<String, ImageButton>  IconsArray, String Icon) {
+        Location = "LabelInfo";
+        for (Map.Entry<String, ImageButton> entry : IconsArray.entrySet()) {
+            if(Icon.equals(entry.getKey()))
+                entry.getValue().setSelected(true);
+            else
+                entry.getValue().setSelected(false);
+        }
+    }
+
+
     public boolean IconChecker() {
         return (iconWashing.getTag() != null && !iconWashing.getTag().equals(R.id.iconWashing)) && (iconBleach.getTag() != null && !iconBleach.getTag().equals(R.id.iconBleach)) && (iconDrying.getTag() != null && !iconDrying.getTag().equals(R.id.iconDrying))
                 && (iconIroning.getTag() != null && !iconIroning.getTag().equals(R.id.iconIroning)) && (iconProfessionalCleaning.getTag() != null && !iconProfessionalCleaning.getTag().equals(R.id.iconProfessionalCleaning));
@@ -536,7 +547,12 @@ public class MainActivity extends AppCompatActivity{
 
 
 
-
+public void LocationLabelsInfoDetector() {
+    if(Location.equals("LabelInfo"))
+        LastButtonNext ="LabelInfo";
+    else
+        LastButtonNext ="";
+}
 
 
     public View.OnClickListener mainClickListener = new View.OnClickListener() {
@@ -550,33 +566,45 @@ public class MainActivity extends AppCompatActivity{
 
                         WardrobeButton.setVisibility(View.GONE);
                         IconInfoButton.setVisibility(View.GONE);
-                        LastButtonNext ="";
+
+                        LocationLabelsInfoDetector();
+
                         Location = "Washing";
                         ButtonPresser(viewFirst);
                         SetVisibility(viewFirst, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                     }
                     break;
                 case R.id.iconWashing:
+                    LocationLabelsInfoDetector();
+
                     Location = "Washing";
                     ButtonPresser(viewFirst);
                     SetVisibility(viewFirst, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                     break;
                 case R.id.iconBleach:
+                    LocationLabelsInfoDetector();
+
                     Location = "Bleaching";
                     ButtonPresser(viewSecond);
                     SetVisibility(viewSecond, getResources().getString(R.string.bleaching_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                     break;
                 case R.id.iconDrying:
+                    LocationLabelsInfoDetector();
+
                     Location = "Drying";
                     ButtonPresser(viewThird);
                     SetVisibility(viewThird, getResources().getString(R.string.drying_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                     break;
                 case R.id.iconIroning:
+                    LocationLabelsInfoDetector();
+
                     Location = "Ironing";
                     ButtonPresser(viewFourth);
                     SetVisibility(viewFourth, getResources().getString(R.string.ironing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                     break;
                 case R.id.iconProfessionalCleaning:
+                    LocationLabelsInfoDetector();
+
                     Location = "Cleaning";
                     ButtonPresser(viewFifth);
                     SetVisibility(viewFifth, getResources().getString(R.string.professional_cleaning_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
@@ -623,6 +651,7 @@ public class MainActivity extends AppCompatActivity{
                     WardrobeButton.setVisibility(View.GONE);
                     IconInfoButton.setVisibility(View.GONE);
                     ButtonPresser(viewNothing);
+                    SetClickable(true);
                     CareLabelLayout.setClickable(false);
                     ItemDescription.setVisibility(View.GONE);
 
@@ -636,40 +665,76 @@ public class MainActivity extends AppCompatActivity{
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.wash_at_or_below_30:
-                    IconSetter(iconWashing,R.drawable.wash_at_or_below_30_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconWashing,R.drawable.wash_at_or_below_30_sizer);
+                    else
+                        IconSetterForDetails(WashIconsArray,"wash_at_or_below_30");
                     break;
                 case R.id.wash_at_or_below_30_mild_fine_wash:
-                    IconSetter(iconWashing,R.drawable.wash_at_or_below_30_mild_fine_wash_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconWashing,R.drawable.wash_at_or_below_30_mild_fine_wash_sizer);
+                    else
+                        IconSetterForDetails(WashIconsArray,"wash_at_or_below_30_mild_fine_wash");
                     break;
                 case R.id.wash_at_or_below_30_very_mild_fine_wash:
-                    IconSetter(iconWashing,R.drawable.wash_at_or_below_30_very_mild_fine_wash_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconWashing,R.drawable.wash_at_or_below_30_very_mild_fine_wash_sizer);
+                    else
+                        IconSetterForDetails(WashIconsArray,"wash_at_or_below_30_very_mild_fine_wash");
                     break;
                 case R.id.wash_at_or_below_40:
-                    IconSetter(iconWashing,R.drawable.wash_at_or_below_40_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconWashing,R.drawable.wash_at_or_below_40_sizer);
+                    else
+                        IconSetterForDetails(WashIconsArray,"wash_at_or_below_40");
                     break;
                 case R.id.wash_at_or_below_40_mild_fine_wash:
-                    IconSetter(iconWashing,R.drawable.wash_at_or_below_40_mild_fine_wash_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconWashing,R.drawable.wash_at_or_below_40_mild_fine_wash_sizer);
+                    else
+                        IconSetterForDetails(WashIconsArray,"wash_at_or_below_40_mild_fine_wash");
                     break;
                 case R.id.wash_at_or_below_40_very_mild_fine_wash:
-                    IconSetter(iconWashing,R.drawable.wash_at_or_below_40_very_mild_fine_wash_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconWashing,R.drawable.wash_at_or_below_40_very_mild_fine_wash_sizer);
+                    else
+                        IconSetterForDetails(WashIconsArray,"wash_at_or_below_40_very_mild_fine_wash");
                     break;
                 case R.id.wash_at_or_below_50:
-                    IconSetter(iconWashing,R.drawable.wash_at_or_below_50_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconWashing,R.drawable.wash_at_or_below_50_sizer);
+                    else
+                        IconSetterForDetails(WashIconsArray,"wash_at_or_below_50");
                     break;
                 case R.id.wash_at_or_below_50_mild_fine_wash:
-                    IconSetter(iconWashing,R.drawable.wash_at_or_below_50_mild_fine_wash_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconWashing,R.drawable.wash_at_or_below_50_mild_fine_wash_sizer);
+                    else
+                        IconSetterForDetails(WashIconsArray,"wash_at_or_below_50_mild_fine_wash");
                     break;
                 case R.id.wash_at_or_below_60:
-                    IconSetter(iconWashing,R.drawable.wash_at_or_below_60_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconWashing,R.drawable.wash_at_or_below_60_sizer);
+                    else
+                        IconSetterForDetails(WashIconsArray,"wash_at_or_below_60");
                     break;
                 case R.id.wash_at_or_below_60_mild_fine_wash:
-                    IconSetter(iconWashing,R.drawable.wash_at_or_below_60_mild_fine_wash_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconWashing,R.drawable.wash_at_or_below_60_mild_fine_wash_sizer);
+                    else
+                        IconSetterForDetails(WashIconsArray,"wash_at_or_below_60_mild_fine_wash");
                     break;
                 case R.id.wash_at_or_below_70:
-                    IconSetter(iconWashing,R.drawable.wash_at_or_below_70_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconWashing,R.drawable.wash_at_or_below_70_sizer);
+                    else
+                        IconSetterForDetails(WashIconsArray,"wash_at_or_below_70");
                     break;
                 case R.id.wash_at_or_below_90:
-                    IconSetter(iconWashing,R.drawable.wash_at_or_below_90_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconWashing,R.drawable.wash_at_or_below_90_sizer);
+                    else
+                        IconSetterForDetails(WashIconsArray,"wash_at_or_below_90");
                     break;
             }
         }
@@ -679,16 +744,29 @@ public class MainActivity extends AppCompatActivity{
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.bleaching_with_chlorine_allowed:
-                    IconSetter(iconBleach,R.drawable.bleaching_with_chlorine_allowed_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconBleach,R.drawable.bleaching_with_chlorine_allowed_sizer);
+                    else
+                        IconSetterForDetails(BleachIconsArray,"bleaching_with_chlorine_allowed");
                     break;
                 case R.id.non_chlorine_bleach_when_needed:
-                    IconSetter(iconBleach,R.drawable.non_chlorine_bleach_when_needed_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconBleach,R.drawable.non_chlorine_bleach_when_needed_sizer);
+                    else
+                        IconSetterForDetails(BleachIconsArray,"non_chlorine_bleach_when_needed");
                     break;
                 case R.id.do_not_bleach:
-                    IconSetter(iconBleach,R.drawable.do_not_bleach_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconBleach,R.drawable.do_not_bleach_sizer);
+                    else
+                        IconSetterForDetails(BleachIconsArray,"do_not_bleach");
+
                     break;
                 case R.id.do_not_bleach2:
-                    IconSetter(iconBleach,R.drawable.do_not_bleach2_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconBleach,R.drawable.do_not_bleach2_sizer);
+                    else
+                        IconSetterForDetails(BleachIconsArray,"do_not_bleach2");
                     break;
             }
         }
@@ -698,37 +776,70 @@ public class MainActivity extends AppCompatActivity{
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.tumble_drying:
-                    IconSetter(iconDrying,R.drawable.tumble_drying_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconDrying,R.drawable.tumble_drying_sizer);
+                    else
+                        IconSetterForDetails(DryIconsArray,"tumble_drying");
                     break;
                 case R.id.tumble_drying_low_temps:
-                    IconSetter(iconDrying,R.drawable.tumble_drying_low_temps_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconDrying,R.drawable.tumble_drying_low_temps_sizer);
+                    else
+                        IconSetterForDetails(DryIconsArray,"tumble_drying_low_temps");
                     break;
                 case R.id.tumble_drying_normal:
-                    IconSetter(iconDrying,R.drawable.tumble_drying_normal_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconDrying,R.drawable.tumble_drying_normal_sizer);
+                    else
+                        IconSetterForDetails(DryIconsArray,"tumble_drying_normal");
                     break;
                 case R.id.do_not_tumble_drying:
-                    IconSetter(iconDrying,R.drawable.do_not_tumble_drying_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconDrying,R.drawable.do_not_tumble_drying_sizer);
+                    else
+                        IconSetterForDetails(DryIconsArray,"do_not_tumble_drying");
                     break;
                 case R.id.line_dry:
-                    IconSetter(iconDrying,R.drawable.line_dry_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconDrying,R.drawable.line_dry_sizer);
+                    else
+                        IconSetterForDetails(DryIconsArray,"line_dry");
                     break;
                 case R.id.dry_flat:
-                    IconSetter(iconDrying,R.drawable.dry_flat_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconDrying,R.drawable.dry_flat_sizer);
+                    else
+                        IconSetterForDetails(DryIconsArray,"dry_flat");
                     break;
                 case R.id.dry_flat_in_the_shade:
-                    IconSetter(iconDrying,R.drawable.dry_flat_in_the_shade_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconDrying,R.drawable.dry_flat_in_the_shade_sizer);
+                    else
+                        IconSetterForDetails(DryIconsArray,"dry_flat_in_the_shade");
                     break;
                 case R.id.dry_in_the_shade:
-                    IconSetter(iconDrying,R.drawable.dry_in_the_shade_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconDrying,R.drawable.dry_in_the_shade_sizer);
+                    else
+                        IconSetterForDetails(DryIconsArray,"dry_in_the_shade");
                     break;
                 case R.id.line_dry_in_the_shade:
-                    IconSetter(iconDrying,R.drawable.line_dry_in_the_shade_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconDrying,R.drawable.line_dry_in_the_shade_sizer);
+                    else
+                        IconSetterForDetails(DryIconsArray,"line_dry_in_the_shade");
                     break;
                 case R.id.drip_dry:
-                    IconSetter(iconDrying,R.drawable.drip_dry_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconDrying,R.drawable.drip_dry_sizer);
+                    else
+                        IconSetterForDetails(DryIconsArray,"drip_dry");
                     break;
                 case R.id.drip_dry_in_the_shade:
-                    IconSetter(iconDrying,R.drawable.drip_dry_in_the_shade_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconDrying,R.drawable.drip_dry_in_the_shade_sizer);
+                    else
+                        IconSetterForDetails(DryIconsArray,"drip_dry_in_the_shade");
                     break;
             }
         }
@@ -738,19 +849,34 @@ public class MainActivity extends AppCompatActivity{
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.ironing_at_low_temp:
-                    IconSetter(iconIroning,R.drawable.ironing_at_low_temp_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconIroning,R.drawable.ironing_at_low_temp_sizer);
+                    else
+                        IconSetterForDetails(IronIconsArray,"ironing_at_low_temp");
                     break;
                 case R.id.ironing_at_med_temp:
-                    IconSetter(iconIroning,R.drawable.ironing_at_med_temp_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconIroning,R.drawable.ironing_at_med_temp_sizer);
+                    else
+                        IconSetterForDetails(IronIconsArray,"ironing_at_med_temp");
                     break;
                 case R.id.ironing_at_high_temp:
-                    IconSetter(iconIroning,R.drawable.ironing_at_high_temp_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconIroning,R.drawable.ironing_at_high_temp_sizer);
+                    else
+                        IconSetterForDetails(IronIconsArray,"ironing_at_high_temp");
                     break;
                 case R.id.no_steam:
-                    IconSetter(iconIroning,R.drawable.no_steam_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconIroning,R.drawable.no_steam_sizer);
+                    else
+                        IconSetterForDetails(IronIconsArray,"no_steam");
                     break;
                 case R.id.do_not_iron:
-                    IconSetter(iconIroning,R.drawable.do_not_iron_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconIroning,R.drawable.do_not_iron_sizer);
+                    else
+                        IconSetterForDetails(IronIconsArray,"do_not_iron");
                     break;
             }
         }
@@ -760,40 +886,76 @@ public class MainActivity extends AppCompatActivity{
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.professional_wet_cleaning:
-                    IconSetter(iconProfessionalCleaning,R.drawable.professional_wet_cleaning_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconProfessionalCleaning,R.drawable.professional_wet_cleaning_sizer);
+                    else
+                        IconSetterForDetails(ProfessionalCleanIconsArray,"professional_wet_cleaning");
                     break;
                 case R.id.gentle_wet_cleaning:
-                    IconSetter(iconProfessionalCleaning,R.drawable.gentle_wet_cleaning_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconProfessionalCleaning,R.drawable.gentle_wet_cleaning_sizer);
+                    else
+                        IconSetterForDetails(ProfessionalCleanIconsArray,"gentle_wet_cleaning");
                     break;
                 case R.id.very_gentle_wet_cleaning:
-                    IconSetter(iconProfessionalCleaning,R.drawable.very_gentle_wet_cleaning_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconProfessionalCleaning,R.drawable.very_gentle_wet_cleaning_sizer);
+                    else
+                        IconSetterForDetails(ProfessionalCleanIconsArray,"very_gentle_wet_cleaning");
                     break;
                 case R.id.do_not_wet_clean:
-                    IconSetter(iconProfessionalCleaning,R.drawable.do_not_wet_clean_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconProfessionalCleaning,R.drawable.do_not_wet_clean_sizer);
+                    else
+                        IconSetterForDetails(ProfessionalCleanIconsArray,"do_not_wet_clean");
                     break;
                 case R.id.dry_clean_any_solvent:
-                    IconSetter(iconProfessionalCleaning,R.drawable.dry_clean_any_solvent_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconProfessionalCleaning,R.drawable.dry_clean_any_solvent_sizer);
+                    else
+                        IconSetterForDetails(ProfessionalCleanIconsArray,"dry_clean_any_solvent");
                     break;
                 case R.id.dry_clean_hydrocarbon_solvent_only_HCS:
-                    IconSetter(iconProfessionalCleaning,R.drawable.dry_clean_hydrocarbon_solvent_only_hcs_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconProfessionalCleaning,R.drawable.dry_clean_hydrocarbon_solvent_only_hcs_sizer);
+                    else
+                        IconSetterForDetails(ProfessionalCleanIconsArray,"dry_clean_hydrocarbon_solvent_only_HCS");
                     break;
                 case R.id.gentle_cleaning_with_hydrocarbon_solvents:
-                    IconSetter(iconProfessionalCleaning,R.drawable.gentle_cleaning_with_hydrocarbon_solvents_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconProfessionalCleaning,R.drawable.gentle_cleaning_with_hydrocarbon_solvents_sizer);
+                    else
+                        IconSetterForDetails(ProfessionalCleanIconsArray,"gentle_cleaning_with_hydrocarbon_solvents");
                     break;
                 case R.id.very_gentle_cleaning_with_hydrocarbon_solvents:
-                    IconSetter(iconProfessionalCleaning,R.drawable.very_gentle_cleaning_with_hydrocarbon_solvents_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconProfessionalCleaning,R.drawable.very_gentle_cleaning_with_hydrocarbon_solvents_sizer);
+                    else
+                        IconSetterForDetails(ProfessionalCleanIconsArray,"very_gentle_cleaning_with_hydrocarbon_solvents");
                     break;
                 case R.id.dry_clean_tetrachloroethylene_PCE_only:
-                    IconSetter(iconProfessionalCleaning,R.drawable.dry_clean_tetrachloroethylene_pce_only_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconProfessionalCleaning,R.drawable.dry_clean_tetrachloroethylene_pce_only_sizer);
+                    else
+                        IconSetterForDetails(ProfessionalCleanIconsArray,"dry_clean_tetrachloroethylene_PCE_only");
                     break;
                 case R.id.gentle_cleaning_with_PCE:
-                    IconSetter(iconProfessionalCleaning,R.drawable.gentle_cleaning_with_pce_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconProfessionalCleaning,R.drawable.gentle_cleaning_with_pce_sizer);
+                    else
+                        IconSetterForDetails(ProfessionalCleanIconsArray,"gentle_cleaning_with_PCE");
                     break;
                 case R.id.very_gentle_cleaning_with_PCE:
-                    IconSetter(iconProfessionalCleaning,R.drawable.very_gentle_cleaning_with_pce_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconProfessionalCleaning,R.drawable.very_gentle_cleaning_with_pce_sizer);
+                    else
+                        IconSetterForDetails(ProfessionalCleanIconsArray,"very_gentle_cleaning_with_PCE");
                     break;
                 case R.id.do_not_dry_clean:
-                    IconSetter(iconProfessionalCleaning,R.drawable.do_not_dry_clean_sizer);
+                    if(!LastButtonNext.equals("LabelInfo"))
+                        IconSetter(iconProfessionalCleaning,R.drawable.do_not_dry_clean_sizer);
+                    else
+                        IconSetterForDetails(ProfessionalCleanIconsArray,"do_not_dry_clean");
                     break;
             }
         }
