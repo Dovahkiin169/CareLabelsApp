@@ -1,13 +1,25 @@
 package com.omens.carelabelsapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.StateSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -108,6 +120,10 @@ public class MainActivity extends AppCompatActivity{
         WardrobeButton = findViewById(R.id.wardrobe_button);
         IconInfoButton = findViewById(R.id.icon_info_button);
 
+        IconInfoButton.setBackground(convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.brickRedColor))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.white)))));
+
+
+
         brandTextView = findViewById(R.id.brandTextView);
         colorTextView = findViewById(R.id.colorTextView);
         specialMarksTextView = findViewById(R.id.specialMarksTextView);
@@ -131,6 +147,7 @@ public class MainActivity extends AppCompatActivity{
         findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.bleach_image_buttons_string),',', BleachingClickListener);
         findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.iron_image_buttons_string),',', IroningClickListener);
         findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.professional_wet_clean_image_buttons_string),',', ProfessionalCleaningIconListener);
+
 
         setClothesOrMaterialOrColor(clothesTypeAutoCompleteTextView,Clothes,"clothes");
         setClothesOrMaterialOrColor(mainMaterialAutoCompleteTextView,Material,"material");
@@ -326,8 +343,7 @@ public class MainActivity extends AppCompatActivity{
             firebaseFirestore.collection("clothes").document(EditItemId).update("washIcon", washIcon );
         }
     }
-    public void afterElementWasAdd()
-    {
+    public void afterElementWasAdd() {
         empty="";
         IconSetter(iconWashing,R.drawable.washing_symbol_sizer);
         empty="";
@@ -353,8 +369,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-    public void EditElement()
-    {
+    public void EditElement() {
         ButtonPresser(viewNothing);
 
         CustomGridView.setAdapter(  new CustomGridAdapter( this, GRID_DATA ) );
@@ -365,28 +380,33 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     public void onBackPressed() {
-        if(Location.equals("Washing") || Location.equals("Bleaching") || Location.equals("Drying") || Location.equals("Ironing") || Location.equals("Cleaning") || Location.equals("Wardrobe") || Location.equals("LabelInfo"))
-        {
-            CustomGridView.setVisibility(View.GONE);
-            afterElementWasAdd();
-            Location="";
+        switch (Location) {
+            case "Washing":
+            case "Bleaching":
+            case "Drying":
+            case "Ironing":
+            case "Cleaning":
+            case "Wardrobe":
+            case "LabelInfo":
+                CustomGridView.setVisibility(View.GONE);
+                afterElementWasAdd();
+                Location = "";
+                break;
+            case "Details":
+                Location = "Cleaning";
+                ButtonPresser(viewFifth);
+                SetVisibility(viewFifth, getResources().getString(R.string.professional_cleaning_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
+                break;
+            case "":
+                finishAffinity();
+                break;
         }
-        else if(Location.equals("Details"))
-        {
-            Location = "Cleaning";
-            ButtonPresser(viewFifth);
-            SetVisibility(viewFifth, getResources().getString(R.string.professional_cleaning_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
-        }
-        else if(Location.equals(""))
-            finish();
     }
 
     public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
-        for (Map.Entry<T, E> entry : map.entrySet()) {
-            if (Objects.equals(value, entry.getValue())) {
+        for (Map.Entry<T, E> entry : map.entrySet())
+            if (Objects.equals(value, entry.getValue()))
                 return entry.getKey();
-            }
-        }
         return null;
     }
 
@@ -400,15 +420,14 @@ public class MainActivity extends AppCompatActivity{
         if (item.getItemId() == R.id.profile_settings)
                 startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
         else if(item.getItemId() == R.id.log_out) {
-                FirebaseAuth.getInstance().signOut();//logout
+                FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext(),Login.class));
                 finishAffinity();
             }
         return super.onOptionsItemSelected(item);
     }
 
-    public void DataGetter()
-    {
+    public void DataGetter() {
         Getter = new HashMap<>();
         firebaseFirestore.collection("clothes").whereEqualTo("userId", firebaseUser.getUid()).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -417,14 +436,12 @@ public class MainActivity extends AppCompatActivity{
                             Getter.put(document.toString().substring( document.toString().indexOf(start)+"DocumentSnapshot{key=clothes/".length(), document.toString().indexOf(", ")),document.getData());
                         }
                         transformReceivedData();
-                    } else {
+                    } else
                         Log.d("TAG", "Error getting documents: ", task.getException());
-                    }
                 });
     }
 
-    public void transformReceivedData()
-    {
+    public void transformReceivedData() {
         GRID_DATA= new ArrayList<>();
         ArrayList<String> dataFormat;
 
@@ -450,8 +467,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public String getSpecificData(String RawData, String typeOfData)
-    {
+    public String getSpecificData(String RawData, String typeOfData) {
         String result = RawData.substring(RawData.indexOf(typeOfData) + typeOfData.length()+1);
         if(result.contains(","))
             return result.substring(0, result.indexOf(","));
@@ -491,8 +507,7 @@ public class MainActivity extends AppCompatActivity{
         return Result;
     }
 
-    private void SetInvalid(TextView textView, String ErrorText)
-    {
+    private void SetInvalid(TextView textView, String ErrorText) {
         textView.setText("");
         textView.setError("Invalid"+ ErrorText+", choose from list");
     }
@@ -811,5 +826,24 @@ public class MainActivity extends AppCompatActivity{
             clothesSeasonSpinner.setSelection(((ArrayAdapter<String>) clothesSeasonSpinner.getAdapter()).getPosition(GRID_DATA.get(position).get(3)));
 
         }
+    }
+
+
+    public StateListDrawable convertColorIntoBitmap(int pressedColor, int normalColor){
+        StateListDrawable stateListDrawable= new StateListDrawable();
+        stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(this.getResources(),ColorForDrawable(pressedColor)));
+        stateListDrawable.addState(StateSet.WILD_CARD, new BitmapDrawable(this.getResources(),ColorForDrawable(normalColor)));
+
+        return stateListDrawable;
+
+    }
+    public Bitmap ColorForDrawable(int color) {
+        Rect rect = new Rect(0, 0, 1, 1);
+        Bitmap image = Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(image);
+        Paint paint = new Paint();
+        paint.setColor(color);
+        canvas.drawRect(rect, paint);
+        return image;
     }
 }
