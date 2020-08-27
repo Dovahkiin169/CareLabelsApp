@@ -6,4 +6,9 @@
         android:title="@string/my_profile"
         app:showAsAction="never"
         />
+    <item
+        android:id="@+id/log_out"
+        android:title="@string/logout"
+        app:showAsAction="never"
+        />
 </menu>

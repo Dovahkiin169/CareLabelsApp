@@ -369,6 +369,7 @@ public class MainActivity extends AppCompatActivity{
         {
             CustomGridView.setVisibility(View.GONE);
             afterElementWasAdd();
+            Location="";
         }
         else if(Location.equals("Details"))
         {
@@ -376,6 +377,8 @@ public class MainActivity extends AppCompatActivity{
             ButtonPresser(viewFifth);
             SetVisibility(viewFifth, getResources().getString(R.string.professional_cleaning_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
         }
+        else if(Location.equals(""))
+            finish();
     }
 
     public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
@@ -395,8 +398,11 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.profile_settings)
-            {
                 startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+        else if(item.getItemId() == R.id.log_out) {
+                FirebaseAuth.getInstance().signOut();//logout
+                startActivity(new Intent(getApplicationContext(),Login.class));
+                finishAffinity();
             }
         return super.onOptionsItemSelected(item);
     }

@@ -38,6 +38,11 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        if(Auth.getCurrentUser() != null){
+            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            finish();
+        }
+
         Email = findViewById(R.id.emailEditTextLogin);
         Password = findViewById(R.id.passwordEditTextLogin);
         progressBar = findViewById(R.id.progressBarLogin);
