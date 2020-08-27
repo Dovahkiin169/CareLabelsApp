@@ -10,11 +10,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -24,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Register extends AppCompatActivity {
@@ -54,74 +48,57 @@ public class Register extends AppCompatActivity {
 
 
 
-        RegisterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String email = Email.getText().toString().trim();
-                final String password = Password.getText().toString().trim();
-                final String nickname = Nickname.getText().toString();
-                if(TextUtils.isEmpty(nickname)){
-                    Email.setError("Email is Required.");
-                    return;
-                }
-
-                if(TextUtils.isEmpty(email)){
-                    Email.setError("Email is Required.");
-                    return;
-                }
-
-                if(TextUtils.isEmpty(password)){
-                    Password.setError("Password is Required.");
-                    return;
-                }
-
-                if(password.length() < 6){
-                    Password.setError("Password Must be >= 6 Characters");
-                    return;
-                }
-
-                progressBar.setVisibility(View.VISIBLE);
-
-                Auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            FirebaseUser FireUser = Auth.getCurrentUser();
-                            FireUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Toast.makeText(Register.this, "Verification Email Has been Sent.", Toast.LENGTH_SHORT).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(Register.this, "Email not sent", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-                            Toast.makeText(Register.this, "User Created.", Toast.LENGTH_SHORT).show();
-                            userID = Auth.getCurrentUser().getUid();
-                            DocumentReference documentReference = FireStore.collection("users").document(userID);
-                            Map<String,Object> user = new HashMap<>();
-                            user.put("fName",nickname);
-                            user.put("email",email);
-                            documentReference.set(user);
-                            startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
-                        }
-                        else {
-                            Toast.makeText(Register.this, "Error ! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    }
-                });
+        RegisterButton.setOnClickListener(v -> {
+            final String email = Email.getText().toString().trim();
+            final String password = Password.getText().toString().trim();
+            final String nickname = Nickname.getText().toString();
+            if(TextUtils.isEmpty(nickname)){
+                Email.setError("Email is Required.");
+                return;
             }
+
+            if(TextUtils.isEmpty(email)){
+                Email.setError("Email is Required.");
+                return;
+            }
+
+            if(TextUtils.isEmpty(password)){
+                Password.setError("Password is Required.");
+                return;
+            }
+
+            if(password.length() < 6){
+                Password.setError("Password Must be >= 6 Characters");
+                return;
+            }
+
+            progressBar.setVisibility(View.VISIBLE);
+
+            Auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    FirebaseUser FireUser = Auth.getCurrentUser();
+                    assert FireUser != null;
+                    FireUser.sendEmailVerification().addOnSuccessListener(
+                            aVoid -> Toast.makeText(Register.this, "Verification Email Has been Sent.", Toast.LENGTH_SHORT).show()).addOnFailureListener(
+                                    e -> Toast.makeText(Register.this, "Email not sent", Toast.LENGTH_SHORT).show());
+
+                    Toast.makeText(Register.this, "User Created.", Toast.LENGTH_SHORT).show();
+                    userID = Auth.getCurrentUser().getUid();
+                    DocumentReference documentReference = FireStore.collection("users").document(userID);
+                    Map<String,Object> user = new HashMap<>();
+                    user.put("fName",nickname);
+                    user.put("email",email);
+                    documentReference.set(user);
+                    startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                }
+                else {
+                    Toast.makeText(Register.this, "Error ! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
         });
 
-        LoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),Login.class));
-            }
-        });
+        LoginButton.setOnClickListener(
+                v -> startActivity(new Intent(getApplicationContext(),Login.class)));
     }
 }

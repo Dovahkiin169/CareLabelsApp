@@ -70,22 +70,11 @@ public class CustomGridAdapter extends BaseAdapter {
             colorButton = gridView.findViewById(R.id.colorButton);
             weatherImageView = gridView.findViewById(R.id.weatherImageView);
 
-            //LayoutButton = gridView.findViewById(R.id.layoutButton);
             ViewHolder holder = new ViewHolder();
             holder.LayoutButton = gridView.findViewById(R.id.layoutButton);
-            holder.LayoutButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((GridView)parent).performItemClick(v,position,0);
-                }
-            });
+            holder.LayoutButton.setOnClickListener(v -> ((GridView)parent).performItemClick(v,position,0));
             holder.EditButton = gridView.findViewById(R.id.editButton);
-            holder.EditButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((GridView)parent).performItemClick(v,position,0);
-                }
-            });
+            holder.EditButton.setOnClickListener(v -> ((GridView)parent).performItemClick(v,position,0));
             ArrayList<String> arrLabel = gridValues.get(position);
 
 
