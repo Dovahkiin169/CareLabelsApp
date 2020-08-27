@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity{
         WardrobeButton = findViewById(R.id.wardrobe_button);
         IconInfoButton = findViewById(R.id.icon_info_button);
 
-        IconInfoButton.setBackground(convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.brickRedColor))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.white)))));
+        IconInfoButton.setBackground(convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor)))));
 
 
 
@@ -277,15 +277,18 @@ public class MainActivity extends AppCompatActivity{
     public void IconSetterForDetails(ImageButton imageButton, HashMap<String, ImageButton>  IconsArray, String Icon) {
         if(!LastButtonNext.equals("LabelInfo") && imageButton != null)
         {
-            imageButton.setImageResource(getApplicationContext().getResources().getIdentifier(Icon+"_sizer", "drawable", getApplicationContext().getPackageName()));
-            if (empty.equals(""))
-                imageButton.setTag(null);
-            else {
-                details_info.setText(getApplicationContext().getResources().getIdentifier(Icon, "string", getApplicationContext().getPackageName()));
-                imageButton.setTag(Icon);
-            }
-            empty = "not_empty";
+            if(!Icon.contains("_sizer"))
+                imageButton.setImageResource(getApplicationContext().getResources().getIdentifier(Icon+"_sizer", "drawable", getApplicationContext().getPackageName()));
+            else
+                imageButton.setImageResource(getApplicationContext().getResources().getIdentifier(Icon, "drawable", getApplicationContext().getPackageName()));
 
+            if (empty.equals("") && !Icon.contains("_sizer"))
+                imageButton.setTag(null);
+            else if (!empty.equals("") && !Icon.contains("_sizer"))
+                imageButton.setTag(getApplicationContext().getResources().getIdentifier(Icon, "id", getApplicationContext().getPackageName()));
+            else if (!empty.equals("") && Icon.contains("_sizer"))
+                imageButton.setTag(getApplicationContext().getResources().getIdentifier(Icon, "id", getApplicationContext().getPackageName()));
+            empty = "not_empty";
             if (IconChecker())
                 ButtonNext.setVisibility(View.VISIBLE);
             else
@@ -413,6 +416,7 @@ public class MainActivity extends AppCompatActivity{
                 afterElementWasAdd();
                 Location = "";
                 LastButtonNext="";
+                details_info.setText("");
                 break;
             case "LabelInfo":
 
@@ -428,6 +432,7 @@ public class MainActivity extends AppCompatActivity{
                 LastButtonNext="";
                 break;
             case "Details":
+                details_info.setText("");
                 Location = "Cleaning";
                 ButtonPresser(viewFifth);
                 SetVisibility(viewFifth, getResources().getString(R.string.professional_cleaning_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
@@ -576,7 +581,7 @@ public void LocationLabelsInfoDetector() {
         LastButtonNext = "LabelInfo";
         details_info.setText("");
     }
-    else {
+    else if(!LastButtonNext.equals("Wardrobe")) {
         details_info.setText("");
         LastButtonNext = "";
     }
@@ -681,16 +686,19 @@ public void LocationLabelsInfoDetector() {
                     ItemDescription.setVisibility(View.GONE);
                     break;
                 case R.id.icon_info_button:
-                    Location = "LabelInfo";
-                    LastButtonNext ="";
+
                     WardrobeButton.setVisibility(View.GONE);
                     IconInfoButton.setVisibility(View.GONE);
-                    ButtonPresser(viewNothing);
                     SetClickable(true);
                     CareLabelLayout.setClickable(false);
                     ItemDescription.setVisibility(View.GONE);
 
-                    SetVisibility(viewNothing, "", "", "");
+
+                    //SetVisibility(viewNothing, "", "", "");
+                    ButtonPresser(viewFirst);
+                    SetVisibility(viewFirst, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
+                    Location = "LabelInfo";
+                    LastButtonNext ="LabelInfo";
                     break;
             }
         }
@@ -876,11 +884,12 @@ public void LocationLabelsInfoDetector() {
 /**
  * asjhgdajshdgjhagsdhj
  */
-        IconSetterForDetails(iconWashing,null, GRID_DATA.get(position).get(6));
-        IconSetterForDetails(iconBleach,null, GRID_DATA.get(position).get(7));
-        IconSetterForDetails(iconDrying,null, GRID_DATA.get(position).get(8));
-        IconSetterForDetails(iconIroning,null, GRID_DATA.get(position).get(9));
-        IconSetterForDetails(iconProfessionalCleaning,null, GRID_DATA.get(position).get(10));
+        IconSetterForDetails(iconWashing,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(6))));
+        IconSetterForDetails(iconBleach,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(7))));
+        IconSetterForDetails(iconDrying,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(8))));
+        IconSetterForDetails(iconIroning,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(9))));
+        IconSetterForDetails(iconProfessionalCleaning,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(10))));
+        details_info.setText("");
         if (view.getId() == R.id.layoutButton)
             SetVisibility(viewNothing, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), "");
         else if (view.getId() == R.id.editButton) {
