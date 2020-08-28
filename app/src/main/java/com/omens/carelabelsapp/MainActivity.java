@@ -287,11 +287,14 @@ public class MainActivity extends AppCompatActivity{
                 imageButton.setTag(getApplicationContext().getResources().getIdentifier(Icon, "id", getApplicationContext().getPackageName()));
             else if (!empty.equals("") && Icon.contains("_sizer"))
                 imageButton.setTag(getApplicationContext().getResources().getIdentifier(Icon, "id", getApplicationContext().getPackageName()));
+            if(!empty.equals(""))
+                details_info.setText(getApplicationContext().getResources().getIdentifier(Icon, "string", getApplicationContext().getPackageName()));
             empty = "not_empty";
             if (IconChecker())
                 ButtonNext.setVisibility(View.VISIBLE);
             else
                 ButtonNext.setVisibility(View.GONE);
+
         }
         else if(LastButtonNext.equals("LabelInfo") && IconsArray != null){
             Location = "LabelInfo";
@@ -899,7 +902,7 @@ public void LocationLabelsInfoDetector() {
         IconSetterForDetails(iconProfessionalCleaning,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(10))));
         details_info.setText("");
         if (view.getId() == R.id.layoutButton)
-            SetVisibility(viewNothing, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), "");
+            SetVisibility(viewNothing, "","", "");
         else if (view.getId() == R.id.editButton) {
             ButtonPresser(viewFirst);
 
