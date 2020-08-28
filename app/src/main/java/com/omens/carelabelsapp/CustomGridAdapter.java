@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,7 +34,6 @@ public class CustomGridAdapter extends BaseAdapter {
     TextView SpecialMarksText;
     TextView clothesTypeText;
     TextView mainMaterialText;
-    ImageView deleteButton;
     ImageView weatherImageView;
 
 
@@ -143,7 +143,7 @@ public class CustomGridAdapter extends BaseAdapter {
     class ViewHolder {
         Button LayoutButton;
         Button EditButton;
-        Button DeleteButton;
+        ImageButton DeleteButton;
     }
 
     @ColorInt
