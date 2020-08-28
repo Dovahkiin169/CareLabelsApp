@@ -116,4 +116,9 @@
     <string name="dry_clean_tetrachloroethylene_pce_only">Dry clean, tetrachloroethylene (PCE) only</string>
     <string name="do_not_wet_clean">Do not wet clean</string>
     <string name="do_not_dry_clean">Do not dry clean</string>
+    <string name="delete_button">Delete Button</string>
+    <string name="edit_button">Edit Button</string>
+    <string name="image_of_person">Image of person</string>
+    <string name="washing">Washing</string>
+    <string name="professional_cleaning">Professional Cleaning</string>
 </resources>

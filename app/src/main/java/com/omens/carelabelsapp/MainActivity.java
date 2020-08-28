@@ -15,6 +15,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity{
 
         CustomGridView = findViewById(R.id.grid_view);
 
-        iconWashing = findViewById(R.id.iconWashing);
+        iconWashing =  findViewById(R.id.iconWashing);
         iconBleach = findViewById(R.id.iconBleach);
         iconDrying = findViewById(R.id.iconDrying);
         iconIroning = findViewById(R.id.iconIroning);

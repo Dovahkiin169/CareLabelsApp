@@ -23,13 +23,18 @@
     <ImageView
         android:id="@+id/profileImageView"
         android:layout_width="131dp"
-        android:layout_height="143dp"
+        android:layout_height="143dp"        android:paddingStart="1dp"
+        android:paddingEnd="1dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/button_shape"
         android:src="@drawable/person_icon"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/image_of_person" />
 
     <EditText
         android:id="@+id/profileEmailAddress"

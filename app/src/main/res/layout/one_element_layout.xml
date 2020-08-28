@@ -68,18 +68,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/clothesTypeText" />
 
-    <Button
+    <ImageButton
         android:id="@+id/editButton"
         android:layout_width="30dp"
         android:layout_height="0dp"
         android:layout_marginTop="3dp"
         android:layout_marginEnd="3dp"
         android:background="@drawable/top_left_button_shape"
-        android:text="@string/edit"
-        android:textSize="12sp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/edit_button_sizer"
         app:layout_constraintBottom_toTopOf="@+id/deleteButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/edit_button" />
 
     <ImageButton
         android:id="@+id/deleteButton"
@@ -87,6 +92,11 @@
         android:layout_height="0dp"
         android:layout_marginEnd="3dp"
         android:layout_marginBottom="3dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/delete_button_sizer"
         android:background="@drawable/bottom_right_button_shape"
 
@@ -94,7 +104,8 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editButton" />
+        app:layout_constraintTop_toBottomOf="@+id/editButton"
+        android:contentDescription="@string/delete_button" />
 
     <ImageView
         android:id="@+id/weatherImageView"
@@ -103,6 +114,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="8dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/editButton"
         app:layout_constraintTop_toTopOf="parent"

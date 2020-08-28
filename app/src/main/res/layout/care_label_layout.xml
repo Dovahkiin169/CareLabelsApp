@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/care_label_shape">
@@ -19,78 +20,75 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
+    <ImageButton
         android:id="@+id/iconDrying"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/button_transparent_icon_shape"
+        android:scaleType="fitCenter"
         android:src="@drawable/drying_symbol_sizer"
-        app:layout_constraintBottom_toTopOf="@+id/item_description"
+        app:layout_constraintBottom_toTopOf="@+id/space"
         app:layout_constraintEnd_toStartOf="@+id/iconIroning"
         app:layout_constraintStart_toEndOf="@+id/iconBleach"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
+    <ImageButton
         android:id="@+id/iconIroning"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/button_transparent_icon_shape"
+        android:scaleType="fitCenter"
         android:src="@drawable/ironing_sizer"
-        app:layout_constraintBottom_toTopOf="@+id/item_description"
+        app:layout_constraintBottom_toTopOf="@+id/space"
         app:layout_constraintEnd_toStartOf="@+id/iconProfessionalCleaning"
         app:layout_constraintStart_toEndOf="@+id/iconDrying"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
+    <ImageButton
         android:id="@+id/iconProfessionalCleaning"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/button_transparent_icon_shape"
+        android:scaleType="fitCenter"
         android:src="@drawable/professional_cleaning_sizer"
-        app:layout_constraintBottom_toTopOf="@+id/item_description"
+        app:layout_constraintBottom_toTopOf="@+id/space"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iconIroning"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/professional_cleaning" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
+    <ImageButton
         android:id="@+id/iconBleach"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/button_transparent_icon_shape"
+        android:scaleType="fitCenter"
         android:src="@drawable/chlorine_and_non_chlorine_bleach_sizer"
-        app:layout_constraintBottom_toTopOf="@+id/item_description"
+        app:layout_constraintBottom_toTopOf="@+id/space"
         app:layout_constraintEnd_toStartOf="@+id/iconDrying"
         app:layout_constraintStart_toEndOf="@+id/iconWashing"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="Bleach"/>
+
+    <ImageButton
+        android:id="@+id/iconWashing"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/button_transparent_icon_shape"
+        android:contentDescription="@string/washing"
+        android:scaleType="fitCenter"
+        android:src="@drawable/washing_symbol_sizer"
+        app:layout_constraintBottom_toTopOf="@+id/space"
+        app:layout_constraintEnd_toStartOf="@+id/iconBleach"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/iconWashing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/button_transparent_icon_shape"
-        android:src="@drawable/washing_symbol_sizer"
-        app:layout_constraintBottom_toTopOf="@+id/item_description"
-        app:layout_constraintEnd_toStartOf="@+id/iconBleach"
+    <Space
+        android:id="@+id/space"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
