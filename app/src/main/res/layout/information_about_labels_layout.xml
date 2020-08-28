@@ -3,92 +3,56 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/care_label_shape">
+    android:background="@drawable/main_button_shape">
 
-    <ImageButton
-        android:id="@+id/iconDrying"
-        android:layout_width="0dp"
+    <Space
+        android:id="@+id/space6"
+        android:layout_width="8dp"
         android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="4dp"
-        android:background="@drawable/button_transparent_icon_shape"
-        android:contentDescription="@string/drying"
-        android:scaleType="fitCenter"
-        android:src="@drawable/drying_symbol_sizer"
+        android:layout_marginStart="63dp"
         app:layout_constraintBottom_toTopOf="@+id/space"
-        app:layout_constraintEnd_toStartOf="@+id/iconIroning"
-        app:layout_constraintStart_toEndOf="@+id/iconBleach"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/iconIroning"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="4dp"
-        android:background="@drawable/button_transparent_icon_shape"
-        android:contentDescription="@string/ironing"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ironing_sizer"
-        app:layout_constraintBottom_toTopOf="@+id/space"
-        app:layout_constraintEnd_toStartOf="@+id/iconProfessionalCleaning"
-        app:layout_constraintStart_toEndOf="@+id/iconDrying"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/iconProfessionalCleaning"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/button_transparent_icon_shape"
-        android:contentDescription="@string/professional_cleaning"
-        android:scaleType="fitCenter"
-        android:src="@drawable/professional_cleaning_sizer"
-        app:layout_constraintBottom_toTopOf="@+id/space"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iconIroning"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
+    <TextView
         android:id="@+id/iconBleach"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/button_transparent_icon_shape"
-        android:contentDescription="@string/bleach"
+        android:gravity="center_vertical|start"
         android:scaleType="fitCenter"
-        android:src="@drawable/chlorine_and_non_chlorine_bleach_sizer"
+        android:text="@string/information_about_laundry_labels"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/space"
-        app:layout_constraintEnd_toStartOf="@+id/iconDrying"
-        app:layout_constraintStart_toEndOf="@+id/iconWashing"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/space6"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/iconWashing"
+        android:id="@+id/information_about_laundry"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="4dp"
-        android:contentDescription="@string/washing"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/info_labels_icon"
+        android:contentDescription="@string/information_about_laundry_labels"
+        android:paddingStart="5dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="5dp"
         android:scaleType="fitCenter"
-        android:drawableStart="@drawable/search_sizer"
         app:layout_constraintBottom_toTopOf="@+id/space"
-        app:layout_constraintEnd_toStartOf="@+id/iconBleach"
+        app:layout_constraintEnd_toStartOf="@+id/space6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Space
         android:id="@+id/space"
         android:layout_width="0dp"
-        android:layout_height="8dp"
-        android:layout_marginTop="60dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="53dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

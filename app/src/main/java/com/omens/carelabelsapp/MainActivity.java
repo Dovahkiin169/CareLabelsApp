@@ -6,7 +6,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -15,7 +14,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -55,7 +53,8 @@ public class MainActivity extends AppCompatActivity{
     String Location = "";
     ImageButton iconWashing, iconBleach, iconDrying, iconIroning, iconProfessionalCleaning;
 
-    Button ButtonNext,WardrobeButton,IconInfoButton;
+    Button ButtonNext;
+    ConstraintLayout WardrobeButton,IconInfoButton;
 
     ConstraintLayout CareLabelLayout,WashingLayout,BleachLayout,DryingLayout,IroningLayout,ProfessionalCleaningLayout;
     HashMap<String, ImageButton>  WashIconsArray,BleachIconsArray,DryIconsArray,IronIconsArray,ProfessionalCleanIconsArray;
