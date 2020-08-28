@@ -901,6 +901,8 @@ public void LocationLabelsInfoDetector() {
         details_info.setText("");
         if (view.getId() == R.id.layoutButton)
             SetVisibility(viewNothing, "","", "");
+        else if (view.getId() == R.id.deleteButton)
+            SetVisibility(viewNothing, "","", "");
         else if (view.getId() == R.id.editButton) {
             ButtonPresser(viewFirst);
 

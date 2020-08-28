@@ -1,12 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<shape android:shape="rectangle"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-        <corners
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" >
+        <shape android:shape="rectangle" >
+            <corners
+                android:bottomLeftRadius="0dp"
+                android:bottomRightRadius="18dp"
+                android:radius="60dp"
+                android:topRightRadius="0dp"
+                android:topLeftRadius="0dp" />
+            <solid android:color="@color/colorPrimary" />
+        </shape>
+    </item>
+    <item android:state_selected="true" >
+        <shape android:shape="rectangle" >
+            <corners
                 android:bottomLeftRadius="0dp"
                 android:bottomRightRadius="18dp"
                 android:radius="60dp"
                 android:topRightRadius="0dp"
                 android:topLeftRadius="0dp" />
 
-        <solid android:color="@color/white" />
-    </shape>
+            <solid android:color="@color/colorPrimary" />
+        </shape>
+    </item>
+    <item android:state_enabled="false" >
+        <shape android:shape="rectangle" >
+            <corners
+                android:bottomLeftRadius="0dp"
+                android:bottomRightRadius="18dp"
+                android:radius="60dp"
+                android:topRightRadius="0dp"
+                android:topLeftRadius="0dp" />
+
+            <solid android:color="@color/cyan" />
+        </shape>
+    </item>
+    <item android:state_pressed="false">
+        <shape android:shape="rectangle" >
+            <corners
+                android:bottomLeftRadius="0dp"
+                android:bottomRightRadius="18dp"
+                android:radius="60dp"
+                android:topRightRadius="0dp"
+                android:topLeftRadius="0dp" />
+
+            <solid android:color="@color/cyan" />
+        </shape>
+    </item>
+</selector>

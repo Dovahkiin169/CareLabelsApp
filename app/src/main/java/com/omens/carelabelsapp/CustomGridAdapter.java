@@ -1,20 +1,15 @@
 package com.omens.carelabelsapp;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
+
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
+
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
+
 import android.graphics.drawable.StateListDrawable;
-import android.util.StateSet;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,13 +26,14 @@ import androidx.core.content.ContextCompat;
 
 public class CustomGridAdapter extends BaseAdapter {
 
+    private static int colorForStroke;
     private Context context;
     private final ArrayList<ArrayList<String>> gridValues;
     TextView BrandText;
     TextView SpecialMarksText;
     TextView clothesTypeText;
     TextView mainMaterialText;
-    ImageView colorButton;
+    ImageView deleteButton;
     ImageView weatherImageView;
 
 
@@ -81,7 +77,6 @@ public class CustomGridAdapter extends BaseAdapter {
             SpecialMarksText = gridView.findViewById(R.id.specialMarksText);
             clothesTypeText = gridView.findViewById(R.id.clothesTypeText);
             mainMaterialText = gridView.findViewById(R.id.mainMaterialText);
-            colorButton = gridView.findViewById(R.id.colorButton);
             weatherImageView = gridView.findViewById(R.id.weatherImageView);
 
             ViewHolder holder = new ViewHolder();
@@ -89,6 +84,8 @@ public class CustomGridAdapter extends BaseAdapter {
             holder.LayoutButton.setOnClickListener(v -> ((GridView)parent).performItemClick(v,position,0));
             holder.EditButton = gridView.findViewById(R.id.editButton);
             holder.EditButton.setOnClickListener(v -> ((GridView)parent).performItemClick(v,position,0));
+            holder.DeleteButton = gridView.findViewById(R.id.deleteButton);
+            holder.DeleteButton.setOnClickListener(v -> ((GridView)parent).performItemClick(v,position,0));
             ArrayList<String> arrLabel = gridValues.get(position);
 
 
@@ -97,9 +94,7 @@ public class CustomGridAdapter extends BaseAdapter {
             mainMaterialText.setText(arrLabel.get(2));
 
             int id = Integer.parseInt(arrLabel.get(4));
-            GradientDrawable shapeDrawable = (GradientDrawable) colorButton.getBackground();
-            shapeDrawable.setColor(ContextCompat.getColor(context,id));
-
+            int textColor = getContrastColor(context.getResources().getColor(id));
 
 
             StateListDrawable gradientDrawable = (StateListDrawable) gridView.getBackground();
@@ -109,12 +104,9 @@ public class CustomGridAdapter extends BaseAdapter {
             GradientDrawable unselectedItem = (GradientDrawable) children[1];
 
             unselectedItem.setColor(context.getResources().getColor(id));
-            unselectedItem.setStroke(dpToPx(3,context), Color.BLACK);
+            unselectedItem.setStroke(dpToPx(3,context), colorForStroke);
 
 
-
-           // gridView.getBackground().setColorFilter(context.getResources().getColor(id), PorterDuff.Mode.SRC_ATOP);
-            int textColor = getContrastColor(context.getResources().getColor(id));
 
 
             BrandText.setTextColor(textColor);
@@ -151,6 +143,7 @@ public class CustomGridAdapter extends BaseAdapter {
     class ViewHolder {
         Button LayoutButton;
         Button EditButton;
+        Button DeleteButton;
     }
 
     @ColorInt
@@ -161,32 +154,23 @@ public class CustomGridAdapter extends BaseAdapter {
         int d;
         if (a < 0.5) {
             d = 0; // bright colors - black font
+            colorForStroke = manipulateColor(color,0.9f);
         } else {
             d = 255; // dark colors - white font
+            colorForStroke = manipulateColor(color,1.2f);
         }
 
         return Color.rgb(d, d, d);
     }
-
-    public StateListDrawable convertColorIntoBitmap(int pressedColor, int normalColor){
-        StateListDrawable stateListDrawable= new StateListDrawable();
-        stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(context.getResources(),ColorForDrawable(pressedColor)));
-        stateListDrawable.addState(StateSet.WILD_CARD, new BitmapDrawable(context.getResources(),ColorForDrawable(normalColor)));
-
-        return stateListDrawable;
-
-    }
-    public Bitmap ColorForDrawable(int color) {
-        Rect rect = new Rect(0, 0, 1, 1);
-        Bitmap image = Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(image);
-        Paint paint = new Paint();
-        paint.setColor(color);
-        canvas.drawRect(rect, paint);
-        return image;
-    }
     public static int dpToPx(int dp, Context context) {
         float density = context.getResources().getDisplayMetrics().density;
         return Math.round((float) dp * density);
+    }
+
+    public static int manipulateColor(int color, float factor) {
+        return Color.argb(Color.alpha(color),
+                Math.min(Math.round(Color.red(color) * factor),255),
+                Math.min(Math.round(Color.green(color) * factor),255),
+                Math.min(Math.round(Color.blue(color) * factor),255));
     }
 }
