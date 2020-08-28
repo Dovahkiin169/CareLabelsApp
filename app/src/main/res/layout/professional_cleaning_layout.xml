@@ -16,13 +16,13 @@
         android:layout_marginBottom="8dp"
         android:src="@drawable/professional_wet_cleaning_sizer"
         android:background="@drawable/button_transparent_icon_shape"
-        app:layout_constraintBottom_toTopOf="@+id/dry_clean_hydrocarbon_solvent_only_HCS"
+        app:layout_constraintBottom_toTopOf="@+id/dry_clean_hydrocarbon_solvent_only_hcs"
         app:layout_constraintEnd_toStartOf="@+id/gentle_wet_cleaning"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/dry_clean_hydrocarbon_solvent_only_HCS"
+        android:id="@+id/dry_clean_hydrocarbon_solvent_only_hcs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -30,13 +30,13 @@
         android:layout_marginBottom="8dp"
         android:src="@drawable/dry_clean_hydrocarbon_solvent_only_hcs_sizer"
         android:background="@drawable/button_transparent_icon_shape"
-        app:layout_constraintBottom_toTopOf="@+id/very_gentle_cleaning_with_PCE"
+        app:layout_constraintBottom_toTopOf="@+id/very_gentle_cleaning_with_pce"
         app:layout_constraintEnd_toStartOf="@+id/gentle_cleaning_with_hydrocarbon_solvents"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/professional_wet_cleaning" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/very_gentle_cleaning_with_PCE"
+        android:id="@+id/very_gentle_cleaning_with_pce"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -47,7 +47,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/do_not_dry_clean"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dry_clean_hydrocarbon_solvent_only_HCS" />
+        app:layout_constraintTop_toBottomOf="@+id/dry_clean_hydrocarbon_solvent_only_hcs" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/do_not_dry_clean"
@@ -60,7 +60,7 @@
         android:src="@drawable/do_not_dry_clean_sizer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/very_gentle_cleaning_with_hydrocarbon_solvents"
-        app:layout_constraintStart_toEndOf="@+id/very_gentle_cleaning_with_PCE"
+        app:layout_constraintStart_toEndOf="@+id/very_gentle_cleaning_with_pce"
         app:layout_constraintTop_toBottomOf="@+id/gentle_cleaning_with_hydrocarbon_solvents" />
 
     <androidx.appcompat.widget.AppCompatImageButton
@@ -88,7 +88,7 @@
         android:src="@drawable/very_gentle_cleaning_with_hydrocarbon_solvents_sizer"
         android:background="@drawable/button_transparent_icon_shape"
         app:layout_constraintBottom_toTopOf="@+id/do_not_dry_clean"
-        app:layout_constraintEnd_toStartOf="@+id/dry_clean_tetrachloroethylene_PCE_only"
+        app:layout_constraintEnd_toStartOf="@+id/dry_clean_tetrachloroethylene_pce_only"
         app:layout_constraintStart_toEndOf="@+id/gentle_cleaning_with_hydrocarbon_solvents"
         app:layout_constraintTop_toBottomOf="@+id/very_gentle_wet_cleaning" />
 
@@ -102,13 +102,13 @@
         android:layout_marginBottom="8dp"
         android:src="@drawable/do_not_wet_clean_sizer"
         android:background="@drawable/button_transparent_icon_shape"
-        app:layout_constraintBottom_toTopOf="@+id/dry_clean_tetrachloroethylene_PCE_only"
+        app:layout_constraintBottom_toTopOf="@+id/dry_clean_tetrachloroethylene_pce_only"
         app:layout_constraintEnd_toStartOf="@+id/dry_clean_any_solvent"
         app:layout_constraintStart_toEndOf="@+id/very_gentle_wet_cleaning"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/dry_clean_tetrachloroethylene_PCE_only"
+        android:id="@+id/dry_clean_tetrachloroethylene_pce_only"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -117,7 +117,7 @@
         android:src="@drawable/dry_clean_tetrachloroethylene_pce_only_sizer"
         android:background="@drawable/button_transparent_icon_shape"
         app:layout_constraintBottom_toTopOf="@+id/do_not_dry_clean"
-        app:layout_constraintEnd_toStartOf="@+id/gentle_cleaning_with_PCE"
+        app:layout_constraintEnd_toStartOf="@+id/gentle_cleaning_with_pce"
         app:layout_constraintStart_toEndOf="@+id/very_gentle_cleaning_with_hydrocarbon_solvents"
         app:layout_constraintTop_toBottomOf="@+id/do_not_wet_clean" />
 
@@ -131,13 +131,13 @@
         android:layout_marginBottom="8dp"
         android:src="@drawable/dry_clean_any_solvent_sizer"
         android:background="@drawable/button_transparent_icon_shape"
-        app:layout_constraintBottom_toTopOf="@+id/gentle_cleaning_with_PCE"
+        app:layout_constraintBottom_toTopOf="@+id/gentle_cleaning_with_pce"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/do_not_wet_clean"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/gentle_cleaning_with_PCE"
+        android:id="@+id/gentle_cleaning_with_pce"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -147,7 +147,7 @@
         android:background="@drawable/button_transparent_icon_shape"
         app:layout_constraintBottom_toTopOf="@+id/do_not_dry_clean"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/dry_clean_tetrachloroethylene_PCE_only"
+        app:layout_constraintStart_toEndOf="@+id/dry_clean_tetrachloroethylene_pce_only"
         app:layout_constraintTop_toBottomOf="@+id/dry_clean_any_solvent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
@@ -176,7 +176,7 @@
         android:background="@drawable/button_transparent_icon_shape"
         app:layout_constraintBottom_toTopOf="@+id/do_not_dry_clean"
         app:layout_constraintEnd_toStartOf="@+id/very_gentle_cleaning_with_hydrocarbon_solvents"
-        app:layout_constraintStart_toEndOf="@+id/dry_clean_hydrocarbon_solvent_only_HCS"
+        app:layout_constraintStart_toEndOf="@+id/dry_clean_hydrocarbon_solvent_only_hcs"
         app:layout_constraintTop_toBottomOf="@+id/gentle_wet_cleaning" />
 
 

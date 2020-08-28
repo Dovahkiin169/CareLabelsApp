@@ -58,7 +58,7 @@
     <string name="dry_image_buttons_string">tumble_drying,tumble_drying_low_temps,tumble_drying_normal,do_not_tumble_drying,line_dry,line_dry_in_the_shade,dry_flat,dry_flat_in_the_shade,dry_in_the_shade,drip_dry,drip_dry_in_the_shade</string>
     <string name="bleach_image_buttons_string">chlorine_and_non_chlorine_bleach,bleaching_with_chlorine_allowed,non_chlorine_bleach_when_needed,do_not_bleach,do_not_bleach2</string>
     <string name="iron_image_buttons_string">ironing_at_low_temp,ironing_at_med_temp,ironing_at_high_temp,no_steam,do_not_iron</string>
-    <string name="professional_wet_clean_image_buttons_string">professional_wet_cleaning,gentle_wet_cleaning,gentle_cleaning_with_hydrocarbon_solvents,gentle_cleaning_with_PCE,very_gentle_wet_cleaning,very_gentle_cleaning_with_hydrocarbon_solvents,very_gentle_cleaning_with_PCE,dry_clean_any_solvent,dry_clean_hydrocarbon_solvent_only_HCS,dry_clean_tetrachloroethylene_PCE_only,do_not_wet_clean,do_not_dry_clean</string>
+    <string name="professional_wet_clean_image_buttons_string">professional_wet_cleaning,gentle_wet_cleaning,gentle_cleaning_with_hydrocarbon_solvents,gentle_cleaning_with_pce,very_gentle_wet_cleaning,very_gentle_cleaning_with_hydrocarbon_solvents,very_gentle_cleaning_with_pce,dry_clean_any_solvent,dry_clean_hydrocarbon_solvent_only_hcs,dry_clean_tetrachloroethylene_pce_only,do_not_wet_clean,do_not_dry_clean</string>
     <string name="main_icons_image_buttons_string">iconWashing,iconBleach,iconDrying,iconIroning,iconProfessionalCleaning</string>
 
 
@@ -107,13 +107,13 @@
     <string name="professional_wet_cleaning">Professional wet cleaning</string>
     <string name="gentle_wet_cleaning">Gentle professional wet cleaning</string>
     <string name="gentle_cleaning_with_hydrocarbon_solvents">Gentle cleaning with hydrocarbon solvents</string>
-    <string name="gentle_cleaning_with_PCE">Gentle cleaning with PCE</string>
+    <string name="gentle_cleaning_with_pce">Gentle cleaning with PCE</string>
     <string name="very_gentle_wet_cleaning">Very gentle professional wet cleaning</string>
     <string name="very_gentle_cleaning_with_hydrocarbon_solvents">Very gentle cleaning with hydrocarbon solvents</string>
-    <string name="very_gentle_cleaning_with_PCE">Very gentle cleaning with PCE</string>
+    <string name="very_gentle_cleaning_with_pce">Very gentle cleaning with PCE</string>
     <string name="dry_clean_any_solvent">Dry clean with any solvent</string>
-    <string name="dry_clean_hydrocarbon_solvent_only_HCS">Dry clean, hydrocarbon solvent only (HCS)</string>
-    <string name="dry_clean_tetrachloroethylene_PCE_only">Dry clean, tetrachloroethylene (PCE) only</string>
+    <string name="dry_clean_hydrocarbon_solvent_only_hcs">Dry clean, hydrocarbon solvent only (HCS)</string>
+    <string name="dry_clean_tetrachloroethylene_pce_only">Dry clean, tetrachloroethylene (PCE) only</string>
     <string name="do_not_wet_clean">Do not wet clean</string>
     <string name="do_not_dry_clean">Do not dry clean</string>
 </resources>

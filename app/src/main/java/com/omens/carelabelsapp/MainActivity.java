@@ -14,7 +14,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 
-import android.graphics.drawable.Icon;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -381,6 +380,15 @@ public class MainActivity extends AppCompatActivity{
         IconSetterForDetails(iconProfessionalCleaning,null,"professional_cleaning");
         ButtonPresser(viewNothing);
 
+        brandTextView.setText("");
+        colorTextView.setText("");
+        clothesTypeAutoCompleteTextView.setText("");
+        mainMaterialAutoCompleteTextView.setText("");
+        clothesSeasonSpinner.setSelection(0);
+        specialMarksTextView.setText("");
+        colorImage.setBackgroundColor(Color.TRANSPARENT);
+        colorTextView.setError(null);
+        ButtonNext.setText(R.string.next);
         SetClickable(false);
         CareLabelLayout.setClickable(true);
 
@@ -549,7 +557,7 @@ public class MainActivity extends AppCompatActivity{
 
     private void SetInvalid(TextView textView, String ErrorText) {
         textView.setText("");
-        textView.setError("Invalid"+ ErrorText+", choose from list");
+        textView.setError("Invalid "+ ErrorText+", choose from list");
     }
 
 
@@ -855,8 +863,8 @@ public void LocationLabelsInfoDetector() {
                 case R.id.dry_clean_any_solvent:
                         IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"dry_clean_any_solvent");
                     break;
-                case R.id.dry_clean_hydrocarbon_solvent_only_HCS:
-                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"dry_clean_hydrocarbon_solvent_only_HCS");
+                case R.id.dry_clean_hydrocarbon_solvent_only_hcs:
+                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"dry_clean_hydrocarbon_solvent_only_hcs");
                     break;
                 case R.id.gentle_cleaning_with_hydrocarbon_solvents:
                         IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"gentle_cleaning_with_hydrocarbon_solvents");
@@ -864,14 +872,14 @@ public void LocationLabelsInfoDetector() {
                 case R.id.very_gentle_cleaning_with_hydrocarbon_solvents:
                         IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"very_gentle_cleaning_with_hydrocarbon_solvents");
                     break;
-                case R.id.dry_clean_tetrachloroethylene_PCE_only:
-                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"dry_clean_tetrachloroethylene_PCE_only");
+                case R.id.dry_clean_tetrachloroethylene_pce_only:
+                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"dry_clean_tetrachloroethylene_pce_only");
                     break;
-                case R.id.gentle_cleaning_with_PCE:
-                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"gentle_cleaning_with_PCE");
+                case R.id.gentle_cleaning_with_pce:
+                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"gentle_cleaning_with_pce");
                     break;
-                case R.id.very_gentle_cleaning_with_PCE:
-                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"very_gentle_cleaning_with_PCE");
+                case R.id.very_gentle_cleaning_with_pce:
+                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"very_gentle_cleaning_with_pce");
                     break;
                 case R.id.do_not_dry_clean:
                         IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"do_not_dry_clean");
