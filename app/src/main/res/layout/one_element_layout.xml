@@ -12,12 +12,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="6dp"
         android:hint="@string/brand"
         android:importantForAutofill="no"
         android:textAlignment="center"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/weatherImageView"
+        app:layout_constraintEnd_toStartOf="@+id/space4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,7 +53,7 @@
     <TextView
         android:id="@+id/mainMaterialText"
         android:layout_width="0dp"
-        android:layout_height="36dp"
+        android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
@@ -99,9 +98,6 @@
         android:scaleType="fitCenter"
         android:src="@drawable/delete_button_sizer"
         android:background="@drawable/bottom_right_button_shape"
-
-        android:clickable="false"
-        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editButton"
@@ -109,21 +105,18 @@
 
     <ImageView
         android:id="@+id/weatherImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginEnd="6dp"
-        android:layout_marginBottom="8dp"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/editButton"
-        app:layout_constraintTop_toTopOf="parent"
         android:background="@android:color/transparent"
-        android:contentDescription="@string/seasonsicon" />
+        android:contentDescription="@string/seasonsicon"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/mainMaterialText"
+        app:layout_constraintEnd_toStartOf="@+id/editButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/space4"
+        app:layout_constraintTop_toTopOf="@+id/mainMaterialText"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/layoutButton"
@@ -135,6 +128,16 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:visibility="visible" />
+
+    <Space
+        android:id="@+id/space4"
+        android:layout_width="6dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="76dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

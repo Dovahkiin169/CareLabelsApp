@@ -121,4 +121,7 @@
     <string name="image_of_person">Image of person</string>
     <string name="washing">Washing</string>
     <string name="professional_cleaning">Professional Cleaning</string>
+    <string name="bleach">Bleach</string>
+    <string name="ironing">Ironing</string>
+    <string name="drying">Drying</string>
 </resources>
