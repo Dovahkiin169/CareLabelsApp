@@ -6,7 +6,7 @@
                 android:bottomLeftRadius="0dp"
                 android:bottomRightRadius="0dp"
                 android:radius="60dp"
-                android:topRightRadius="15dp"
+                android:topRightRadius="18dp"
                 android:topLeftRadius="0dp" />
             <solid android:color="@color/colorPrimary" />
         </shape>
@@ -17,7 +17,7 @@
                 android:bottomLeftRadius="0dp"
                 android:bottomRightRadius="0dp"
                 android:radius="60dp"
-                android:topRightRadius="15dp"
+                android:topRightRadius="18dp"
                 android:topLeftRadius="0dp" />
 
             <solid android:color="@color/colorPrimary" />
@@ -29,7 +29,7 @@
                 android:bottomLeftRadius="0dp"
                 android:bottomRightRadius="0dp"
                 android:radius="60dp"
-                android:topRightRadius="15dp"
+                android:topRightRadius="18dp"
                 android:topLeftRadius="0dp" />
 
             <solid android:color="@color/cyan" />
@@ -41,7 +41,7 @@
                 android:bottomLeftRadius="0dp"
                 android:bottomRightRadius="0dp"
                 android:radius="60dp"
-                android:topRightRadius="15dp"
+                android:topRightRadius="18dp"
                 android:topLeftRadius="0dp" />
 
             <solid android:color="@color/cyan" />

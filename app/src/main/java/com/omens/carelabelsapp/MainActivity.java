@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -123,7 +124,6 @@ public class MainActivity extends AppCompatActivity{
         IconInfoButton = findViewById(R.id.icon_info_button);
 
         IconInfoButton.setBackground(convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor)))));
-
 
 
         brandTextView = findViewById(R.id.brandTextView);
@@ -892,9 +892,7 @@ public void LocationLabelsInfoDetector() {
     };
 
     private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-/**
- * asjhgdajshdgjhagsdhj
- */
+
         IconSetterForDetails(iconWashing,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(6))));
         IconSetterForDetails(iconBleach,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(7))));
         IconSetterForDetails(iconDrying,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(8))));
@@ -942,4 +940,5 @@ public void LocationLabelsInfoDetector() {
         canvas.drawRect(rect, paint);
         return image;
     }
+
 }
