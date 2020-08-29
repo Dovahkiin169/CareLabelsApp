@@ -315,13 +315,7 @@ public class MainActivity extends AppCompatActivity{
             }
         }
         else if(LastButtonNext.equals("Wardrobe") && imageButton != null){
-            StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
-            DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
-            assert drawableContainerState != null;
-            Drawable[] children = drawableContainerState.getChildren();
-            GradientDrawable unselectedItem = (GradientDrawable) children[1];
-            unselectedItem.getColor();
-            if (!imageButton.getTag().equals("") && getContrastColor(getApplicationContext().getResources().getColor((Integer) imageButton.getTag())) ==  Color.rgb(255, 255, 255)) //White Icons
+            if (!imageButton.getTag().equals("") && getContrastColor(getApplicationContext().getResources().getColor((Integer) Tags)) ==  Color.rgb(255, 255, 255)) //White Icons
                 imageButton.setImageResource(getApplicationContext().getResources().getIdentifier(Icon+"_white", "drawable", getApplicationContext().getPackageName()));
             else
                 imageButton.setImageResource(getApplicationContext().getResources().getIdentifier(Icon, "drawable", getApplicationContext().getPackageName()));
@@ -970,6 +964,7 @@ public class MainActivity extends AppCompatActivity{
     };
 
     Button unShade = null;
+    int Tags = 0;
     private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         int Tag=0;
         if (view.getId() != R.id.deleteButton) {
@@ -979,6 +974,7 @@ public class MainActivity extends AppCompatActivity{
             iconDrying.setTag(Tag);
             iconIroning.setTag(Tag);
             iconProfessionalCleaning.setTag(Tag);
+            Tags =Tag;
             IconSetterForDetails(iconWashing, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(6))));
             IconSetterForDetails(iconBleach, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(7))));
             IconSetterForDetails(iconDrying, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(8))));
