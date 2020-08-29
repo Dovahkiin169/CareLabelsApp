@@ -427,7 +427,6 @@ public class MainActivity extends AppCompatActivity{
             case "Drying":
             case "Ironing":
             case "Cleaning":
-            case "Wardrobe":
                 CustomGridView.setVisibility(View.GONE);
                 afterElementWasAdd();
                 Location = "";
@@ -446,6 +445,21 @@ public class MainActivity extends AppCompatActivity{
                 afterElementWasAdd();
                 Location = "";
                 LastButtonNext="";
+                break;
+            case "Wardrobe":
+                StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
+                DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
+                assert drawableContainerState != null;
+                Drawable[] children = drawableContainerState.getChildren();
+                GradientDrawable unselectedItem = (GradientDrawable) children[1];
+
+                unselectedItem.setColor(getApplicationContext().getResources().getColor(R.color.colorAccent));
+
+                CustomGridView.setVisibility(View.GONE);
+                afterElementWasAdd();
+                Location = "";
+                LastButtonNext="";
+                details_info.setText("");
                 break;
             case "Details":
                 details_info.setText("");
@@ -688,6 +702,13 @@ public void LocationLabelsInfoDetector() {
                         addingElement(iconBleach.getTag().toString(), brandTextView.getText().toString(), String.valueOf(Colors.get(colorTextView.getText() + "")), clothesTypeAutoCompleteTextView.getText().toString(), iconDrying.getTag().toString(),
                                 iconIroning.getTag().toString(), mainMaterialAutoCompleteTextView.getText().toString(), iconProfessionalCleaning.getTag().toString(), (String) clothesSeasonSpinner.getSelectedItem(),
                                 specialMarksTextView.getText().toString(), firebaseUser.getUid(), iconWashing.getTag().toString(),false);
+                        StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
+                        DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
+                        assert drawableContainerState != null;
+                        Drawable[] children = drawableContainerState.getChildren();
+                        GradientDrawable unselectedItem = (GradientDrawable) children[1];
+
+                        unselectedItem.setColor(getApplicationContext().getResources().getColor(R.color.colorAccent));
                         afterElementWasAdd();
                     }
 
