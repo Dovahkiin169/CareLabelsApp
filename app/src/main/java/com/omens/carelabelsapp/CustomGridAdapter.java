@@ -1,17 +1,11 @@
 package com.omens.carelabelsapp;
 
 import android.content.Context;
-
-import android.content.res.Resources;
 import android.graphics.Color;
-
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
 import android.graphics.drawable.GradientDrawable;
-
 import android.graphics.drawable.StateListDrawable;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,28 +107,34 @@ public class CustomGridAdapter extends BaseAdapter {
             SpecialMarksText.setTextColor(textColor);
             clothesTypeText.setTextColor(textColor);
             mainMaterialText.setTextColor(textColor);
+            SpecialMarksText.setTextColor(textColor);
+            SpecialMarksText.setHintTextColor(textColor);
 
-            if(!arrLabel.get(2).equals(""))
+            if(!arrLabel.get(5).equals("")) {
                 SpecialMarksText.setText(arrLabel.get(5));
+                SpecialMarksText.setAlpha((float) 1);
+            }
+            else
+                SpecialMarksText.setAlpha((float) 0.4);
 
 
 
 
             switch (arrLabel.get(3)) {
                 case "Winter":
-                    weatherImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.winter_sizer));
+                    SetIcon("winter",textColor);
                     break;
                 case "Summer":
-                    weatherImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.summer_sizer));
+                    SetIcon("summer",textColor);
                     break;
                 case "Autumn":
-                    weatherImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.autumn_sizer));
+                    SetIcon("autumn",textColor);
                     break;
                 case "Spring":
-                    weatherImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.spring_sizer));
+                    SetIcon("spring",textColor);
                     break;
                 default:
-                    weatherImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.all_seasons_sizer));
+                    SetIcon("all_seasons",textColor);
                     break;
             }
         }
@@ -147,6 +147,13 @@ public class CustomGridAdapter extends BaseAdapter {
         Button LayoutButton;
         ImageButton EditButton;
         ImageButton DeleteButton;
+    }
+
+    public void SetIcon(String imageName, int textColor){
+        if(textColor == Color.rgb(255, 255, 255))//White Icons
+            weatherImageView.setBackground(ContextCompat.getDrawable(context, (context.getResources().getIdentifier(imageName+"_white", "drawable", context.getPackageName()))));
+        else//Black Icons
+            weatherImageView.setBackground(ContextCompat.getDrawable(context, (context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()))));
     }
 
     @ColorInt

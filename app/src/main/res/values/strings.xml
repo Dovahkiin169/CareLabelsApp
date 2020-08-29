@@ -22,8 +22,8 @@
     <string name="add_clothes">Add</string>
     <string name="edit">Edit</string>
     <string name="clothes_season">Clothes Season</string>
-    <string name="my_wardrobe">&#160;&#160;&#160;&#160;&#160;My Wardrobe</string>
-    <string name="information_about_laundry_labels">&#160;&#160;Information about labels</string>
+    <string name="my_wardrobe">&#160;&#160;&#160;&#160;&#160;MY WARDROBE</string>
+    <string name="information_about_laundry_labels">&#160;&#160;&#160;&#160;&#160;INFORMATION ABOUT LABELS</string>
     <string name="color_preview">Color Preview</string>
     <string name="seasonsicon">SeasonsIcon</string>
     <string name="confirm">Confirm</string>
