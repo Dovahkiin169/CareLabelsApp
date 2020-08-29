@@ -2,8 +2,10 @@ package com.omens.carelabelsapp;
 
 import android.content.Context;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
 import android.graphics.drawable.GradientDrawable;
@@ -114,6 +116,9 @@ public class CustomGridAdapter extends BaseAdapter {
 
             if(!arrLabel.get(2).equals(""))
                 SpecialMarksText.setText(arrLabel.get(5));
+
+
+
 
             switch (arrLabel.get(3)) {
                 case "Winter":
