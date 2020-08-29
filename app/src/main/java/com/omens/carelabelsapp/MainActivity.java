@@ -704,8 +704,6 @@ public void LocationLabelsInfoDetector() {
                     CareLabelLayout.setClickable(false);
                     ItemDescription.setVisibility(View.GONE);
 
-
-                    //SetVisibility(viewNothing, "", "", "");
                     ButtonPresser(viewFirst);
                     SetVisibility(viewFirst, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
                     Location = "LabelInfo";
@@ -891,6 +889,7 @@ public void LocationLabelsInfoDetector() {
         }
     };
 
+    Button unShade = null;
     private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         IconSetterForDetails(iconWashing,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(6))));
@@ -899,8 +898,20 @@ public void LocationLabelsInfoDetector() {
         IconSetterForDetails(iconIroning,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(9))));
         IconSetterForDetails(iconProfessionalCleaning,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(10))));
         details_info.setText("");
-        if (view.getId() == R.id.layoutButton)
-            SetVisibility(viewNothing, "","", "");
+        if (view.getId() == R.id.layoutButton) {
+            if(unShade != null)
+            {
+                unShade.setAlpha((float) 0.0);
+                unShade = (Button) view;
+                unShade.setAlpha((float) 0.15);
+            }
+            else
+            {
+                unShade = (Button) view;
+                unShade.setAlpha((float) 0.15);
+            }
+            SetVisibility(viewNothing, "", "", "");
+        }
         else if (view.getId() == R.id.deleteButton)
             SetVisibility(viewNothing, "","", "");
         else if (view.getId() == R.id.editButton) {

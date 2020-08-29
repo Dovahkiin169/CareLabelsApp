@@ -82,6 +82,7 @@ public class CustomGridAdapter extends BaseAdapter {
             ViewHolder holder = new ViewHolder();
             holder.LayoutButton = gridView.findViewById(R.id.layoutButton);
             holder.LayoutButton.setOnClickListener(v -> ((GridView)parent).performItemClick(v,position,0));
+            holder.LayoutButton.setAlpha((float) 0.0);
             holder.EditButton = gridView.findViewById(R.id.editButton);
             holder.EditButton.setOnClickListener(v -> ((GridView)parent).performItemClick(v,position,0));
             holder.DeleteButton = gridView.findViewById(R.id.deleteButton);
