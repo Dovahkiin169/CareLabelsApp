@@ -1,13 +1,16 @@
 package com.omens.carelabelsapp;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -39,6 +42,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.base.CharMatcher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -396,6 +401,7 @@ public class MainActivity extends AppCompatActivity{
             firebaseFirestore.collection("clothes").document(EditItemId).update("userId", userId );
             firebaseFirestore.collection("clothes").document(EditItemId).update("washIcon", washIcon );
         }
+        colorTextView.setError(null);
     }
     public void afterElementWasAdd() {
         iconWashing.setTag("");
@@ -469,6 +475,7 @@ public class MainActivity extends AppCompatActivity{
             case "Drying":
             case "Ironing":
             case "Cleaning":
+                Tags=0;
                 CustomGridView.setVisibility(View.GONE);
                 afterElementWasAdd();
                 Location = "";
@@ -489,6 +496,7 @@ public class MainActivity extends AppCompatActivity{
                 LastButtonNext="";
                 break;
             case "Wardrobe":
+                Tags=0;
                 StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
                 DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
                 assert drawableContainerState != null;
@@ -732,6 +740,7 @@ public class MainActivity extends AppCompatActivity{
                         SetVisibility(viewSixth, getResources().getString(R.string.details), getResources().getString(R.string.enter_more_details), getResources().getString(R.string.add_clothes));
                         ButtonNext.setText(getResources().getString(R.string.confirm));
                         ButtonPresser(viewNothing);
+                        colorTextView.setError(null);
                         break;
                     }
                     Location = "Details";
@@ -1013,8 +1022,48 @@ public class MainActivity extends AppCompatActivity{
             SetVisibility(viewNothing, "", "", "");
 
         }
-        else if (view.getId() == R.id.deleteButton)
-            SetVisibility(viewNothing, "","", "");
+        else if (view.getId() == R.id.deleteButton) {
+            EditItemId = GRID_DATA.get(position).get(11);
+            AlertDialog.Builder  builder = new AlertDialog.Builder(MainActivity.this);
+
+            builder.setCancelable(true);
+            builder.setTitle("This clothing will be removed");
+            builder.setMessage("Do you want to delete this item?");
+            builder.setCancelable(false);
+            builder.setNegativeButton("NO", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i)
+                {}
+            });
+
+            builder.setPositiveButton("YES", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i)
+                {
+
+                    firebaseFirestore.collection("clothes").document(EditItemId).delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d("TAG", "DocumentSnapshot successfully deleted!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w("TAG", "Error deleting document", e);
+                                }
+                            });
+                }
+            });
+            builder.show();
+
+
+
+            SetVisibility(viewNothing, "", "", "");
+        }
         else if (view.getId() == R.id.editButton) {
             ButtonPresser(viewFirst);
 
@@ -1091,7 +1140,7 @@ public class MainActivity extends AppCompatActivity{
         double a = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
 
         int d;
-        if (a < 0.5)
+        if (a < 0.6)
             d = 0; // bright colors - black font
         else
             d = 255; // dark colors - white font

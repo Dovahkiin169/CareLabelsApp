@@ -164,7 +164,7 @@ public class CustomGridAdapter extends BaseAdapter {
         double a = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
 
         int d;
-        if (a < 0.5) {
+        if (a < 0.6) {
             d = 0; // bright colors - black font
             colorForStroke = manipulateColor(color,0.9f);
         } else {
