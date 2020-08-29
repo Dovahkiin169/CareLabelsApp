@@ -92,6 +92,8 @@ public class CustomGridAdapter extends BaseAdapter {
 
             int id = Integer.parseInt(arrLabel.get(4));
             holder.LayoutButton.setTag(id);
+            holder.EditButton.setTag(id);
+            holder.DeleteButton.setTag(id);
             int textColor = getContrastColor(context.getResources().getColor(id));
 
             StateListDrawable gradientDrawable = (StateListDrawable) gridView.getBackground();
@@ -172,15 +174,17 @@ public class CustomGridAdapter extends BaseAdapter {
 
         return Color.rgb(d, d, d);
     }
-    public static int dpToPx(int dp, Context context) {
-        float density = context.getResources().getDisplayMetrics().density;
-        return Math.round((float) dp * density);
-    }
+
 
     public static int manipulateColor(int color, float factor) {
         return Color.argb(Color.alpha(color),
                 Math.min(Math.round(Color.red(color) * factor),255),
                 Math.min(Math.round(Color.green(color) * factor),255),
                 Math.min(Math.round(Color.blue(color) * factor),255));
+    }
+
+    public static int dpToPx(int dp, Context context) {
+        float density = context.getResources().getDisplayMetrics().density;
+        return Math.round((float) dp * density);
     }
 }

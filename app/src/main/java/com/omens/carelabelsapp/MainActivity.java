@@ -1,11 +1,13 @@
 package com.omens.carelabelsapp;
 
+import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -279,7 +281,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void IconSetterForDetails(ImageButton imageButton, HashMap<String, ImageButton>  IconsArray, String Icon) {
-        if(!LastButtonNext.equals("LabelInfo") && imageButton != null)
+        if(!LastButtonNext.equals("LabelInfo")&& !LastButtonNext.equals("Wardrobe") && imageButton != null)
         {
             if(!Icon.contains("_sizer"))
                 imageButton.setImageResource(getApplicationContext().getResources().getIdentifier(Icon+"_sizer", "drawable", getApplicationContext().getPackageName()));
@@ -311,6 +313,32 @@ public class MainActivity extends AppCompatActivity{
                     entry.getValue().setSelected(false);
 
             }
+        }
+        else if(LastButtonNext.equals("Wardrobe") && imageButton != null){
+            StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
+            DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
+            assert drawableContainerState != null;
+            Drawable[] children = drawableContainerState.getChildren();
+            GradientDrawable unselectedItem = (GradientDrawable) children[1];
+            unselectedItem.getColor();
+            if (!imageButton.getTag().equals("") && getContrastColor(getApplicationContext().getResources().getColor((Integer) imageButton.getTag())) ==  Color.rgb(255, 255, 255)) //White Icons
+                imageButton.setImageResource(getApplicationContext().getResources().getIdentifier(Icon+"_white", "drawable", getApplicationContext().getPackageName()));
+            else
+                imageButton.setImageResource(getApplicationContext().getResources().getIdentifier(Icon, "drawable", getApplicationContext().getPackageName()));
+
+
+            if (empty.equals("") && !Icon.contains("_sizer"))
+                imageButton.setTag(null);
+            else
+                imageButton.setTag(getApplicationContext().getResources().getIdentifier(Icon, "id", getApplicationContext().getPackageName()));
+
+            if(!empty.equals(""))
+                details_info.setText(getApplicationContext().getResources().getIdentifier(Icon, "string", getApplicationContext().getPackageName()));
+            empty = "not_empty";
+            if (IconChecker())
+                ButtonNext.setVisibility(View.VISIBLE);
+            else
+                ButtonNext.setVisibility(View.GONE);
         }
     }
 
@@ -376,17 +404,37 @@ public class MainActivity extends AppCompatActivity{
         }
     }
     public void afterElementWasAdd() {
+        iconWashing.setTag("");
+        iconBleach.setTag("");
+        iconDrying.setTag("");
+        iconIroning.setTag("");
+        iconProfessionalCleaning.setTag("");
         empty="";
+        iconWashing.setTag("");
         IconSetterForDetails(iconWashing,null,"washing_symbol");
         empty="";
+        iconWashing.setTag("");
         IconSetterForDetails(iconBleach,null,"chlorine_and_non_chlorine_bleach");
         empty="";
+        iconDrying.setTag("");
         IconSetterForDetails(iconDrying,null,"drying_symbol");
         empty="";
+        iconIroning.setTag("");
         IconSetterForDetails(iconIroning,null,"ironing");
         empty="";
+        iconProfessionalCleaning.setTag("");
         IconSetterForDetails(iconProfessionalCleaning,null,"professional_cleaning");
         ButtonPresser(viewNothing);
+
+
+        StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
+        DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
+        assert drawableContainerState != null;
+        Drawable[] children = drawableContainerState.getChildren();
+        GradientDrawable unselectedItem = (GradientDrawable) children[1];
+
+        unselectedItem.setColor(getApplicationContext().getResources().getColor(R.color.colorAccent));
+
 
         brandTextView.setText("");
         colorTextView.setText("");
@@ -454,6 +502,11 @@ public class MainActivity extends AppCompatActivity{
                 GradientDrawable unselectedItem = (GradientDrawable) children[1];
 
                 unselectedItem.setColor(getApplicationContext().getResources().getColor(R.color.colorAccent));
+                iconWashing.setTag("");
+                iconBleach.setTag("");
+                iconDrying.setTag("");
+                iconIroning.setTag("");
+                iconProfessionalCleaning.setTag("");
 
                 CustomGridView.setVisibility(View.GONE);
                 afterElementWasAdd();
@@ -488,27 +541,27 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.profile_settings)
-                startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+            startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
         else if(item.getItemId() == R.id.log_out) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getApplicationContext(),Login.class));
-                finishAffinity();
-            }
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(getApplicationContext(),Login.class));
+            finishAffinity();
+        }
         return super.onOptionsItemSelected(item);
     }
 
     public void DataGetter() {
         Getter = new HashMap<>();
         firebaseFirestore.collection("clothes").whereEqualTo("userId", firebaseUser.getUid()).get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                            String start = "DocumentSnapshot{key=clothes/";
-                            Getter.put(document.toString().substring( document.toString().indexOf(start)+"DocumentSnapshot{key=clothes/".length(), document.toString().indexOf(", ")),document.getData());
-                        }
-                        transformReceivedData();
-                    } else
-                        Log.d("TAG", "Error getting documents: ", task.getException());
-                });
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                    String start = "DocumentSnapshot{key=clothes/";
+                    Getter.put(document.toString().substring( document.toString().indexOf(start)+"DocumentSnapshot{key=clothes/".length(), document.toString().indexOf(", ")),document.getData());
+                }
+                transformReceivedData();
+            } else
+                Log.d("TAG", "Error getting documents: ", task.getException());
+        });
     }
 
     public void transformReceivedData() {
@@ -606,16 +659,17 @@ public class MainActivity extends AppCompatActivity{
 
 
 
-public void LocationLabelsInfoDetector() {
-    if(Location.equals("LabelInfo") || LastButtonNext.equals("LabelInfo")) {
-        LastButtonNext = "LabelInfo";
-        details_info.setText("");
+    public void LocationLabelsInfoDetector() {
+        if(Location.equals("LabelInfo") || LastButtonNext.equals("LabelInfo")) {
+            LastButtonNext = "LabelInfo";
+            details_info.setText("");
+        }
+        else if(!LastButtonNext.equals("Wardrobe")) {
+            details_info.setText("");
+            LastButtonNext = "";
+        }
+
     }
-    else if(!LastButtonNext.equals("Wardrobe")) {
-        details_info.setText("");
-        LastButtonNext = "";
-    }
-}
 
 
     public View.OnClickListener mainClickListener = new View.OnClickListener() {
@@ -743,46 +797,46 @@ public void LocationLabelsInfoDetector() {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.wash_at_or_below_30:
-                        IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_30");
+                    IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_30");
                     break;
                 case R.id.wash_at_or_below_30_mild_fine_wash:
-                        IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_30_mild_fine_wash");
+                    IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_30_mild_fine_wash");
                     break;
                 case R.id.wash_at_or_below_30_very_mild_fine_wash:
-                        IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_30_very_mild_fine_wash");
+                    IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_30_very_mild_fine_wash");
                     break;
                 case R.id.wash_at_or_below_40:
-                        IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_40");
+                    IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_40");
                     break;
                 case R.id.wash_at_or_below_40_mild_fine_wash:
-                        IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_40_mild_fine_wash");
+                    IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_40_mild_fine_wash");
                     break;
                 case R.id.wash_at_or_below_40_very_mild_fine_wash:
-                        IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_40_very_mild_fine_wash");
+                    IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_40_very_mild_fine_wash");
                     break;
                 case R.id.wash_at_or_below_50:
-                        IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_50");
+                    IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_50");
                     break;
                 case R.id.wash_at_or_below_50_mild_fine_wash:
-                        IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_50_mild_fine_wash");
+                    IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_50_mild_fine_wash");
                     break;
                 case R.id.wash_at_or_below_60:
-                        IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_60");
+                    IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_60");
                     break;
                 case R.id.wash_at_or_below_60_mild_fine_wash:
-                        IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_60_mild_fine_wash");
+                    IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_60_mild_fine_wash");
                     break;
                 case R.id.wash_at_or_below_70:
-                        IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_70");
+                    IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_70");
                     break;
                 case R.id.wash_at_or_below_90:
-                        IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_90");
+                    IconSetterForDetails(iconWashing,WashIconsArray,"wash_at_or_below_90");
                     break;
                 case R.id.hand_wash:
-                        IconSetterForDetails(iconWashing,WashIconsArray,"hand_wash");
+                    IconSetterForDetails(iconWashing,WashIconsArray,"hand_wash");
                     break;
                 case R.id.do_not_wash:
-                        IconSetterForDetails(iconWashing,WashIconsArray,"do_not_wash");
+                    IconSetterForDetails(iconWashing,WashIconsArray,"do_not_wash");
                     break;
             }
         }
@@ -792,19 +846,19 @@ public void LocationLabelsInfoDetector() {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.chlorine_and_non_chlorine_bleach:
-                        IconSetterForDetails(iconBleach,BleachIconsArray,"chlorine_and_non_chlorine_bleach");
+                    IconSetterForDetails(iconBleach,BleachIconsArray,"chlorine_and_non_chlorine_bleach");
                     break;
                 case R.id.bleaching_with_chlorine_allowed:
-                        IconSetterForDetails(iconBleach,BleachIconsArray,"bleaching_with_chlorine_allowed");
+                    IconSetterForDetails(iconBleach,BleachIconsArray,"bleaching_with_chlorine_allowed");
                     break;
                 case R.id.non_chlorine_bleach_when_needed:
-                        IconSetterForDetails(iconBleach,BleachIconsArray,"non_chlorine_bleach_when_needed");
+                    IconSetterForDetails(iconBleach,BleachIconsArray,"non_chlorine_bleach_when_needed");
                     break;
                 case R.id.do_not_bleach:
-                        IconSetterForDetails(iconBleach,BleachIconsArray,"do_not_bleach");
+                    IconSetterForDetails(iconBleach,BleachIconsArray,"do_not_bleach");
                     break;
                 case R.id.do_not_bleach2:
-                        IconSetterForDetails(iconBleach,BleachIconsArray,"do_not_bleach2");
+                    IconSetterForDetails(iconBleach,BleachIconsArray,"do_not_bleach2");
                     break;
             }
         }
@@ -814,37 +868,37 @@ public void LocationLabelsInfoDetector() {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.tumble_drying:
-                        IconSetterForDetails(iconDrying,DryIconsArray,"tumble_drying");
+                    IconSetterForDetails(iconDrying,DryIconsArray,"tumble_drying");
                     break;
                 case R.id.tumble_drying_low_temps:
-                        IconSetterForDetails(iconDrying,DryIconsArray,"tumble_drying_low_temps");
+                    IconSetterForDetails(iconDrying,DryIconsArray,"tumble_drying_low_temps");
                     break;
                 case R.id.tumble_drying_normal:
-                        IconSetterForDetails(iconDrying,DryIconsArray,"tumble_drying_normal");
+                    IconSetterForDetails(iconDrying,DryIconsArray,"tumble_drying_normal");
                     break;
                 case R.id.do_not_tumble_drying:
-                        IconSetterForDetails(iconDrying,DryIconsArray,"do_not_tumble_drying");
+                    IconSetterForDetails(iconDrying,DryIconsArray,"do_not_tumble_drying");
                     break;
                 case R.id.line_dry:
-                        IconSetterForDetails(iconDrying,DryIconsArray,"line_dry");
+                    IconSetterForDetails(iconDrying,DryIconsArray,"line_dry");
                     break;
                 case R.id.dry_flat:
-                        IconSetterForDetails(iconDrying,DryIconsArray,"dry_flat");
+                    IconSetterForDetails(iconDrying,DryIconsArray,"dry_flat");
                     break;
                 case R.id.dry_flat_in_the_shade:
-                        IconSetterForDetails(iconDrying,DryIconsArray,"dry_flat_in_the_shade");
+                    IconSetterForDetails(iconDrying,DryIconsArray,"dry_flat_in_the_shade");
                     break;
                 case R.id.dry_in_the_shade:
-                        IconSetterForDetails(iconDrying,DryIconsArray,"dry_in_the_shade");
+                    IconSetterForDetails(iconDrying,DryIconsArray,"dry_in_the_shade");
                     break;
                 case R.id.line_dry_in_the_shade:
-                        IconSetterForDetails(iconDrying,DryIconsArray,"line_dry_in_the_shade");
+                    IconSetterForDetails(iconDrying,DryIconsArray,"line_dry_in_the_shade");
                     break;
                 case R.id.drip_dry:
-                        IconSetterForDetails(iconDrying,DryIconsArray,"drip_dry");
+                    IconSetterForDetails(iconDrying,DryIconsArray,"drip_dry");
                     break;
                 case R.id.drip_dry_in_the_shade:
-                        IconSetterForDetails(iconDrying,DryIconsArray,"drip_dry_in_the_shade");
+                    IconSetterForDetails(iconDrying,DryIconsArray,"drip_dry_in_the_shade");
                     break;
             }
         }
@@ -854,19 +908,19 @@ public void LocationLabelsInfoDetector() {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.ironing_at_low_temp:
-                        IconSetterForDetails(iconIroning,IronIconsArray,"ironing_at_low_temp");
+                    IconSetterForDetails(iconIroning,IronIconsArray,"ironing_at_low_temp");
                     break;
                 case R.id.ironing_at_med_temp:
-                        IconSetterForDetails(iconIroning,IronIconsArray,"ironing_at_med_temp");
+                    IconSetterForDetails(iconIroning,IronIconsArray,"ironing_at_med_temp");
                     break;
                 case R.id.ironing_at_high_temp:
-                        IconSetterForDetails(iconIroning,IronIconsArray,"ironing_at_high_temp");
+                    IconSetterForDetails(iconIroning,IronIconsArray,"ironing_at_high_temp");
                     break;
                 case R.id.no_steam:
-                        IconSetterForDetails(iconIroning,IronIconsArray,"no_steam");
+                    IconSetterForDetails(iconIroning,IronIconsArray,"no_steam");
                     break;
                 case R.id.do_not_iron:
-                        IconSetterForDetails(iconIroning,IronIconsArray,"do_not_iron");
+                    IconSetterForDetails(iconIroning,IronIconsArray,"do_not_iron");
                     break;
             }
         }
@@ -876,40 +930,40 @@ public void LocationLabelsInfoDetector() {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.professional_wet_cleaning:
-                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"professional_wet_cleaning");
+                    IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"professional_wet_cleaning");
                     break;
                 case R.id.gentle_wet_cleaning:
-                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"gentle_wet_cleaning");
+                    IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"gentle_wet_cleaning");
                     break;
                 case R.id.very_gentle_wet_cleaning:
-                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"very_gentle_wet_cleaning");
+                    IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"very_gentle_wet_cleaning");
                     break;
                 case R.id.do_not_wet_clean:
-                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"do_not_wet_clean");
+                    IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"do_not_wet_clean");
                     break;
                 case R.id.dry_clean_any_solvent:
-                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"dry_clean_any_solvent");
+                    IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"dry_clean_any_solvent");
                     break;
                 case R.id.dry_clean_hydrocarbon_solvent_only_hcs:
-                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"dry_clean_hydrocarbon_solvent_only_hcs");
+                    IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"dry_clean_hydrocarbon_solvent_only_hcs");
                     break;
                 case R.id.gentle_cleaning_with_hydrocarbon_solvents:
-                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"gentle_cleaning_with_hydrocarbon_solvents");
+                    IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"gentle_cleaning_with_hydrocarbon_solvents");
                     break;
                 case R.id.very_gentle_cleaning_with_hydrocarbon_solvents:
-                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"very_gentle_cleaning_with_hydrocarbon_solvents");
+                    IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"very_gentle_cleaning_with_hydrocarbon_solvents");
                     break;
                 case R.id.dry_clean_tetrachloroethylene_pce_only:
-                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"dry_clean_tetrachloroethylene_pce_only");
+                    IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"dry_clean_tetrachloroethylene_pce_only");
                     break;
                 case R.id.gentle_cleaning_with_pce:
-                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"gentle_cleaning_with_pce");
+                    IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"gentle_cleaning_with_pce");
                     break;
                 case R.id.very_gentle_cleaning_with_pce:
-                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"very_gentle_cleaning_with_pce");
+                    IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"very_gentle_cleaning_with_pce");
                     break;
                 case R.id.do_not_dry_clean:
-                        IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"do_not_dry_clean");
+                    IconSetterForDetails(iconProfessionalCleaning,ProfessionalCleanIconsArray,"do_not_dry_clean");
                     break;
             }
         }
@@ -917,13 +971,21 @@ public void LocationLabelsInfoDetector() {
 
     Button unShade = null;
     private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        IconSetterForDetails(iconWashing,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(6))));
-        IconSetterForDetails(iconBleach,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(7))));
-        IconSetterForDetails(iconDrying,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(8))));
-        IconSetterForDetails(iconIroning,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(9))));
-        IconSetterForDetails(iconProfessionalCleaning,null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(10))));
-        details_info.setText("");
+        int Tag=0;
+        if (view.getId() != R.id.deleteButton) {
+            Tag = (int) view.getTag();
+            iconWashing.setTag(Tag);
+            iconBleach.setTag(Tag);
+            iconDrying.setTag(Tag);
+            iconIroning.setTag(Tag);
+            iconProfessionalCleaning.setTag(Tag);
+            IconSetterForDetails(iconWashing, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(6))));
+            IconSetterForDetails(iconBleach, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(7))));
+            IconSetterForDetails(iconDrying, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(8))));
+            IconSetterForDetails(iconIroning, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(9))));
+            IconSetterForDetails(iconProfessionalCleaning, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(10))));
+            details_info.setText("");
+        }
         if (view.getId() == R.id.layoutButton) {
             if(unShade != null)
                 unShade.setAlpha((float) 0.0);
@@ -936,14 +998,51 @@ public void LocationLabelsInfoDetector() {
             assert drawableContainerState != null;
             Drawable[] children = drawableContainerState.getChildren();
             GradientDrawable unselectedItem = (GradientDrawable) children[1];
+            Tag = (Integer) ((Button) view).getTag();
+            if(Tag == R.color.white||
+                    Tag == R.color.antiqueWhiteColor||
+                    Tag == R.color.oldLaceColor||
+                    Tag == R.color.ivoryColor||
+                    Tag == R.color.seashellColor||
+                    Tag == R.color.ghostWhiteColor||
+                    Tag == R.color.snowColor||
+                    Tag == R.color.linenColor)
+            {
+                unselectedItem.setColor(manipulateColor(getApplicationContext().getResources().getColor(Tag), (float) 0.9));
+            }
+            else
+                unselectedItem.setColor(getApplicationContext().getResources().getColor(Tag));
 
-            unselectedItem.setColor(getApplicationContext().getResources().getColor((Integer) unShade.getTag()));
+
             SetVisibility(viewNothing, "", "", "");
+
         }
         else if (view.getId() == R.id.deleteButton)
             SetVisibility(viewNothing, "","", "");
         else if (view.getId() == R.id.editButton) {
             ButtonPresser(viewFirst);
+
+            StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
+            DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
+            assert drawableContainerState != null;
+            Drawable[] children = drawableContainerState.getChildren();
+            GradientDrawable unselectedItem = (GradientDrawable) children[1];
+            ImageButton unShades = (ImageButton) view;
+            Tag = (Integer) unShades.getTag();
+            if(Tag == R.color.white||
+                    Tag == R.color.antiqueWhiteColor||
+                    Tag == R.color.oldLaceColor||
+                    Tag == R.color.ivoryColor||
+                    Tag == R.color.seashellColor||
+                    Tag == R.color.ghostWhiteColor||
+                    Tag == R.color.snowColor||
+                    Tag == R.color.linenColor)
+            {
+                unselectedItem.setColor(manipulateColor(getApplicationContext().getResources().getColor(Tag), (float) 0.9));
+            }
+            else
+                unselectedItem.setColor(getApplicationContext().getResources().getColor(Tag));
+
 
             CustomGridView.setVisibility(View.GONE);
             SetVisibility(viewFirst, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
@@ -959,6 +1058,8 @@ public void LocationLabelsInfoDetector() {
 
 
             clothesSeasonSpinner.setSelection(((ArrayAdapter<String>) clothesSeasonSpinner.getAdapter()).getPosition(GRID_DATA.get(position).get(3)));
+
+
 
         }
     }
@@ -982,4 +1083,38 @@ public void LocationLabelsInfoDetector() {
         return image;
     }
 
+
+
+
+
+
+
+    @ColorInt
+    public static int getContrastColor(@ColorInt int color) {
+        // Counting the perceptive luminance - human eye favors green color...
+        double a = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
+
+        int d;
+        if (a < 0.5)
+            d = 0; // bright colors - black font
+        else
+            d = 255; // dark colors - white font
+
+        return Color.rgb(d, d, d);
+    }
+
+    public static int dpToPx(int dp, Context context) {
+        float density = context.getResources().getDisplayMetrics().density;
+        return Math.round((float) dp * density);
+    }
+
+    public static int manipulateColor(int color, float factor) {
+        return Color.argb(Color.alpha(color),
+                Math.min(Math.round(Color.red(color) * factor),255),
+                Math.min(Math.round(Color.green(color) * factor),255),
+                Math.min(Math.round(Color.blue(color) * factor),255));
+    }
+
 }
+
+
