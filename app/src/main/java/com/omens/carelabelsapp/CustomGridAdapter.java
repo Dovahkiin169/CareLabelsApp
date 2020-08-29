@@ -95,19 +95,16 @@ public class CustomGridAdapter extends BaseAdapter {
             mainMaterialText.setText(arrLabel.get(2));
 
             int id = Integer.parseInt(arrLabel.get(4));
+            holder.LayoutButton.setTag(id);
             int textColor = getContrastColor(context.getResources().getColor(id));
-
 
             StateListDrawable gradientDrawable = (StateListDrawable) gridView.getBackground();
             DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
             assert drawableContainerState != null;
             Drawable[] children = drawableContainerState.getChildren();
             GradientDrawable unselectedItem = (GradientDrawable) children[1];
-
             unselectedItem.setColor(context.getResources().getColor(id));
             unselectedItem.setStroke(dpToPx(3,context), colorForStroke);
-
-
 
 
             BrandText.setTextColor(textColor);

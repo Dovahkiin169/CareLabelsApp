@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,6 +15,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableContainer;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -900,16 +905,18 @@ public void LocationLabelsInfoDetector() {
         details_info.setText("");
         if (view.getId() == R.id.layoutButton) {
             if(unShade != null)
-            {
                 unShade.setAlpha((float) 0.0);
-                unShade = (Button) view;
-                unShade.setAlpha((float) 0.15);
-            }
-            else
-            {
-                unShade = (Button) view;
-                unShade.setAlpha((float) 0.15);
-            }
+
+            unShade = (Button) view;
+            unShade.setAlpha((float) 0.15);
+
+            StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
+            DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
+            assert drawableContainerState != null;
+            Drawable[] children = drawableContainerState.getChildren();
+            GradientDrawable unselectedItem = (GradientDrawable) children[1];
+
+            unselectedItem.setColor(getApplicationContext().getResources().getColor((Integer) unShade.getTag()));
             SetVisibility(viewNothing, "", "", "");
         }
         else if (view.getId() == R.id.deleteButton)
