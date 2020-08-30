@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/care_label_shape"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginEnd="4dp"
+    android:background="@drawable/care_label_shape">
 
     <TextView
         android:id="@+id/brandText"
@@ -12,10 +16,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
+        android:layout_marginBottom="2dp"
         android:hint="@string/brand"
         android:importantForAutofill="no"
         android:textAlignment="center"
         android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/clothesTypeText"
         app:layout_constraintEnd_toStartOf="@+id/space4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,13 +46,14 @@
     <TextView
         android:id="@+id/clothesTypeText"
         android:layout_width="0dp"
-        android:layout_height="22dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="2dp"
         android:hint="@string/clothes_type"
         android:maxLength="24"
         android:textAlignment="center"
         android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/mainMaterialText"
         app:layout_constraintEnd_toEndOf="@+id/brandText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/brandText" />
@@ -75,16 +82,16 @@
         android:layout_marginTop="3dp"
         android:layout_marginEnd="3dp"
         android:background="@drawable/top_left_button_shape"
+        android:contentDescription="@string/edit_button"
         android:paddingStart="5dp"
-        android:paddingEnd="5dp"
         android:paddingTop="5dp"
+        android:paddingEnd="5dp"
         android:paddingBottom="5dp"
         android:scaleType="fitCenter"
         android:src="@drawable/edit_button_sizer"
         app:layout_constraintBottom_toTopOf="@+id/deleteButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/edit_button" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/deleteButton"
@@ -92,17 +99,17 @@
         android:layout_height="0dp"
         android:layout_marginEnd="3dp"
         android:layout_marginBottom="3dp"
+        android:background="@drawable/bottom_right_button_shape"
+        android:contentDescription="@string/delete_button"
         android:paddingStart="5dp"
-        android:paddingEnd="5dp"
         android:paddingTop="5dp"
+        android:paddingEnd="5dp"
         android:paddingBottom="5dp"
         android:scaleType="fitCenter"
         android:src="@drawable/delete_button_sizer"
-        android:background="@drawable/bottom_right_button_shape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editButton"
-        android:contentDescription="@string/delete_button" />
+        app:layout_constraintTop_toBottomOf="@+id/editButton" />
 
     <ImageView
         android:id="@+id/weatherImageView"
@@ -130,7 +137,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
     <Space
         android:id="@+id/space4"
