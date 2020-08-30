@@ -8,11 +8,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -20,12 +22,12 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.StateSet;
@@ -39,6 +41,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -84,6 +87,8 @@ public class MainActivity extends AppCompatActivity{
     AutoCompleteTextView colorTextView,clothesTypeAutoCompleteTextView,mainMaterialAutoCompleteTextView;
 
     GridView CustomGridView;
+
+    ProgressBar progressBarLoading;
 
     Spinner clothesSeasonSpinner;
 
@@ -137,6 +142,9 @@ public class MainActivity extends AppCompatActivity{
 
         IconInfoButton.setBackground(convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor)))));
 
+
+        progressBarLoading = findViewById(R.id.progressBarLoading);
+        progressBarLoading.setVisibility(View.GONE);
 
         brandTextView = findViewById(R.id.brandTextView);
         colorTextView = findViewById(R.id.colorTextView);
@@ -551,9 +559,12 @@ public class MainActivity extends AppCompatActivity{
         }
         return super.onOptionsItemSelected(item);
     }
-
+boolean flagOfDelete = false;
     public void DataGetter() {
         Getter = new HashMap<>();
+
+        progressBarLoading.setVisibility(View.VISIBLE);
+        showProgress(true,getApplicationContext(),this,progressBarLoading);
         firebaseFirestore.collection("clothes").whereEqualTo("userId", firebaseUser.getUid()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
@@ -561,7 +572,14 @@ public class MainActivity extends AppCompatActivity{
                     Getter.put(document.toString().substring( document.toString().indexOf(start)+"DocumentSnapshot{key=clothes/".length(), document.toString().indexOf(", ")),document.getData());
                 }
                 transformReceivedData();
+
+                showProgress(false,getApplicationContext(),this,progressBarLoading);
+                if(flagOfDelete) {
+                    EditElement();
+                    flagOfDelete=false;
+                }
             } else
+                showProgress(false,getApplicationContext(),this,progressBarLoading);
                 Log.d("TAG", "Error getting documents: ", task.getException());
         });
     }
@@ -1047,6 +1065,9 @@ public class MainActivity extends AppCompatActivity{
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+                                    flagOfDelete = true;
+                                    DataGetter();
+
                                     Log.d("TAG", "DocumentSnapshot successfully deleted!");
                                 }
                             })
@@ -1062,7 +1083,6 @@ public class MainActivity extends AppCompatActivity{
 
 
 
-            SetVisibility(viewNothing, "", "", "");
         }
         else if (view.getId() == R.id.editButton) {
             ButtonPresser(viewFirst);
@@ -1148,10 +1168,6 @@ public class MainActivity extends AppCompatActivity{
         return Color.rgb(d, d, d);
     }
 
-    public static int dpToPx(int dp, Context context) {
-        float density = context.getResources().getDisplayMetrics().density;
-        return Math.round((float) dp * density);
-    }
 
     public static int manipulateColor(int color, float factor) {
         return Color.argb(Color.alpha(color),
@@ -1160,6 +1176,28 @@ public class MainActivity extends AppCompatActivity{
                 Math.min(Math.round(Color.blue(color) * factor),255));
     }
 
+
+
+    protected void showProgress(final boolean show, final Context con, final Activity act, View ProgressView) {
+        act.runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                int shortAnimTime = con.getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+
+                ProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                ProgressView.animate().setDuration(shortAnimTime).alpha(
+                        show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        ProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    }
+                });
+            }
+        });
+    }
 }
 
 
