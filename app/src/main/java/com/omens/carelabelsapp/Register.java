@@ -98,7 +98,6 @@ public class Register extends AppCompatActivity {
             });
         });
 
-        LoginButton.setOnClickListener(
-                v -> startActivity(new Intent(getApplicationContext(),Login.class)));
+        LoginButton.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(),Login.class)));
     }
 }

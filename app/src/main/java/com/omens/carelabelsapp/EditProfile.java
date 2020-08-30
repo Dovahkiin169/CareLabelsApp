@@ -34,9 +34,6 @@ public class EditProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        Intent data = getIntent();
-        final String fullName = data.getStringExtra("fullName");
-        String email = data.getStringExtra("email");
         
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -69,7 +66,7 @@ public class EditProfile extends AppCompatActivity {
                 finish();
             }).addOnFailureListener(e -> Toast.makeText(EditProfile.this,   "Sorry, There was problem while trying to update information. Please, try later or check your internet connection", Toast.LENGTH_SHORT).show());
         });
-        profileEmail.setText(email);
-        profileFullName.setText(fullName);
+        profileEmail.setText(getIntent().getStringExtra("email"));
+        profileFullName.setText(getIntent().getStringExtra("fullName"));
     }
 }

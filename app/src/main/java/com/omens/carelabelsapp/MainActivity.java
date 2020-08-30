@@ -1,10 +1,10 @@
 package com.omens.carelabelsapp;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.animation.Animator;
@@ -24,6 +24,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -46,8 +47,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.omens.carelabelsapp.ColorOperations.dpToPx;
 import static com.omens.carelabelsapp.ColorOperations.getContrastColor;
 import static com.omens.carelabelsapp.ColorOperations.manipulateColor;
 
@@ -323,7 +322,7 @@ public class MainActivity extends AppCompatActivity{
             }
         }
         else if(LastButtonNext.equals("Wardrobe") && imageButton != null){
-            if (!imageButton.getTag().equals("") && getContrastColor(getApplicationContext().getResources().getColor(Tags)) ==  Color.rgb(255, 255, 255)) //White Icons
+            if ((imageButton.getTag() != null) && !imageButton.getTag().equals("") && getContrastColor(getApplicationContext().getResources().getColor(Tags)) ==  Color.rgb(255, 255, 255)) //White Icons
                 imageButton.setImageResource(getApplicationContext().getResources().getIdentifier(Icon + "_white", "drawable", getApplicationContext().getPackageName()));
             else
                 imageButton.setImageResource(getApplicationContext().getResources().getIdentifier(Icon, "drawable", getApplicationContext().getPackageName()));
@@ -412,16 +411,12 @@ public class MainActivity extends AppCompatActivity{
         colorTextView.setError(null);
     }
     public void afterElementWasAdd() {
-        iconWashing.setTag("");
-        iconBleach.setTag("");
-        iconDrying.setTag("");
-        iconIroning.setTag("");
-        iconProfessionalCleaning.setTag("");
+        setValueOfTags("");
         empty="";
         iconWashing.setTag("");
         IconSetterForDetails(iconWashing,null,"washing_symbol");
         empty="";
-        iconWashing.setTag("");
+        iconBleach.setTag("");
         IconSetterForDetails(iconBleach,null,"chlorine_and_non_chlorine_bleach");
         empty="";
         iconDrying.setTag("");
@@ -435,7 +430,7 @@ public class MainActivity extends AppCompatActivity{
         ButtonPresser(viewNothing);
 
 
-        CO.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false);
+        ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false);
 
 
         brandTextView.setText("");
@@ -499,13 +494,9 @@ public class MainActivity extends AppCompatActivity{
             case "Wardrobe":
 
                 Tags=0;
-                CO.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false);
+                ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false);
 
-                iconWashing.setTag("");
-                iconBleach.setTag("");
-                iconDrying.setTag("");
-                iconIroning.setTag("");
-                iconProfessionalCleaning.setTag("");
+                setValueOfTags("");
 
                 CustomGridView.setVisibility(View.GONE);
                 afterElementWasAdd();
@@ -615,28 +606,34 @@ boolean flagOfDelete = false;
         HashMap<String, Integer> Result = new HashMap<>();
         String string;
         int CharMatchers = CharMatcher.is(separator).countIn(RawData)+1;
-        for(int i=0; i<CharMatchers+1; i++) {
-            if(RawData.contains(",") && !ifColor) {
-                string = RawData.substring( 0, RawData.indexOf(","));
-                Result.put(string,i+1);
-                RawData = RawData.substring(RawData.indexOf(",")+1);
+
+
+        if(!ifColor) {
+            for(int i=0; i<CharMatchers+1; i++) {
+                if (RawData.contains(",")) {
+                    Result.put(RawData.substring(0, RawData.indexOf(",")), i + 1);
+                    RawData = RawData.substring(RawData.indexOf(",") + 1);
+                } else if (!RawData.contains(","))
+                    Result.put(RawData, i);
             }
-            else if(!RawData.contains(",") && !ifColor)
-                Result.put(RawData,i);
-            else if(RawData.contains(",") && ifColor) {
-                string = RawData.substring( 0, RawData.indexOf(","));
-                string = string.replace("Color","");
-                string = string.substring(0, 1).toUpperCase() + string.substring(1);
-                string = string.replaceAll("([^_])([A-Z])", "$1 $2");
-                Result.put(string,getApplicationContext().getResources().getIdentifier(RawData.substring( 0, RawData.indexOf(",")), "color", getApplicationContext().getPackageName()));
-                RawData = RawData.substring(RawData.indexOf(",")+1);
-            }
-            else if(!RawData.contains(",") && ifColor) {
-                string = RawData;
-                string = string.replace("Color","");
-                string = string.substring(0, 1).toUpperCase() + string.substring(1);
-                string = string.replaceAll("([^_])([A-Z])", "$1 $2");
-                Result.put(string, getApplicationContext().getResources().getIdentifier(RawData, "color", getApplicationContext().getPackageName()));
+        }
+        else {
+            for(int i=0; i<CharMatchers+1; i++) {
+                if(RawData.contains(",")) {
+                    string = RawData.substring( 0, RawData.indexOf(","));
+                    string = string.replace("Color","");
+                    string = string.substring(0, 1).toUpperCase() + string.substring(1);
+                    string = string.replaceAll("([^_])([A-Z])", "$1 $2");
+                    Result.put(string,getApplicationContext().getResources().getIdentifier(RawData.substring( 0, RawData.indexOf(",")), "color", getApplicationContext().getPackageName()));
+                    RawData = RawData.substring(RawData.indexOf(",")+1);
+                }
+                else if(!RawData.contains(",")) {
+                    string = RawData;
+                    string = string.replace("Color","");
+                    string = string.substring(0, 1).toUpperCase() + string.substring(1);
+                    string = string.replaceAll("([^_])([A-Z])", "$1 $2");
+                    Result.put(string, getApplicationContext().getResources().getIdentifier(RawData, "color", getApplicationContext().getPackageName()));
+                }
             }
         }
         return Result;
@@ -776,7 +773,7 @@ boolean flagOfDelete = false;
                                 iconIroning.getTag().toString(), mainMaterialAutoCompleteTextView.getText().toString(), iconProfessionalCleaning.getTag().toString(), (String) clothesSeasonSpinner.getSelectedItem(),
                                 specialMarksTextView.getText().toString(), firebaseUser.getUid(), iconWashing.getTag().toString(),false);
 
-                        CO.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false);
+                        ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false);
 
                         afterElementWasAdd();
                         DataGetter();
@@ -992,6 +989,7 @@ boolean flagOfDelete = false;
 
     Button unShade = null;
     int Tags = 0;
+
     private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         int Tag;
         if (view.getId() != R.id.deleteButton) {
@@ -1153,6 +1151,14 @@ boolean flagOfDelete = false;
                 }
             });
         });
+    }
+
+    public void setValueOfTags(String value) {
+        iconWashing.setTag(value);
+        iconBleach.setTag(value);
+        iconDrying.setTag(value);
+        iconIroning.setTag(value);
+        iconProfessionalCleaning.setTag(value);
     }
 }
 

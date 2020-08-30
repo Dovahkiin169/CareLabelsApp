@@ -23,9 +23,7 @@ public class ColorOperations {
         StateListDrawable stateListDrawable= new StateListDrawable();
         stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(Cont.getResources(),ColorForDrawable(pressedColor)));
         stateListDrawable.addState(StateSet.WILD_CARD, new BitmapDrawable(Cont.getResources(),ColorForDrawable(normalColor)));
-
         return stateListDrawable;
-
     }
     public Bitmap ColorForDrawable(int color) {
         Rect rect = new Rect(0, 0, 1, 1);
@@ -39,17 +37,11 @@ public class ColorOperations {
 
     @ColorInt
     public static int getContrastColor(@ColorInt int color) {
-        // Counting the perceptive luminance - human eye favors green color...
-        double a = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
-
-        int d;
-        if (a < 0.6) {
-            d = 0; // bright colors - black font
-        } else {
-            d = 255; // dark colors - white font
-        }
-
-        return Color.rgb(d, d, d);
+        // Counting the perceptive luminance
+        if (1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255 < 0.67)
+            return Color.rgb(0, 0, 0); // bright colors - black font
+        else
+            return Color.rgb(255, 255, 255); // dark colors - white font
     }
 
 
@@ -79,8 +71,7 @@ public class ColorOperations {
         Drawable[] children = drawableContainerState.getChildren();
         GradientDrawable unselectedItem = (GradientDrawable) children[1];
         unselectedItem.setColor(color);
-        if(Stroke)
-        {
+        if(Stroke) {
             if( color  ==  Color.rgb(255, 255, 255))
                 unselectedItem.setStroke(dpToPx(3,view.getContext()), manipulateColor(color,1.2f));
             else

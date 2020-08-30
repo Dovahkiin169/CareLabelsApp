@@ -56,10 +56,8 @@ public class ProfileActivity extends AppCompatActivity {
         if(!user.isEmailVerified()){
             verifyMsg.setVisibility(View.VISIBLE);
             resendCode.setVisibility(View.VISIBLE);
-
-            resendCode.setOnClickListener(v -> user.sendEmailVerification().addOnSuccessListener(
-                    aVoid -> Toast.makeText(v.getContext(), "Verification Email Has been Sent.", Toast.LENGTH_SHORT).show()).addOnFailureListener(
-                            e -> Toast.makeText(v.getContext(), "Error, Verification Email not Sent.", Toast.LENGTH_SHORT).show()));
+            resendCode.setOnClickListener(v -> user.sendEmailVerification().addOnSuccessListener(aVoid -> Toast.makeText(v.getContext(), "Verification Email Has been Sent.", Toast.LENGTH_SHORT).show())
+                                                                           .addOnFailureListener(e -> Toast.makeText(v.getContext(), "Error, Verification Email not Sent.", Toast.LENGTH_SHORT).show()));
         }
 
 
@@ -85,12 +83,9 @@ public class ProfileActivity extends AppCompatActivity {
             passwordResetDialog.setMessage("Enter New Password > 6 Characters long.");
             passwordResetDialog.setView(resetPassword);
 
-            passwordResetDialog.setPositiveButton("Yes", (dialog, which) -> {
-                // extract the email and send reset link
-                String newPassword = resetPassword.getText().toString();
-                user.updatePassword(newPassword).addOnSuccessListener(aVoid -> Toast.makeText(ProfileActivity.this, "Password Reset Successfully.", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Password Reset Failed.", Toast.LENGTH_SHORT).show());
-            });
-
+            passwordResetDialog.setPositiveButton("Yes", (dialog, which) ->
+                    user.updatePassword(resetPassword.getText().toString()).addOnSuccessListener(aVoid -> Toast.makeText(ProfileActivity.this, "Password Reset Successfully.", Toast.LENGTH_SHORT).show())
+                                                                           .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Password Reset Failed.", Toast.LENGTH_SHORT).show()));
             passwordResetDialog.setNegativeButton("No", (dialog, which) -> {
                 // close
             });
