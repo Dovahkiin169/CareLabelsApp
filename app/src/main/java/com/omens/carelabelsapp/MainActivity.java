@@ -503,6 +503,7 @@ public class MainActivity extends AppCompatActivity{
                 LastButtonNext="";
                 break;
             case "Wardrobe":
+
                 Tags=0;
                 StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
                 DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
@@ -759,6 +760,7 @@ boolean flagOfDelete = false;
                         ButtonNext.setText(getResources().getString(R.string.confirm));
                         ButtonPresser(viewNothing);
                         colorTextView.setError(null);
+
                         break;
                     }
                     Location = "Details";
@@ -766,6 +768,11 @@ boolean flagOfDelete = false;
                         addingElement(iconBleach.getTag().toString(), brandTextView.getText().toString(), String.valueOf(Colors.get(colorTextView.getText() + "")), clothesTypeAutoCompleteTextView.getText().toString(), iconDrying.getTag().toString(),
                                 iconIroning.getTag().toString(), mainMaterialAutoCompleteTextView.getText().toString(), iconProfessionalCleaning.getTag().toString(), (String) clothesSeasonSpinner.getSelectedItem(),
                                 specialMarksTextView.getText().toString(), firebaseUser.getUid(), iconWashing.getTag().toString(),true);
+                        brandTextView.clearFocus();
+                        colorTextView.clearFocus();
+                        clothesTypeAutoCompleteTextView.clearFocus();
+                        mainMaterialAutoCompleteTextView.clearFocus();
+                                specialMarksTextView.clearFocus();
                         DataGetter();
                         afterElementWasAdd();
                     } else if (ButtonNext.getText().toString().equals(getResources().getString(R.string.next))) {
@@ -790,6 +797,10 @@ boolean flagOfDelete = false;
 
                     break;
                 case R.id.wardrobe_button:
+                    if(GRID_DATA.size()==0)
+                    {
+                        details_info.setText(R.string.dont_have_clothes);
+                    }
                     Location = "Wardrobe";
                     LastButtonNext = "Wardrobe";
                     EditElement();
@@ -1068,8 +1079,40 @@ boolean flagOfDelete = false;
                                 public void onSuccess(Void aVoid) {
                                     flagOfDelete = true;
                                     DataGetter();
+                                    StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
+                                    DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
+                                    assert drawableContainerState != null;
+                                    Drawable[] children = drawableContainerState.getChildren();
+                                    GradientDrawable unselectedItem = (GradientDrawable) children[1];
 
-                                    Log.d("TAG", "DocumentSnapshot successfully deleted!");
+                                    unselectedItem.setColor(getApplicationContext().getResources().getColor(R.color.colorAccent));
+
+                                    iconWashing.setTag("");
+                                    iconBleach.setTag("");
+                                    iconDrying.setTag("");
+                                    iconIroning.setTag("");
+                                    iconProfessionalCleaning.setTag("");
+                                    empty="";
+                                    iconWashing.setTag("");
+                                    IconSetterForDetails(iconWashing,null,"washing_symbol");
+                                    empty="";
+                                    iconWashing.setTag("");
+                                    IconSetterForDetails(iconBleach,null,"chlorine_and_non_chlorine_bleach");
+                                    empty="";
+                                    iconDrying.setTag("");
+                                    IconSetterForDetails(iconDrying,null,"drying_symbol");
+                                    empty="";
+                                    iconIroning.setTag("");
+                                    IconSetterForDetails(iconIroning,null,"ironing");
+                                    empty="";
+                                    IconSetterForDetails(iconProfessionalCleaning,null,"professional_cleaning");
+                                    iconProfessionalCleaning.setTag("");
+
+
+                                    if(GRID_DATA.size()==0)
+                                    {
+                                        details_info.setText(R.string.dont_have_clothes);
+                                    }
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {

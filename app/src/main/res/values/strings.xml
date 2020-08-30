@@ -124,4 +124,5 @@
     <string name="bleach">Bleach</string>
     <string name="ironing">Ironing</string>
     <string name="drying">Drying</string>
+    <string name="dont_have_clothes">You don\'t have any clothes, try adding one by pressing \"Read My Label\" in main menu</string>
 </resources>
