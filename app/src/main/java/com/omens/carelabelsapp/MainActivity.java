@@ -44,6 +44,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -394,20 +395,29 @@ public class MainActivity extends AppCompatActivity{
         clothesToDataBase.put("userId", userId);
         clothesToDataBase.put("washIcon", washIcon);
         if(Add)
-            firebaseFirestore.collection("clothes").add(clothesToDataBase);
+            firebaseFirestore.collection("clothes").add(clothesToDataBase).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Sorry, There was problem while trying to add clothes. Please, try later or check your internet connection", Toast.LENGTH_LONG);
+                    toast.show(); }});
         else {
-            firebaseFirestore.collection("clothes").document(EditItemId).update("bleachingIcon", bleachingIcon);
-            firebaseFirestore.collection("clothes").document(EditItemId).update("brand", brand );
-            firebaseFirestore.collection("clothes").document(EditItemId).update("clothesColor", clothesColor );
-            firebaseFirestore.collection("clothes").document(EditItemId).update("clothesType", clothesType );
-            firebaseFirestore.collection("clothes").document(EditItemId).update("dryIcon", dryIcon );
-            firebaseFirestore.collection("clothes").document(EditItemId).update("ironingIcon", ironingIcon );
-            firebaseFirestore.collection("clothes").document(EditItemId).update("mainMaterial", mainMaterial );
-            firebaseFirestore.collection("clothes").document(EditItemId).update("professionalCleaningIcon", professionalCleaningIcon );
-            firebaseFirestore.collection("clothes").document(EditItemId).update("season", season );
-            firebaseFirestore.collection("clothes").document(EditItemId).update("specialMarks", specialMarks );
-            firebaseFirestore.collection("clothes").document(EditItemId).update("userId", userId );
-            firebaseFirestore.collection("clothes").document(EditItemId).update("washIcon", washIcon );
+            firebaseFirestore.collection("clothes").document(EditItemId).update(
+                                    "bleachingIcon", bleachingIcon,
+                    "brand", brand,
+                                    "clothesColor", clothesColor,
+                                    "clothesType", clothesType ,
+                                    "dryIcon", dryIcon ,
+                                    "ironingIcon", ironingIcon ,
+                                    "mainMaterial", mainMaterial,
+                                    "professionalCleaningIcon", professionalCleaningIcon,
+                                    "season", season ,
+                                    "specialMarks", specialMarks,
+                                    "userId", userId,
+                                    "washIcon", washIcon).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Sorry, There was problem while trying to update clothes. Please, try later or check your internet connection", Toast.LENGTH_LONG);
+                    toast.show(); }});;
         }
         colorTextView.setError(null);
     }
@@ -579,9 +589,11 @@ boolean flagOfDelete = false;
                     flagOfDelete=false;
                 }
                 WardrobeButton.setClickable(true);
-            } else
-                showProgress(false,getApplicationContext(),this,progressBarLoading);
-                Log.d("TAG", "Error getting documents: ", task.getException());
+            } else {
+                showProgress(false, getApplicationContext(), this, progressBarLoading);
+                Toast toast = Toast.makeText(getApplicationContext(), "Sorry, There was problem while getting data from our Servers. Please, try later or check your internet connection", Toast.LENGTH_LONG);
+                toast.show();
+            }
         });
     }
 
@@ -1118,7 +1130,8 @@ boolean flagOfDelete = false;
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Log.w("TAG", "Error deleting document", e);
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Sorry, There was problem while trying to delete clothes. Please, try later or check your internet connection", Toast.LENGTH_LONG);
+                                    toast.show();
                                 }
                             });
                 }
