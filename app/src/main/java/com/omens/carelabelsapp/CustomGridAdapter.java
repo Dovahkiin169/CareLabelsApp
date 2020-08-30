@@ -23,7 +23,6 @@ import androidx.core.content.ContextCompat;
 
 public class CustomGridAdapter extends BaseAdapter {
 
-    private static int colorForStroke;
     private Context context;
     private final ArrayList<ArrayList<String>> gridValues;
     TextView BrandText;
@@ -31,7 +30,6 @@ public class CustomGridAdapter extends BaseAdapter {
     TextView clothesTypeText;
     TextView mainMaterialText;
     ImageView weatherImageView;
-
 
     //Constructor to initialize values
     public CustomGridAdapter(Context context, ArrayList<ArrayList<String>> gridValues) {
@@ -94,7 +92,7 @@ public class CustomGridAdapter extends BaseAdapter {
             holder.LayoutButton.setTag(id);
             holder.EditButton.setTag(id);
             holder.DeleteButton.setTag(id);
-            int textColor = getContrastColor(context.getResources().getColor(id));
+            int textColor = ColorOperations.getContrastColor(context.getResources().getColor(id));
 
             StateListDrawable gradientDrawable = (StateListDrawable) gridView.getBackground();
             DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
@@ -102,7 +100,12 @@ public class CustomGridAdapter extends BaseAdapter {
             Drawable[] children = drawableContainerState.getChildren();
             GradientDrawable unselectedItem = (GradientDrawable) children[1];
             unselectedItem.setColor(context.getResources().getColor(id));
-            unselectedItem.setStroke(dpToPx(3,context), colorForStroke);
+
+            if( context.getResources().getColor(id)  ==  Color.rgb(255, 255, 255))
+                unselectedItem.setStroke(ColorOperations.dpToPx(3,context), ColorOperations.manipulateColor(textColor,1.2f));
+            else
+                unselectedItem.setStroke(ColorOperations.dpToPx(3,context), ColorOperations.manipulateColor(textColor,0.9f));
+
 
 
             BrandText.setTextColor(textColor);
@@ -158,33 +161,5 @@ public class CustomGridAdapter extends BaseAdapter {
             weatherImageView.setBackground(ContextCompat.getDrawable(context, (context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()))));
     }
 
-    @ColorInt
-    public static int getContrastColor(@ColorInt int color) {
-        // Counting the perceptive luminance - human eye favors green color...
-        double a = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
 
-        int d;
-        if (a < 0.6) {
-            d = 0; // bright colors - black font
-            colorForStroke = manipulateColor(color,0.9f);
-        } else {
-            d = 255; // dark colors - white font
-            colorForStroke = manipulateColor(color,1.2f);
-        }
-
-        return Color.rgb(d, d, d);
-    }
-
-
-    public static int manipulateColor(int color, float factor) {
-        return Color.argb(Color.alpha(color),
-                Math.min(Math.round(Color.red(color) * factor),255),
-                Math.min(Math.round(Color.green(color) * factor),255),
-                Math.min(Math.round(Color.blue(color) * factor),255));
-    }
-
-    public static int dpToPx(int dp, Context context) {
-        float density = context.getResources().getDisplayMetrics().density;
-        return Math.round((float) dp * density);
-    }
 }

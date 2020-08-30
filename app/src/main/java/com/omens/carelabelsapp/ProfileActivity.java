@@ -4,16 +4,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.StateSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,8 +16,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.Objects;
 
@@ -37,6 +27,7 @@ public class ProfileActivity extends AppCompatActivity {
     Button resendCode;
     Button resetPassLocal,changeProfile,logoutButton;
     FirebaseUser user;
+    ColorOperations CO = new ColorOperations();
 
 
     @Override
@@ -116,27 +107,11 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
 
-        resetPassLocal.setBackground(convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor)))));
-        logoutButton.setBackground(convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.blueberryColor)))));
+        resetPassLocal.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor))),getApplicationContext()));
+        logoutButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.blueberryColor))),getApplicationContext()));
 
     }
-    public StateListDrawable convertColorIntoBitmap(int pressedColor, int normalColor){
-        StateListDrawable stateListDrawable= new StateListDrawable();
-        stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(this.getResources(),ColorForDrawable(pressedColor)));
-        stateListDrawable.addState(StateSet.WILD_CARD, new BitmapDrawable(this.getResources(),ColorForDrawable(normalColor)));
 
-        return stateListDrawable;
-
-    }
-    public Bitmap ColorForDrawable(int color) {
-        Rect rect = new Rect(0, 0, 1, 1);
-        Bitmap image = Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(image);
-        Paint paint = new Paint();
-        paint.setColor(color);
-        canvas.drawRect(rect, paint);
-        return image;
-    }
 
     public void logout(View view) {
         FirebaseAuth.getInstance().signOut();//logout

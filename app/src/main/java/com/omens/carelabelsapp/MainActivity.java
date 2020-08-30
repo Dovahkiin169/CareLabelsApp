@@ -1,6 +1,5 @@
 package com.omens.carelabelsapp;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,24 +12,15 @@ import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
-import android.util.StateSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,7 +37,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.base.CharMatcher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -58,6 +47,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.omens.carelabelsapp.ColorOperations.getContrastColor;
+import static com.omens.carelabelsapp.ColorOperations.manipulateColor;
 
 public class MainActivity extends AppCompatActivity{
     HashMap<String, Integer> Clothes;
@@ -105,6 +97,8 @@ public class MainActivity extends AppCompatActivity{
     int viewNothing =0, viewFirst =1, viewSecond =2, viewThird =3, viewFourth =4, viewFifth =5, viewSixth =6;
 
     String LastButtonNext ="";
+
+    ColorOperations CO = new ColorOperations();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,7 +135,7 @@ public class MainActivity extends AppCompatActivity{
         WardrobeButton = findViewById(R.id.wardrobe_button);
         IconInfoButton = findViewById(R.id.icon_info_button);
 
-        IconInfoButton.setBackground(convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor)))));
+        IconInfoButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor))),getApplicationContext()));
 
 
         progressBarLoading = findViewById(R.id.progressBarLoading);
@@ -329,7 +323,7 @@ public class MainActivity extends AppCompatActivity{
             }
         }
         else if(LastButtonNext.equals("Wardrobe") && imageButton != null){
-            if (!imageButton.getTag().equals("") && getContrastColor(getApplicationContext().getResources().getColor((Integer) Tags)) ==  Color.rgb(255, 255, 255)) //White Icons
+            if (!imageButton.getTag().equals("") && getContrastColor(getApplicationContext().getResources().getColor(Tags)) ==  Color.rgb(255, 255, 255)) //White Icons
                 imageButton.setImageResource(getApplicationContext().getResources().getIdentifier(Icon+"_white", "drawable", getApplicationContext().getPackageName()));
             else
                 imageButton.setImageResource(getApplicationContext().getResources().getIdentifier(Icon, "drawable", getApplicationContext().getPackageName()));
@@ -395,11 +389,9 @@ public class MainActivity extends AppCompatActivity{
         clothesToDataBase.put("userId", userId);
         clothesToDataBase.put("washIcon", washIcon);
         if(Add)
-            firebaseFirestore.collection("clothes").add(clothesToDataBase).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Sorry, There was problem while trying to add clothes. Please, try later or check your internet connection", Toast.LENGTH_LONG);
-                    toast.show(); }});
+            firebaseFirestore.collection("clothes").add(clothesToDataBase).addOnFailureListener(e -> {
+                Toast toast = Toast.makeText(getApplicationContext(), "Sorry, There was problem while trying to add clothes. Please, try later or check your internet connection", Toast.LENGTH_LONG);
+                toast.show(); });
         else {
             firebaseFirestore.collection("clothes").document(EditItemId).update(
                                     "bleachingIcon", bleachingIcon,
@@ -413,11 +405,9 @@ public class MainActivity extends AppCompatActivity{
                                     "season", season ,
                                     "specialMarks", specialMarks,
                                     "userId", userId,
-                                    "washIcon", washIcon).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Sorry, There was problem while trying to update clothes. Please, try later or check your internet connection", Toast.LENGTH_LONG);
-                    toast.show(); }});;
+                                    "washIcon", washIcon).addOnFailureListener(e -> {
+                                        Toast toast = Toast.makeText(getApplicationContext(), "Sorry, There was problem while trying to update clothes. Please, try later or check your internet connection", Toast.LENGTH_LONG);
+                                        toast.show(); });
         }
         colorTextView.setError(null);
     }
@@ -1017,7 +1007,7 @@ boolean flagOfDelete = false;
     Button unShade = null;
     int Tags = 0;
     private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        int Tag=0;
+        int Tag;
         if (view.getId() != R.id.deleteButton) {
             Tag = (int) view.getTag();
             iconWashing.setTag(Tag);
@@ -1045,7 +1035,7 @@ boolean flagOfDelete = false;
             assert drawableContainerState != null;
             Drawable[] children = drawableContainerState.getChildren();
             GradientDrawable unselectedItem = (GradientDrawable) children[1];
-            Tag = (Integer) ((Button) view).getTag();
+            Tag = (Integer) view.getTag();
             if(Tag == R.color.white||
                     Tag == R.color.antiqueWhiteColor||
                     Tag == R.color.oldLaceColor||
@@ -1072,70 +1062,51 @@ boolean flagOfDelete = false;
             builder.setTitle("This clothing will be removed");
             builder.setMessage("Do you want to delete this item?");
             builder.setCancelable(false);
-            builder.setNegativeButton("NO", new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i)
-                {}
-            });
+            builder.setNegativeButton("NO", (dialogInterface, i) -> {});
 
-            builder.setPositiveButton("YES", new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i)
-                {
+            builder.setPositiveButton("YES", (dialogInterface, i) -> firebaseFirestore.collection("clothes").document(EditItemId).delete()
+                    .addOnSuccessListener(aVoid -> {
+                        flagOfDelete = true;
+                        DataGetter();
+                        StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
+                        DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
+                        assert drawableContainerState != null;
+                        Drawable[] children = drawableContainerState.getChildren();
+                        GradientDrawable unselectedItem = (GradientDrawable) children[1];
 
-                    firebaseFirestore.collection("clothes").document(EditItemId).delete()
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    flagOfDelete = true;
-                                    DataGetter();
-                                    StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
-                                    DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
-                                    assert drawableContainerState != null;
-                                    Drawable[] children = drawableContainerState.getChildren();
-                                    GradientDrawable unselectedItem = (GradientDrawable) children[1];
+                        unselectedItem.setColor(getApplicationContext().getResources().getColor(R.color.colorAccent));
 
-                                    unselectedItem.setColor(getApplicationContext().getResources().getColor(R.color.colorAccent));
-
-                                    iconWashing.setTag("");
-                                    iconBleach.setTag("");
-                                    iconDrying.setTag("");
-                                    iconIroning.setTag("");
-                                    iconProfessionalCleaning.setTag("");
-                                    empty="";
-                                    iconWashing.setTag("");
-                                    IconSetterForDetails(iconWashing,null,"washing_symbol");
-                                    empty="";
-                                    iconWashing.setTag("");
-                                    IconSetterForDetails(iconBleach,null,"chlorine_and_non_chlorine_bleach");
-                                    empty="";
-                                    iconDrying.setTag("");
-                                    IconSetterForDetails(iconDrying,null,"drying_symbol");
-                                    empty="";
-                                    iconIroning.setTag("");
-                                    IconSetterForDetails(iconIroning,null,"ironing");
-                                    empty="";
-                                    IconSetterForDetails(iconProfessionalCleaning,null,"professional_cleaning");
-                                    iconProfessionalCleaning.setTag("");
+                        iconWashing.setTag("");
+                        iconBleach.setTag("");
+                        iconDrying.setTag("");
+                        iconIroning.setTag("");
+                        iconProfessionalCleaning.setTag("");
+                        empty="";
+                        iconWashing.setTag("");
+                        IconSetterForDetails(iconWashing,null,"washing_symbol");
+                        empty="";
+                        iconWashing.setTag("");
+                        IconSetterForDetails(iconBleach,null,"chlorine_and_non_chlorine_bleach");
+                        empty="";
+                        iconDrying.setTag("");
+                        IconSetterForDetails(iconDrying,null,"drying_symbol");
+                        empty="";
+                        iconIroning.setTag("");
+                        IconSetterForDetails(iconIroning,null,"ironing");
+                        empty="";
+                        IconSetterForDetails(iconProfessionalCleaning,null,"professional_cleaning");
+                        iconProfessionalCleaning.setTag("");
 
 
-                                    if(GRID_DATA.size()==0)
-                                    {
-                                        details_info.setText(R.string.dont_have_clothes);
-                                    }
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Sorry, There was problem while trying to delete clothes. Please, try later or check your internet connection", Toast.LENGTH_LONG);
-                                    toast.show();
-                                }
-                            });
-                }
-            });
+                        if(GRID_DATA.size()==0)
+                        {
+                            details_info.setText(R.string.dont_have_clothes);
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Sorry, There was problem while trying to delete clothes. Please, try later or check your internet connection", Toast.LENGTH_LONG);
+                        toast.show();
+                    }));
             builder.show();
 
 
@@ -1186,73 +1157,20 @@ boolean flagOfDelete = false;
         }
     }
 
-
-    public StateListDrawable convertColorIntoBitmap(int pressedColor, int normalColor){
-        StateListDrawable stateListDrawable= new StateListDrawable();
-        stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(this.getResources(),ColorForDrawable(pressedColor)));
-        stateListDrawable.addState(StateSet.WILD_CARD, new BitmapDrawable(this.getResources(),ColorForDrawable(normalColor)));
-
-        return stateListDrawable;
-
-    }
-    public Bitmap ColorForDrawable(int color) {
-        Rect rect = new Rect(0, 0, 1, 1);
-        Bitmap image = Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(image);
-        Paint paint = new Paint();
-        paint.setColor(color);
-        canvas.drawRect(rect, paint);
-        return image;
-    }
-
-
-
-
-
-
-
-    @ColorInt
-    public static int getContrastColor(@ColorInt int color) {
-        // Counting the perceptive luminance - human eye favors green color...
-        double a = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
-
-        int d;
-        if (a < 0.6)
-            d = 0; // bright colors - black font
-        else
-            d = 255; // dark colors - white font
-
-        return Color.rgb(d, d, d);
-    }
-
-
-    public static int manipulateColor(int color, float factor) {
-        return Color.argb(Color.alpha(color),
-                Math.min(Math.round(Color.red(color) * factor),255),
-                Math.min(Math.round(Color.green(color) * factor),255),
-                Math.min(Math.round(Color.blue(color) * factor),255));
-    }
-
-
-
     protected void showProgress(final boolean show, final Context con, final Activity act, View ProgressView) {
-        act.runOnUiThread(new Runnable() {
+        act.runOnUiThread(() -> {
 
-            @Override
-            public void run() {
-
-                int shortAnimTime = con.getResources().getInteger(android.R.integer.config_shortAnimTime);
+            int shortAnimTime = con.getResources().getInteger(android.R.integer.config_shortAnimTime);
 
 
-                ProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                ProgressView.animate().setDuration(shortAnimTime).alpha(
-                        show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        ProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                    }
-                });
-            }
+            ProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            ProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    ProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
         });
     }
 }
