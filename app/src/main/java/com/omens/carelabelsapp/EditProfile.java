@@ -67,7 +67,7 @@ public class EditProfile extends AppCompatActivity {
                 Toast.makeText(EditProfile.this, "Information was successfully updated", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                 finish();
-            }).addOnFailureListener(e -> Toast.makeText(EditProfile.this,   e.getMessage(), Toast.LENGTH_SHORT).show());
+            }).addOnFailureListener(e -> Toast.makeText(EditProfile.this,   "Sorry, There was problem while trying to update information. Please, try later or check your internet connection", Toast.LENGTH_SHORT).show());
         });
         profileEmail.setText(email);
         profileFullName.setText(fullName);
