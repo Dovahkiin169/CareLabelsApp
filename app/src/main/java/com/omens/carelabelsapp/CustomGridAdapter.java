@@ -1,11 +1,6 @@
 package com.omens.carelabelsapp;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +10,10 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
-import androidx.annotation.ColorInt;
-import androidx.core.content.ContextCompat;
 
 public class CustomGridAdapter extends BaseAdapter {
-
     private Context context;
     private final ArrayList<ArrayList<String>> gridValues;
     TextView BrandText;
@@ -53,7 +44,6 @@ public class CustomGridAdapter extends BaseAdapter {
         return 0;
     }
     public View getView(final int position, View convertView, final ViewGroup parent) {
-
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -94,17 +84,8 @@ public class CustomGridAdapter extends BaseAdapter {
             holder.DeleteButton.setTag(id);
             int textColor = ColorOperations.getContrastColor(context.getResources().getColor(id));
 
-            StateListDrawable gradientDrawable = (StateListDrawable) gridView.getBackground();
-            DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
-            assert drawableContainerState != null;
-            Drawable[] children = drawableContainerState.getChildren();
-            GradientDrawable unselectedItem = (GradientDrawable) children[1];
-            unselectedItem.setColor(context.getResources().getColor(id));
 
-            if( context.getResources().getColor(id)  ==  Color.rgb(255, 255, 255))
-                unselectedItem.setStroke(ColorOperations.dpToPx(3,context), ColorOperations.manipulateColor(textColor,1.2f));
-            else
-                unselectedItem.setStroke(ColorOperations.dpToPx(3,context), ColorOperations.manipulateColor(textColor,0.9f));
+            ColorOperations.setCareLabelColor(gridView,context.getResources().getColor(id),false);
 
 
 
@@ -127,19 +108,19 @@ public class CustomGridAdapter extends BaseAdapter {
 
             switch (arrLabel.get(3)) {
                 case "Winter":
-                    SetIcon("winter",textColor);
+                    ColorOperations.determinateColorOfIcons("winter",textColor,weatherImageView,context);
                     break;
                 case "Summer":
-                    SetIcon("summer",textColor);
+                    ColorOperations.determinateColorOfIcons("summer",textColor,weatherImageView,context);
                     break;
                 case "Autumn":
-                    SetIcon("autumn",textColor);
+                    ColorOperations.determinateColorOfIcons("autumn",textColor,weatherImageView,context);
                     break;
                 case "Spring":
-                    SetIcon("spring",textColor);
+                    ColorOperations.determinateColorOfIcons("spring",textColor,weatherImageView,context);
                     break;
                 default:
-                    SetIcon("all_seasons",textColor);
+                    ColorOperations.determinateColorOfIcons("all_seasons",textColor,weatherImageView,context);
                     break;
             }
         }
@@ -148,18 +129,9 @@ public class CustomGridAdapter extends BaseAdapter {
         return gridView;
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         Button LayoutButton;
         ImageButton EditButton;
         ImageButton DeleteButton;
     }
-
-    public void SetIcon(String imageName, int textColor){
-        if(textColor == Color.rgb(255, 255, 255))//White Icons
-            weatherImageView.setBackground(ContextCompat.getDrawable(context, (context.getResources().getIdentifier(imageName+"_white", "drawable", context.getPackageName()))));
-        else//Black Icons
-            weatherImageView.setBackground(ContextCompat.getDrawable(context, (context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()))));
-    }
-
-
 }

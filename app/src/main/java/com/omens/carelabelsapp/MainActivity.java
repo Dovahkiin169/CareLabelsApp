@@ -36,7 +36,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.common.base.CharMatcher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -48,6 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.omens.carelabelsapp.ColorOperations.dpToPx;
 import static com.omens.carelabelsapp.ColorOperations.getContrastColor;
 import static com.omens.carelabelsapp.ColorOperations.manipulateColor;
 
@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity{
         }
         else if(LastButtonNext.equals("Wardrobe") && imageButton != null){
             if (!imageButton.getTag().equals("") && getContrastColor(getApplicationContext().getResources().getColor(Tags)) ==  Color.rgb(255, 255, 255)) //White Icons
-                imageButton.setImageResource(getApplicationContext().getResources().getIdentifier(Icon+"_white", "drawable", getApplicationContext().getPackageName()));
+                imageButton.setImageResource(getApplicationContext().getResources().getIdentifier(Icon + "_white", "drawable", getApplicationContext().getPackageName()));
             else
                 imageButton.setImageResource(getApplicationContext().getResources().getIdentifier(Icon, "drawable", getApplicationContext().getPackageName()));
 
@@ -435,13 +435,7 @@ public class MainActivity extends AppCompatActivity{
         ButtonPresser(viewNothing);
 
 
-        StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
-        DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
-        assert drawableContainerState != null;
-        Drawable[] children = drawableContainerState.getChildren();
-        GradientDrawable unselectedItem = (GradientDrawable) children[1];
-
-        unselectedItem.setColor(getApplicationContext().getResources().getColor(R.color.colorAccent));
+        CO.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false);
 
 
         brandTextView.setText("");
@@ -505,13 +499,8 @@ public class MainActivity extends AppCompatActivity{
             case "Wardrobe":
 
                 Tags=0;
-                StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
-                DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
-                assert drawableContainerState != null;
-                Drawable[] children = drawableContainerState.getChildren();
-                GradientDrawable unselectedItem = (GradientDrawable) children[1];
+                CO.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false);
 
-                unselectedItem.setColor(getApplicationContext().getResources().getColor(R.color.colorAccent));
                 iconWashing.setTag("");
                 iconBleach.setTag("");
                 iconDrying.setTag("");
@@ -786,19 +775,16 @@ boolean flagOfDelete = false;
                         addingElement(iconBleach.getTag().toString(), brandTextView.getText().toString(), String.valueOf(Colors.get(colorTextView.getText() + "")), clothesTypeAutoCompleteTextView.getText().toString(), iconDrying.getTag().toString(),
                                 iconIroning.getTag().toString(), mainMaterialAutoCompleteTextView.getText().toString(), iconProfessionalCleaning.getTag().toString(), (String) clothesSeasonSpinner.getSelectedItem(),
                                 specialMarksTextView.getText().toString(), firebaseUser.getUid(), iconWashing.getTag().toString(),false);
-                        StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
-                        DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
-                        assert drawableContainerState != null;
-                        Drawable[] children = drawableContainerState.getChildren();
-                        GradientDrawable unselectedItem = (GradientDrawable) children[1];
 
-                        unselectedItem.setColor(getApplicationContext().getResources().getColor(R.color.colorAccent));
+                        CO.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false);
+
                         afterElementWasAdd();
                         DataGetter();
                     }
 
                     break;
                 case R.id.wardrobe_button:
+
                     if(GRID_DATA.size()==0)
                     {
                         details_info.setText(R.string.dont_have_clothes);
@@ -1068,13 +1054,8 @@ boolean flagOfDelete = false;
                     .addOnSuccessListener(aVoid -> {
                         flagOfDelete = true;
                         DataGetter();
-                        StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
-                        DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
-                        assert drawableContainerState != null;
-                        Drawable[] children = drawableContainerState.getChildren();
-                        GradientDrawable unselectedItem = (GradientDrawable) children[1];
 
-                        unselectedItem.setColor(getApplicationContext().getResources().getColor(R.color.colorAccent));
+                        CO.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false);
 
                         iconWashing.setTag("");
                         iconBleach.setTag("");

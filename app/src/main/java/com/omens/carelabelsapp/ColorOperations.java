@@ -7,8 +7,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableContainer;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.StateSet;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.ColorInt;
 
@@ -58,5 +63,28 @@ public class ColorOperations {
     public static int dpToPx(int dp, Context context) {
         float density = context.getResources().getDisplayMetrics().density;
         return Math.round((float) dp * density);
+    }
+
+    public static void determinateColorOfIcons(String imageName, int color, ImageView imageView,Context context){
+        if(color == Color.rgb(255, 255, 255))//White Icons
+            imageView.setImageResource(context.getResources().getIdentifier(imageName + "_white", "drawable", context.getPackageName()));
+        else//Black Icons
+            imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
+    }
+
+    public static void setCareLabelColor(View view, Integer color, boolean Stroke) {
+        StateListDrawable gradientDrawable = (StateListDrawable) view.getBackground();
+        DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
+        assert drawableContainerState != null;
+        Drawable[] children = drawableContainerState.getChildren();
+        GradientDrawable unselectedItem = (GradientDrawable) children[1];
+        unselectedItem.setColor(color);
+        if(Stroke)
+        {
+            if( color  ==  Color.rgb(255, 255, 255))
+                unselectedItem.setStroke(dpToPx(3,view.getContext()), manipulateColor(color,1.2f));
+            else
+                unselectedItem.setStroke(dpToPx(3,view.getContext()), manipulateColor(color,0.9f));
+        }
     }
 }
