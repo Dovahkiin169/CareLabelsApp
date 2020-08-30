@@ -462,7 +462,6 @@ public class MainActivity extends AppCompatActivity{
         IconInfoButton.setVisibility(View.VISIBLE);
 
         ItemDescription.setVisibility(View.VISIBLE);
-        DataGetter();
     }
 
 
@@ -562,8 +561,8 @@ public class MainActivity extends AppCompatActivity{
 boolean flagOfDelete = false;
     public void DataGetter() {
         Getter = new HashMap<>();
-
         progressBarLoading.setVisibility(View.VISIBLE);
+        WardrobeButton.setClickable(false);
         showProgress(true,getApplicationContext(),this,progressBarLoading);
         firebaseFirestore.collection("clothes").whereEqualTo("userId", firebaseUser.getUid()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -578,6 +577,7 @@ boolean flagOfDelete = false;
                     EditElement();
                     flagOfDelete=false;
                 }
+                WardrobeButton.setClickable(true);
             } else
                 showProgress(false,getApplicationContext(),this,progressBarLoading);
                 Log.d("TAG", "Error getting documents: ", task.getException());
@@ -766,7 +766,7 @@ boolean flagOfDelete = false;
                         addingElement(iconBleach.getTag().toString(), brandTextView.getText().toString(), String.valueOf(Colors.get(colorTextView.getText() + "")), clothesTypeAutoCompleteTextView.getText().toString(), iconDrying.getTag().toString(),
                                 iconIroning.getTag().toString(), mainMaterialAutoCompleteTextView.getText().toString(), iconProfessionalCleaning.getTag().toString(), (String) clothesSeasonSpinner.getSelectedItem(),
                                 specialMarksTextView.getText().toString(), firebaseUser.getUid(), iconWashing.getTag().toString(),true);
-
+                        DataGetter();
                         afterElementWasAdd();
                     } else if (ButtonNext.getText().toString().equals(getResources().getString(R.string.next))) {
                         ButtonPresser(viewNothing);
@@ -785,6 +785,7 @@ boolean flagOfDelete = false;
 
                         unselectedItem.setColor(getApplicationContext().getResources().getColor(R.color.colorAccent));
                         afterElementWasAdd();
+                        DataGetter();
                     }
 
                     break;
