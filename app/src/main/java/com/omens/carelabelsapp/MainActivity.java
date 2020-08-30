@@ -1,5 +1,4 @@
 package com.omens.carelabelsapp;
-import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -24,7 +23,6 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -48,7 +46,7 @@ import java.util.Objects;
 import static com.omens.carelabelsapp.ColorOperations.getContrastColor;
 import static com.omens.carelabelsapp.ColorOperations.manipulateColor;
 
-public class MainActivity extends AppCompatActivity implements CustomRecyclerViewAdapter.ItemClickListener{
+public class MainActivity extends BaseActivity implements CustomRecyclerViewAdapter.ItemClickListener{
     HashMap<String, Integer> Clothes;
     HashMap<String, Integer> Material;
     HashMap<String, Integer> Colors;
@@ -428,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements CustomRecyclerVie
         ButtonPresser(viewNothing);
 
 
-        ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false);
+        ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false,false);
 
 
         brandTextView.setText("");
@@ -464,12 +462,6 @@ public class MainActivity extends AppCompatActivity implements CustomRecyclerVie
         CustomGridView.setAdapter(adapter);
         CustomGridView.setVisibility(View.VISIBLE);
         SetVisibility(viewNothing, "","", "");
-
-
-       /* CustomGridView.setAdapter(  new CustomGridAdapter( this, GRID_DATA ) );
-        CustomGridView.setOnItemClickListener(this::onItemClick);
-        CustomGridView.setVisibility(View.VISIBLE);
-        SetVisibility(viewNothing, "","", "");*/
     }
     @Override
     public void onItemClick(View view, int position) {
@@ -496,25 +488,8 @@ public class MainActivity extends AppCompatActivity implements CustomRecyclerVie
             unShade = (Button) view;
             unShade.setAlpha((float) 0.15);
 
-            StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
-            DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
-            assert drawableContainerState != null;
-            Drawable[] children = drawableContainerState.getChildren();
-            GradientDrawable unselectedItem = (GradientDrawable) children[1];
             Tag = (Integer) view.getTag();
-            if(Tag == R.color.white||
-                    Tag == R.color.antiqueWhiteColor||
-                    Tag == R.color.oldLaceColor||
-                    Tag == R.color.ivoryColor||
-                    Tag == R.color.seashellColor||
-                    Tag == R.color.ghostWhiteColor||
-                    Tag == R.color.snowColor||
-                    Tag == R.color.linenColor)
-            {
-                unselectedItem.setColor(manipulateColor(getApplicationContext().getResources().getColor(Tag), (float) 0.9));
-            }
-            else
-                unselectedItem.setColor(getApplicationContext().getResources().getColor(Tag));
+            ColorOperations.setCareLabelColor(CareLabelLayout,Tag,false,true);
 
 
             SetVisibility(viewNothing, "", "", "");
@@ -535,7 +510,7 @@ public class MainActivity extends AppCompatActivity implements CustomRecyclerVie
                         flagOfDelete = true;
                         DataGetter();
 
-                        CO.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false);
+                        ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false,false);
 
                         iconWashing.setTag("");
                         iconBleach.setTag("");
@@ -576,26 +551,8 @@ public class MainActivity extends AppCompatActivity implements CustomRecyclerVie
         else if (view.getId() == R.id.editButton) {
             ButtonPresser(viewFirst);
 
-            StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
-            DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
-            assert drawableContainerState != null;
-            Drawable[] children = drawableContainerState.getChildren();
-            GradientDrawable unselectedItem = (GradientDrawable) children[1];
-            ImageButton unShades = (ImageButton) view;
-            Tag = (Integer) unShades.getTag();
-            if(Tag == R.color.white||
-                    Tag == R.color.antiqueWhiteColor||
-                    Tag == R.color.oldLaceColor||
-                    Tag == R.color.ivoryColor||
-                    Tag == R.color.seashellColor||
-                    Tag == R.color.ghostWhiteColor||
-                    Tag == R.color.snowColor||
-                    Tag == R.color.linenColor)
-            {
-                unselectedItem.setColor(manipulateColor(getApplicationContext().getResources().getColor(Tag), (float) 0.9));
-            }
-            else
-                unselectedItem.setColor(getApplicationContext().getResources().getColor(Tag));
+            Tag = (Integer) view.getTag();
+            ColorOperations.setCareLabelColor(CareLabelLayout,Tag,false,true);
 
 
             CustomGridView.setVisibility(View.GONE);
@@ -648,7 +605,7 @@ public class MainActivity extends AppCompatActivity implements CustomRecyclerVie
             case "Wardrobe":
 
                 Tags=0;
-                ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false);
+                ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false,false);
 
                 setValueOfTags("");
 
@@ -927,7 +884,7 @@ boolean flagOfDelete = false;
                                 iconIroning.getTag().toString(), mainMaterialAutoCompleteTextView.getText().toString(), iconProfessionalCleaning.getTag().toString(), (String) clothesSeasonSpinner.getSelectedItem(),
                                 specialMarksTextView.getText().toString(), firebaseUser.getUid(), iconWashing.getTag().toString(),false);
 
-                        ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false);
+                        ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false,false);
 
                         afterElementWasAdd();
                         DataGetter();
@@ -1144,152 +1101,6 @@ boolean flagOfDelete = false;
     Button unShade = null;
     int Tags = 0;
 
-    private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        int Tag;
-        if (view.getId() != R.id.deleteButton) {
-            Tag = (int) view.getTag();
-            iconWashing.setTag(Tag);
-            iconBleach.setTag(Tag);
-            iconDrying.setTag(Tag);
-            iconIroning.setTag(Tag);
-            iconProfessionalCleaning.setTag(Tag);
-            Tags =Tag;
-            IconSetterForDetails(iconWashing, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(6))));
-            IconSetterForDetails(iconBleach, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(7))));
-            IconSetterForDetails(iconDrying, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(8))));
-            IconSetterForDetails(iconIroning, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(9))));
-            IconSetterForDetails(iconProfessionalCleaning, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(10))));
-            details_info.setText("");
-        }
-        if (view.getId() == R.id.layoutButton) {
-            if(unShade != null)
-                unShade.setAlpha((float) 0.0);
-
-            unShade = (Button) view;
-            unShade.setAlpha((float) 0.15);
-
-            StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
-            DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
-            assert drawableContainerState != null;
-            Drawable[] children = drawableContainerState.getChildren();
-            GradientDrawable unselectedItem = (GradientDrawable) children[1];
-            Tag = (Integer) view.getTag();
-            if(Tag == R.color.white||
-                    Tag == R.color.antiqueWhiteColor||
-                    Tag == R.color.oldLaceColor||
-                    Tag == R.color.ivoryColor||
-                    Tag == R.color.seashellColor||
-                    Tag == R.color.ghostWhiteColor||
-                    Tag == R.color.snowColor||
-                    Tag == R.color.linenColor)
-            {
-                unselectedItem.setColor(manipulateColor(getApplicationContext().getResources().getColor(Tag), (float) 0.9));
-            }
-            else
-                unselectedItem.setColor(getApplicationContext().getResources().getColor(Tag));
-
-
-            SetVisibility(viewNothing, "", "", "");
-
-        }
-        else if (view.getId() == R.id.deleteButton) {
-            EditItemId = GRID_DATA.get(position).get(11);
-            AlertDialog.Builder  builder = new AlertDialog.Builder(MainActivity.this);
-
-            builder.setCancelable(true);
-            builder.setTitle("This clothing will be removed");
-            builder.setMessage("Do you want to delete this item?");
-            builder.setCancelable(false);
-            builder.setNegativeButton("NO", (dialogInterface, i) -> {});
-
-            builder.setPositiveButton("YES", (dialogInterface, i) -> firebaseFirestore.collection("clothes").document(EditItemId).delete()
-                    .addOnSuccessListener(aVoid -> {
-                        flagOfDelete = true;
-                        DataGetter();
-
-                        CO.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false);
-
-                        iconWashing.setTag("");
-                        iconBleach.setTag("");
-                        iconDrying.setTag("");
-                        iconIroning.setTag("");
-                        iconProfessionalCleaning.setTag("");
-                        empty="";
-                        iconWashing.setTag("");
-                        IconSetterForDetails(iconWashing,null,"washing_symbol");
-                        empty="";
-                        iconWashing.setTag("");
-                        IconSetterForDetails(iconBleach,null,"chlorine_and_non_chlorine_bleach");
-                        empty="";
-                        iconDrying.setTag("");
-                        IconSetterForDetails(iconDrying,null,"drying_symbol");
-                        empty="";
-                        iconIroning.setTag("");
-                        IconSetterForDetails(iconIroning,null,"ironing");
-                        empty="";
-                        IconSetterForDetails(iconProfessionalCleaning,null,"professional_cleaning");
-                        iconProfessionalCleaning.setTag("");
-
-
-                        if(GRID_DATA.size()==0)
-                        {
-                            details_info.setText(R.string.dont_have_clothes);
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast toast = Toast.makeText(getApplicationContext(), "Sorry, There was problem while trying to delete clothes. Please, try later or check your internet connection", Toast.LENGTH_LONG);
-                        toast.show();
-                    }));
-            builder.show();
-
-
-
-        }
-        else if (view.getId() == R.id.editButton) {
-            ButtonPresser(viewFirst);
-
-            StateListDrawable gradientDrawable = (StateListDrawable) CareLabelLayout.getBackground();
-            DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
-            assert drawableContainerState != null;
-            Drawable[] children = drawableContainerState.getChildren();
-            GradientDrawable unselectedItem = (GradientDrawable) children[1];
-            ImageButton unShades = (ImageButton) view;
-            Tag = (Integer) unShades.getTag();
-            if(Tag == R.color.white||
-                    Tag == R.color.antiqueWhiteColor||
-                    Tag == R.color.oldLaceColor||
-                    Tag == R.color.ivoryColor||
-                    Tag == R.color.seashellColor||
-                    Tag == R.color.ghostWhiteColor||
-                    Tag == R.color.snowColor||
-                    Tag == R.color.linenColor)
-            {
-                unselectedItem.setColor(manipulateColor(getApplicationContext().getResources().getColor(Tag), (float) 0.9));
-            }
-            else
-                unselectedItem.setColor(getApplicationContext().getResources().getColor(Tag));
-
-
-            CustomGridView.setVisibility(View.GONE);
-            SetVisibility(viewFirst, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
-            SetClickable(true);
-            clothesTypeAutoCompleteTextView.setText(GRID_DATA.get(position).get(1));
-            mainMaterialAutoCompleteTextView.setText(GRID_DATA.get(position).get(2));
-            brandTextView.setText(GRID_DATA.get(position).get(0));
-            colorTextView.setText(getKeyByValue(Colors, getApplicationContext().getResources().getIdentifier(GRID_DATA.get(position).get(4), "color", getApplicationContext().getPackageName())));
-            colorImage.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), Objects.requireNonNull(Colors.get(colorTextView.getText() + ""))));
-
-            specialMarksTextView.setText(GRID_DATA.get(position).get(5));
-            EditItemId = GRID_DATA.get(position).get(11);
-
-
-            clothesSeasonSpinner.setSelection(((ArrayAdapter<String>) clothesSeasonSpinner.getAdapter()).getPosition(GRID_DATA.get(position).get(3)));
-
-
-
-        }
-    }
-
     protected void showProgress(final boolean show, final Context con, final Activity act, View ProgressView) {
         act.runOnUiThread(() -> {
 
@@ -1314,7 +1125,4 @@ boolean flagOfDelete = false;
         iconIroning.setTag(value);
         iconProfessionalCleaning.setTag(value);
     }
-
 }
-
-

@@ -50,7 +50,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
         holder.DeleteButton.setTag(id);
         int textColor = ColorOperations.getContrastColor(holder.itemView.getContext().getResources().getColor(id));
 
-        ColorOperations.setCareLabelColor(holder.itemView,holder.itemView.getContext().getResources().getColor(id),true);
+        ColorOperations.setCareLabelColor(holder.itemView,holder.itemView.getContext().getResources().getColor(id),true,false);
 
 
 

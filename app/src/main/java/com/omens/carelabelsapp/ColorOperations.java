@@ -64,7 +64,7 @@ public class ColorOperations {
             imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
     }
 
-    public static void setCareLabelColor(View view, Integer color, boolean Stroke) {
+    public static void setCareLabelColor(View view, Integer color, boolean Stroke, boolean ifBackgroundIsWhite) {
         StateListDrawable gradientDrawable = (StateListDrawable) view.getBackground();
         DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
         assert drawableContainerState != null;
@@ -72,10 +72,23 @@ public class ColorOperations {
         GradientDrawable unselectedItem = (GradientDrawable) children[1];
         unselectedItem.setColor(color);
         if(Stroke) {
-            if( color  ==  Color.rgb(255, 255, 255))
+            if( color  ==  Color.rgb(255, 255, 255) && color!=-1)
                 unselectedItem.setStroke(dpToPx(3,view.getContext()), manipulateColor(color,1.2f));
             else
                 unselectedItem.setStroke(dpToPx(3,view.getContext()), manipulateColor(color,0.9f));
+        }
+        else if(ifBackgroundIsWhite) {
+            if(color == R.color.white||
+                    color == R.color.antiqueWhiteColor||
+                    color == R.color.oldLaceColor||
+                    color == R.color.ivoryColor||
+                    color == R.color.seashellColor||
+                    color == R.color.ghostWhiteColor||
+                    color == R.color.snowColor||
+                    color == R.color.linenColor)
+                unselectedItem.setColor(manipulateColor(view.getContext().getResources().getColor(color), (float) 0.9));
+            else
+                unselectedItem.setColor(view.getContext().getResources().getColor(color));
         }
     }
 }

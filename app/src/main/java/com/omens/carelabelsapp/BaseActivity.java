@@ -11,7 +11,7 @@ public class BaseActivity extends AppCompatActivity
     boolean CheckStatus = false;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
      {
         super.onCreate(savedInstanceState);
         updateTheme();
