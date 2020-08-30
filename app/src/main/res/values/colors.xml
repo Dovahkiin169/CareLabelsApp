@@ -4,10 +4,12 @@
     <color name="colorPrimaryDark">#4527a0</color>
     <color name="colorAccent">#9575cd</color>
     <color name="cyan">#33B5E5</color>
-
     <color name="downRightButtonColor">#33B5E5</color>
 
-
+    <color name="colorPrimaryDarker">#2C194E</color>
+    <color name="colorPrimaryDarkDarker">#190E39</color>
+    <color name="colorAccentDarker">#49366B</color>
+    <color name="homeDark">#150F1F</color>
 
     <!-- Whites -->
     <color name="white">#ffffff</color>
