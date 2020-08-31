@@ -1,7 +1,6 @@
 package com.omens.carelabelsapp;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
 import android.graphics.drawable.GradientDrawable;
@@ -12,19 +11,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class EditProfile extends BaseActivity {
     EditText profileFullName,profileEmail;
@@ -58,13 +53,6 @@ public class EditProfile extends BaseActivity {
         else {
             profileImageView.setImageResource(R.drawable.person_icon_white);
             setProfileColors(profileImageView,getApplicationContext().getResources().getColor(R.color.colorAccentDarker));
-        }
-
-        if(Utility.getTheme(getApplicationContext())<= 1) {
-            saveBtn.setBackgroundResource(R.drawable.button_shape);
-        }
-        else {
-            saveBtn.setBackgroundResource(R.drawable.button_shape_darker);
         }
 
         StorageReference profileRef = storageReference.child("users/"+ Objects.requireNonNull(fAuth.getCurrentUser()).getUid());

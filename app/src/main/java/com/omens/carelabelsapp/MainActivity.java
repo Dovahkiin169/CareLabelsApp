@@ -11,8 +11,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Icon;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -622,14 +620,7 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
                 LastButtonNext="";
                 break;
             case "Wardrobe":
-
                 Tags=0;
-                if(Utility.getTheme(getApplicationContext())<= 1)
-                    ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false,false);
-                else
-                    ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccentDarker),false,false);
-
-
                 setValueOfTags("");
 
                 CustomGridView.setVisibility(View.GONE);

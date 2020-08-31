@@ -1,8 +1,6 @@
 package com.omens.carelabelsapp;
 
-
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,13 +9,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.Objects;
 
 public class Login extends BaseActivity {
@@ -26,7 +19,6 @@ public class Login extends BaseActivity {
     TextView CreateButton,forgotTextLink;
     ProgressBar progressBar;
     FirebaseAuth Auth;
-    ColorOperations CO = new ColorOperations();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +32,6 @@ public class Login extends BaseActivity {
         LoginButton = findViewById(R.id.loginButton);
         CreateButton = findViewById(R.id.createAccountText);
         forgotTextLink = findViewById(R.id.forgotPasswordTextView);
-
-
-        if(Utility.getTheme(getApplicationContext())<= 1) {
-            LoginButton.setBackgroundResource(R.drawable.button_shape);
-        }
-        else {
-            LoginButton.setBackgroundResource(R.drawable.button_shape_darker);
-        }
 
         LoginButton.setOnClickListener(v -> {
 
