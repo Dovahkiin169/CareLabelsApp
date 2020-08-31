@@ -4,8 +4,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
@@ -13,11 +11,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -32,7 +26,6 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.common.base.CharMatcher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,7 +37,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import static com.omens.carelabelsapp.ColorOperations.getContrastColor;
-import static com.omens.carelabelsapp.ColorOperations.manipulateColor;
 
 public class MainActivity extends BaseActivity implements CustomRecyclerViewAdapter.ItemClickListener{
     HashMap<String, Integer> Clothes;
@@ -130,7 +122,15 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
         WardrobeButton = findViewById(R.id.wardrobe_button);
         IconInfoButton = findViewById(R.id.icon_info_button);
 
-        IconInfoButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor))),getApplicationContext()));
+        if(Utility.getTheme(getApplicationContext())<= 1)
+            IconInfoButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor))),getApplicationContext()));
+        else
+            IconInfoButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.indigoColor))),getApplicationContext()));
+        if(Utility.getTheme(getApplicationContext())<= 1)
+            WardrobeButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccent))),getApplicationContext()));
+        else
+            WardrobeButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccentDarker))),getApplicationContext()));
+
 
 
         progressBarLoading = findViewById(R.id.progressBarLoading);
@@ -310,7 +310,7 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
             Location = "LabelInfo";
             for (Map.Entry<String, ImageButton> entry : IconsArray.entrySet()) {
                 if (Icon.equals(entry.getKey())) {
-                    entry.getValue().setSelected(true);//getApplicationContext().getResources().getString(R.string.wash_image_buttons_string)
+                    entry.getValue().setSelected(true);
                     details_info.setText(getApplicationContext().getResources().getIdentifier(Icon, "string", getApplicationContext().getPackageName()));
                 } else
                     entry.getValue().setSelected(false);
@@ -426,7 +426,10 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
         ButtonPresser(viewNothing);
 
 
-        ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false,false);
+        if(Utility.getTheme(getApplicationContext())<= 1)
+            ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false,false);
+        else
+            ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccentDarker),false,false);
 
 
         brandTextView.setText("");
@@ -468,11 +471,7 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
         int Tag;
         if (view.getId() != R.id.deleteButton) {
             Tag = (int) view.getTag();
-            iconWashing.setTag(Tag);
-            iconBleach.setTag(Tag);
-            iconDrying.setTag(Tag);
-            iconIroning.setTag(Tag);
-            iconProfessionalCleaning.setTag(Tag);
+            setValueOfTags(String.valueOf(Tag));
             Tags =Tag;
             IconSetterForDetails(iconWashing, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(6))));
             IconSetterForDetails(iconBleach, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(7))));
@@ -510,7 +509,10 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
                         flagOfDelete = true;
                         DataGetter();
 
-                        ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false,false);
+                        if(Utility.getTheme(getApplicationContext())<= 1)
+                            ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false,false);
+                        else
+                            ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccentDarker),false,false);
 
                         iconWashing.setTag("");
                         iconBleach.setTag("");
@@ -552,6 +554,7 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
             ButtonPresser(viewFirst);
 
             Tag = (Integer) view.getTag();
+
             ColorOperations.setCareLabelColor(CareLabelLayout,Tag,false,true);
 
 
@@ -605,7 +608,11 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
             case "Wardrobe":
 
                 Tags=0;
-                ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false,false);
+                if(Utility.getTheme(getApplicationContext())<= 1)
+                    ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false,false);
+                else
+                    ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccentDarker),false,false);
+
 
                 setValueOfTags("");
 
@@ -634,22 +641,7 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
         return null;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.profile_settings)
-            startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
-        else if(item.getItemId() == R.id.log_out) {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(getApplicationContext(),Login.class));
-            finishAffinity();
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 boolean flagOfDelete = false;
     public void DataGetter() {
         Getter = new HashMap<>();
@@ -879,12 +871,15 @@ boolean flagOfDelete = false;
                         ButtonNext.setText(R.string.add_clothes);
                         SetVisibility(viewSixth, getResources().getString(R.string.details), getResources().getString(R.string.enter_more_details), getResources().getString(R.string.add_clothes));
                     }
-                    else if (ButtonNext.getText().toString().equals(getResources().getString(R.string.confirm))) {
+                    else if (EmptyChecker() && ButtonNext.getText().toString().equals(getResources().getString(R.string.confirm))) {
                         addingElement(iconBleach.getTag().toString(), brandTextView.getText().toString(), String.valueOf(Colors.get(colorTextView.getText() + "")), clothesTypeAutoCompleteTextView.getText().toString(), iconDrying.getTag().toString(),
                                 iconIroning.getTag().toString(), mainMaterialAutoCompleteTextView.getText().toString(), iconProfessionalCleaning.getTag().toString(), (String) clothesSeasonSpinner.getSelectedItem(),
                                 specialMarksTextView.getText().toString(), firebaseUser.getUid(), iconWashing.getTag().toString(),false);
 
-                        ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false,false);
+                        if(Utility.getTheme(getApplicationContext())<= 1)
+                            ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccent),false,false);
+                        else
+                            ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccentDarker),false,false);
 
                         afterElementWasAdd();
                         DataGetter();
@@ -1124,5 +1119,25 @@ boolean flagOfDelete = false;
         iconDrying.setTag(value);
         iconIroning.setTag(value);
         iconProfessionalCleaning.setTag(value);
+    }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.profile_settings)
+            startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+        else if(item.getItemId() == R.id.log_out) {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(getApplicationContext(),Login.class));
+            finishAffinity();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

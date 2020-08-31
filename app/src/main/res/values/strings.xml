@@ -127,4 +127,5 @@
     <string name="dont_have_clothes">You don\'t have any clothes, try adding one by pressing \"Read My Label\" in main menu</string>
 
     <string name="prefs_theme_key">theme</string>
+    <string name="settings">Settings</string>
 </resources>

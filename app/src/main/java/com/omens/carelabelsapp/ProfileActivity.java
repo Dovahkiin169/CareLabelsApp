@@ -1,14 +1,18 @@
 package com.omens.carelabelsapp;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity {
     TextView fullName,email,verifyMsg;
     FirebaseAuth Auth;
     FirebaseFirestore fStore;
@@ -28,15 +32,22 @@ public class ProfileActivity extends AppCompatActivity {
     Button resetPassLocal,changeProfile,logoutButton;
     FirebaseUser user;
     ColorOperations CO = new ColorOperations();
-
+    ImageView profileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
         fullName = findViewById(R.id.profileName);
         email = findViewById(R.id.profileEmail);
         resetPassLocal = findViewById(R.id.resetPasswordLocal);
+        profileImage = findViewById(R.id.profileImage);
+        if(Utility.getTheme(getApplicationContext())<= 1)
+            profileImage.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.person_icon));
+        else
+            profileImage.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.person_icon_white));
+
 
         changeProfile = findViewById(R.id.editProfile);
 
@@ -118,5 +129,54 @@ public class ProfileActivity extends AppCompatActivity {
     public void onBackPressed() {
         startActivity(new Intent(getApplicationContext(),MainActivity.class));
         finishAffinity();
+    }
+
+
+    public void saveData(int theme) {
+        Utility.setTheme(getApplicationContext(), theme);
+    }
+
+
+    public void recreateActivity()
+    {
+        Intent intent = getIntent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            finishAffinity();
+        else
+            finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.profile_menu, menu);
+        if (Utility.getTheme(getApplicationContext())<= 1)
+            menu.getItem(0).setIcon(R.drawable.moon);
+        else
+            menu.getItem(0).setIcon(R.drawable.summer_white);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.change_theme_button && !GetStatus()) {
+            item.setIcon(R.drawable.moon);
+            saveData(1);
+            recreateActivity();
+            }
+        else if (item.getItemId() == R.id.change_theme_button && GetStatus()) {
+            item.setIcon(R.drawable.summer_white);
+            saveData(2);
+            recreateActivity();
+            }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
+        super.onUserLeaveHint();
+        saveData(Utility.getTheme(getApplicationContext()));
     }
 }

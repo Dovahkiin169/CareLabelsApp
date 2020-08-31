@@ -23,7 +23,6 @@
         android:gravity="center_vertical|start"
         android:scaleType="fitCenter"
         android:text="@string/information_about_laundry_labels"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/space"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/space6"

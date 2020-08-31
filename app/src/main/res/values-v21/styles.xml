@@ -6,6 +6,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:colorBackground">@color/white</item>
         <item name="care_label_drawable">@drawable/care_label_shape</item>
+        <item name="android:popupBackground">@color/colorAccent</item>
+        <item name="android:itemBackground">@color/white</item>
 
         <item name="android:textColor">@color/black</item>
         <item name="android:editTextColor">@color/black</item>
@@ -18,13 +20,15 @@
     </style>
 
 
-    <style name="AppThemeDark" parent="Theme.AppCompat">
+    <style name="AppThemeDark" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryDarker</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkDarker</item>
         <item name="colorAccent">@color/colorAccentDarker</item>
         <item name="android:windowIsTranslucent">true</item>
-        <item name="backgroundColor">@color/homeDark</item>
+        <item name="android:colorBackground">@color/homeDark</item>
+        <item name="android:popupBackground">@color/homeDark</item>
+        <item name="android:itemBackground">@color/colorAccentDarker</item>
         <item name="care_label_drawable">@drawable/care_label_shape_darker</item>
 
         <item name="android:textColor">@color/white</item>
