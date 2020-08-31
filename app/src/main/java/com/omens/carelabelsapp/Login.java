@@ -99,12 +99,12 @@ public class Login extends BaseActivity {
                 else
                     passwordResetDialog = new AlertDialog.Builder(v.getContext(), R.style.AlertDialogDark);
             passwordResetDialog.setTitle("Reset Password ?");
-            passwordResetDialog.setMessage("Enter Your Email To Received Reset Link.");
+            passwordResetDialog.setMessage("Enter Your Email to receive reset link.");
             passwordResetDialog.setView(resetMail);
 
             passwordResetDialog.setPositiveButton("Yes", (dialog, which) -> {
                 String mail = resetMail.getText().toString();
-                Auth.sendPasswordResetEmail(mail).addOnSuccessListener(aVoid -> Toast.makeText(Login.this, "Reset Link Sent To Your Email.", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(Login.this, "Error ! Reset Link is Not Sent" + e.getMessage(), Toast.LENGTH_SHORT).show());
+                Auth.sendPasswordResetEmail(mail).addOnSuccessListener(aVoid -> Toast.makeText(Login.this, "Reset link was sent to Your Email.", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(Login.this, "Error ! Reset Link is Not Sent" + e.getMessage(), Toast.LENGTH_SHORT).show());
 
             });
 
