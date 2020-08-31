@@ -121,18 +121,6 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
 
         WardrobeButton = findViewById(R.id.wardrobe_button);
         IconInfoButton = findViewById(R.id.icon_info_button);
-
-        if(Utility.getTheme(getApplicationContext())<= 1)
-            IconInfoButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor))),getApplicationContext()));
-        else
-            IconInfoButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.indigoColor))),getApplicationContext()));
-        if(Utility.getTheme(getApplicationContext())<= 1)
-            WardrobeButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccent))),getApplicationContext()));
-        else
-            WardrobeButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccentDarker))),getApplicationContext()));
-
-
-
         progressBarLoading = findViewById(R.id.progressBarLoading);
         progressBarLoading.setVisibility(View.GONE);
 
@@ -177,6 +165,14 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
         firebaseUser = firebaseAuth.getCurrentUser();
 
         firebaseFirestore= FirebaseFirestore.getInstance();
+        if(Utility.getTheme(getApplicationContext())<= 1)
+            IconInfoButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor))),getApplicationContext()));
+        else
+            IconInfoButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.indigoColor))),getApplicationContext()));
+        if(Utility.getTheme(getApplicationContext())<= 1)
+            WardrobeButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccent))),getApplicationContext()));
+        else
+            WardrobeButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccentDarker))),getApplicationContext()));
 
         DataGetter();
     }
@@ -496,7 +492,13 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
         }
         else if (view.getId() == R.id.deleteButton) {
             EditItemId = GRID_DATA.get(position).get(11);
-            AlertDialog.Builder  builder = new AlertDialog.Builder(MainActivity.this);
+            AlertDialog.Builder  builder;
+            if(Utility.getTheme(getApplicationContext())<= 1)
+                builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogWhite);
+            else
+                builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogDark);
+
+
 
             builder.setCancelable(true);
             builder.setTitle("This clothing will be removed");

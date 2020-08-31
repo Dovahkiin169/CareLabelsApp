@@ -1,6 +1,7 @@
 package com.omens.carelabelsapp;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
 import android.graphics.drawable.GradientDrawable;
@@ -36,6 +37,7 @@ public class Register extends BaseActivity {
     ProgressBar progressBar;
     FirebaseFirestore FireStore;
     String userID;
+    ColorOperations CO = new ColorOperations();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,13 @@ public class Register extends BaseActivity {
         FireStore = FirebaseFirestore.getInstance();
         progressBar = findViewById(R.id.progressBar);
 
+        if(Utility.getTheme(getApplicationContext())<= 1) {
+            RegisterButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccent))),getApplicationContext()));
+        }
+        else {
+            RegisterButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccentDarker))),getApplicationContext()));
 
+        }
 
 
         RegisterButton.setOnClickListener(v -> {

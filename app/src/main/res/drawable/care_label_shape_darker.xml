@@ -9,7 +9,7 @@
                 android:topLeftRadius="20dp"
                 android:topRightRadius="20dp" />
 
-            <solid android:color="@color/colorPrimaryDark" />
+            <solid android:color="@color/colorPrimaryDarker" />
         </shape>
     </item>
     <item android:state_pressed="false">

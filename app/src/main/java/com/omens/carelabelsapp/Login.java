@@ -2,6 +2,7 @@ package com.omens.carelabelsapp;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -25,7 +26,7 @@ public class Login extends BaseActivity {
     TextView CreateButton,forgotTextLink;
     ProgressBar progressBar;
     FirebaseAuth Auth;
-
+    ColorOperations CO = new ColorOperations();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,14 @@ public class Login extends BaseActivity {
         CreateButton = findViewById(R.id.createAccountText);
         forgotTextLink = findViewById(R.id.forgotPasswordTextView);
 
+
+        if(Utility.getTheme(getApplicationContext())<= 1) {
+            LoginButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccent))),getApplicationContext()));
+        }
+        else {
+            LoginButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccentDarker))),getApplicationContext()));
+
+        }
 
         LoginButton.setOnClickListener(v -> {
 

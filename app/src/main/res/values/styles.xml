@@ -43,4 +43,10 @@
         <item name="background">@color/colorPrimaryDarker</item>
     </style>
 
+    <style name="AlertDialogWhite" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/white</item>
+    </style>
+    <style name="AlertDialogDark" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="android:background">@color/colorAccentDarker</item>
+    </style>
 </resources>
