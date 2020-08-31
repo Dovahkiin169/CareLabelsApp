@@ -43,11 +43,10 @@ public class Login extends BaseActivity {
 
 
         if(Utility.getTheme(getApplicationContext())<= 1) {
-            LoginButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccent))),getApplicationContext()));
+            LoginButton.setBackgroundResource(R.drawable.button_shape);
         }
         else {
-            LoginButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccentDarker))),getApplicationContext()));
-
+            LoginButton.setBackgroundResource(R.drawable.button_shape_darker);
         }
 
         LoginButton.setOnClickListener(v -> {

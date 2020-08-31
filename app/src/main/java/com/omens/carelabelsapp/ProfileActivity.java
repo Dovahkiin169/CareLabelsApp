@@ -96,8 +96,12 @@ public class ProfileActivity extends BaseActivity {
         resetPassLocal.setOnClickListener(v -> {
 
             final EditText resetPassword = new EditText(v.getContext());
+            final AlertDialog.Builder passwordResetDialog;
+            if(Utility.getTheme(getApplicationContext())<= 1)
+                passwordResetDialog = new AlertDialog.Builder(v.getContext(), R.style.AlertDialogWhite);
+            else
+                passwordResetDialog = new AlertDialog.Builder(v.getContext(), R.style.AlertDialogDark);
 
-            final AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(v.getContext());
             passwordResetDialog.setTitle("Reset Password ?");
             passwordResetDialog.setMessage("Enter New Password > 6 Characters long.");
             passwordResetDialog.setView(resetPassword);

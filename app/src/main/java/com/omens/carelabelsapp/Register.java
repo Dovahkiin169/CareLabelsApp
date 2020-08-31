@@ -55,11 +55,10 @@ public class Register extends BaseActivity {
         progressBar = findViewById(R.id.progressBar);
 
         if(Utility.getTheme(getApplicationContext())<= 1) {
-            RegisterButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccent))),getApplicationContext()));
+            RegisterButton.setBackgroundResource(R.drawable.button_shape);
         }
         else {
-            RegisterButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccentDarker))),getApplicationContext()));
-
+            RegisterButton.setBackgroundResource(R.drawable.button_shape_darker);
         }
 
 

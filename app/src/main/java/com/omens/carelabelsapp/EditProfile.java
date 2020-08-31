@@ -1,7 +1,13 @@
 package com.omens.carelabelsapp;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableContainer;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,7 +34,7 @@ public class EditProfile extends BaseActivity {
     FirebaseFirestore fStore;
     FirebaseUser user;
     StorageReference storageReference;
-
+    ColorOperations CO = new ColorOperations();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +50,22 @@ public class EditProfile extends BaseActivity {
         profileEmail = findViewById(R.id.profileEmailAddress);
         profileImageView = findViewById(R.id.profileImageView);
         saveBtn = findViewById(R.id.saveProfileInfo);
+
+        if(Utility.getTheme(getApplicationContext())<= 1) {
+            profileImageView.setImageResource(R.drawable.person_icon);
+            setProfileColors(profileImageView,getApplicationContext().getResources().getColor(R.color.colorAccent));
+        }
+        else {
+            profileImageView.setImageResource(R.drawable.person_icon_white);
+            setProfileColors(profileImageView,getApplicationContext().getResources().getColor(R.color.colorAccentDarker));
+        }
+
+        if(Utility.getTheme(getApplicationContext())<= 1) {
+            saveBtn.setBackgroundResource(R.drawable.button_shape);
+        }
+        else {
+            saveBtn.setBackgroundResource(R.drawable.button_shape_darker);
+        }
 
         StorageReference profileRef = storageReference.child("users/"+ Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
         profileRef.getDownloadUrl();
@@ -69,4 +91,12 @@ public class EditProfile extends BaseActivity {
         profileEmail.setText(getIntent().getStringExtra("email"));
         profileFullName.setText(getIntent().getStringExtra("fullName"));
     }
+
+    public void setProfileColors(View view, int color) {
+        StateListDrawable gradientDrawable = (StateListDrawable) view.getBackground();
+        DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
+        assert drawableContainerState != null;
+        Drawable[] children = drawableContainerState.getChildren();
+        GradientDrawable unselectedItem = (GradientDrawable) children[0];
+        unselectedItem.setColor(color);}
 }
