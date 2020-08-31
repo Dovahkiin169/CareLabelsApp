@@ -4,11 +4,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -30,7 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -84,7 +79,11 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
 
     String LastButtonNext ="";
 
+    Button unShade = null;
+    int Tags = 0;
+
     ColorOperations CO = new ColorOperations();
+    ItemOperations IO = new ItemOperations();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -214,7 +213,7 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
         textView.setOnFocusChangeListener((view, hasFocus) -> {
             if (!hasFocus) {
                 if (hashMap.get(textView.getText() + "") == null)
-                    SetInvalid(textView,flag);
+                    IO.SetInvalid(textView,flag);
             }
         });
 
@@ -578,7 +577,7 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
             clothesTypeAutoCompleteTextView.setText(GRID_DATA.get(position).get(1));
             mainMaterialAutoCompleteTextView.setText(GRID_DATA.get(position).get(2));
             brandTextView.setText(GRID_DATA.get(position).get(0));
-            colorTextView.setText(getKeyByValue(Colors, getApplicationContext().getResources().getIdentifier(GRID_DATA.get(position).get(4), "color", getApplicationContext().getPackageName())));
+            colorTextView.setText(IO.getKeyByValue(Colors, getApplicationContext().getResources().getIdentifier(GRID_DATA.get(position).get(4), "color", getApplicationContext().getPackageName())));
             colorImage.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), Objects.requireNonNull(Colors.get(colorTextView.getText() + ""))));
 
             specialMarksTextView.setText(GRID_DATA.get(position).get(5));
@@ -641,12 +640,7 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
         }
     }
 
-    public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
-        for (Map.Entry<T, E> entry : map.entrySet())
-            if (Objects.equals(value, entry.getValue()))
-                return entry.getKey();
-        return null;
-    }
+
 
 
 boolean flagOfDelete = false;
@@ -654,7 +648,7 @@ boolean flagOfDelete = false;
         Getter = new HashMap<>();
         progressBarLoading.setVisibility(View.VISIBLE);
         WardrobeButton.setClickable(false);
-        showProgress(true,getApplicationContext(),this,progressBarLoading);
+        IO.showProgress(true,getApplicationContext(),this,progressBarLoading);
         firebaseFirestore.collection("clothes").whereEqualTo("userId", firebaseUser.getUid()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
@@ -663,14 +657,14 @@ boolean flagOfDelete = false;
                 }
                 transformReceivedData();
 
-                showProgress(false,getApplicationContext(),this,progressBarLoading);
+                IO.showProgress(false,getApplicationContext(),this,progressBarLoading);
                 if(flagOfDelete) {
                     EditElement();
                     flagOfDelete=false;
                 }
                 WardrobeButton.setClickable(true);
             } else {
-                showProgress(false, getApplicationContext(), this, progressBarLoading);
+                IO.showProgress(false, getApplicationContext(), this, progressBarLoading);
                 Toast toast = Toast.makeText(getApplicationContext(), "Sorry, There was problem while getting data from our Servers. Please, try later or check your internet connection", Toast.LENGTH_LONG);
                 toast.show();
             }
@@ -749,11 +743,6 @@ boolean flagOfDelete = false;
         return Result;
     }
 
-    private void SetInvalid(TextView textView, String ErrorText) {
-        textView.setText("");
-        textView.setError("Invalid "+ ErrorText+", choose from list");
-    }
-
 
 
 
@@ -797,11 +786,7 @@ boolean flagOfDelete = false;
                 case R.id.care_in_main:
                     if (ItemDescription.getVisibility() == View.VISIBLE) {
                         SetClickable(true);
-                        CareLabelLayout.setClickable(false);
-                        ItemDescription.setVisibility(View.GONE);
-
-                        WardrobeButton.setVisibility(View.GONE);
-                        IconInfoButton.setVisibility(View.GONE);
+                        setClickabilityAndVisibility(View.GONE,false);
 
                         LocationLabelsInfoDetector();
                         IconSetterForDetails(null,WashIconsArray,"");
@@ -870,7 +855,8 @@ boolean flagOfDelete = false;
                         colorTextView.clearFocus();
                         clothesTypeAutoCompleteTextView.clearFocus();
                         mainMaterialAutoCompleteTextView.clearFocus();
-                                specialMarksTextView.clearFocus();
+                        specialMarksTextView.clearFocus();
+
                         DataGetter();
                         afterElementWasAdd();
                     } else if (ButtonNext.getText().toString().equals(getResources().getString(R.string.next))) {
@@ -894,29 +880,23 @@ boolean flagOfDelete = false;
 
                     break;
                 case R.id.wardrobe_button:
+                    setClickabilityAndVisibility(View.GONE,false);
 
                     if(GRID_DATA.size()==0)
-                    {
                         details_info.setText(R.string.dont_have_clothes);
-                    }
+
+                    EditElement();
+
                     Location = "Wardrobe";
                     LastButtonNext = "Wardrobe";
-                    EditElement();
-                    WardrobeButton.setVisibility(View.GONE);
-                    IconInfoButton.setVisibility(View.GONE);
-                    CareLabelLayout.setClickable(false);
-                    ItemDescription.setVisibility(View.GONE);
                     break;
                 case R.id.icon_info_button:
+                    setClickabilityAndVisibility(View.GONE,false);
 
-                    WardrobeButton.setVisibility(View.GONE);
-                    IconInfoButton.setVisibility(View.GONE);
                     SetClickable(true);
-                    CareLabelLayout.setClickable(false);
-                    ItemDescription.setVisibility(View.GONE);
-
                     ButtonPresser(viewFirst);
                     SetVisibility(viewFirst, getResources().getString(R.string.washing_layout), getResources().getString(R.string.choose_your_symbol), getResources().getString(R.string.next));
+
                     Location = "LabelInfo";
                     LastButtonNext ="LabelInfo";
                     break;
@@ -1100,24 +1080,12 @@ boolean flagOfDelete = false;
         }
     };
 
-    Button unShade = null;
-    int Tags = 0;
 
-    protected void showProgress(final boolean show, final Context con, final Activity act, View ProgressView) {
-        act.runOnUiThread(() -> {
-
-            int shortAnimTime = con.getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-
-            ProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            ProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    ProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        });
+    public void setClickabilityAndVisibility(int visibility,boolean Clickability) {
+        WardrobeButton.setVisibility(visibility);
+        IconInfoButton.setVisibility(visibility);
+        CareLabelLayout.setClickable(Clickability);
+        ItemDescription.setVisibility(visibility);
     }
 
     public void setValueOfTags(String value) {
