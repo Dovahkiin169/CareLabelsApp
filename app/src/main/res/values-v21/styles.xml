@@ -6,7 +6,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:colorBackground">@color/white</item>
         <item name="care_label_drawable">@drawable/care_label_shape</item>
-        <item name="android:popupBackground">@color/colorAccent</item>
+        <item name="button_shape_drawable">@drawable/button_shape</item>
+        <item name="button_transparent_icon_shape_drawable">@drawable/button_transparent_icon_shape</item>
         <item name="android:itemBackground">@color/white</item>
 
         <item name="android:textColorHint">@color/charcoalColor</item>
@@ -28,9 +29,10 @@
         <item name="colorAccent">@color/colorAccentDarker</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:colorBackground">@color/homeDark</item>
-        <item name="android:popupBackground">@color/homeDark</item>
         <item name="android:itemBackground">@color/colorAccentDarker</item>
         <item name="care_label_drawable">@drawable/care_label_shape_darker</item>
+        <item name="button_shape_drawable">@drawable/button_shape_darker</item>
+        <item name="button_transparent_icon_shape_drawable">@drawable/button_transparent_icon_shape_darker</item>
 
         <item name="android:textColorHint">@color/white</item>
         <item name="android:textColor">@color/white</item>

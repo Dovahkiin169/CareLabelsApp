@@ -133,7 +133,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="@string/next"
-        android:background="@drawable/button_shape"
+        android:background="?attr/button_shape_drawable"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/choose_your_symbol"
         app:layout_constraintEnd_toEndOf="parent"
