@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
-public class Login extends AppCompatActivity {
+public class Login extends BaseActivity {
     EditText Email,Password;
     Button LoginButton;
     TextView CreateButton,forgotTextLink;

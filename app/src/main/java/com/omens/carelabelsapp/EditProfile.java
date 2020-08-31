@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class EditProfile extends AppCompatActivity {
+public class EditProfile extends BaseActivity {
     EditText profileFullName,profileEmail;
     ImageView profileImageView;
     Button saveBtn;

@@ -5,6 +5,10 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableContainer;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -43,10 +47,14 @@ public class ProfileActivity extends BaseActivity {
         email = findViewById(R.id.profileEmail);
         resetPassLocal = findViewById(R.id.resetPasswordLocal);
         profileImage = findViewById(R.id.profileImage);
-        if(Utility.getTheme(getApplicationContext())<= 1)
-            profileImage.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.person_icon));
-        else
-            profileImage.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.person_icon_white));
+        if(Utility.getTheme(getApplicationContext())<= 1) {
+            profileImage.setImageResource(R.drawable.person_icon);
+            setProfileColors(profileImage,getApplicationContext().getResources().getColor(R.color.colorAccent));
+        }
+        else {
+            profileImage.setImageResource(R.drawable.person_icon_white);
+            setProfileColors(profileImage,getApplicationContext().getResources().getColor(R.color.colorAccentDarker));
+        }
 
 
         changeProfile = findViewById(R.id.editProfile);
@@ -112,9 +120,17 @@ public class ProfileActivity extends BaseActivity {
             startActivity(i);
         });
 
+        if(Utility.getTheme(getApplicationContext())<= 1) {
+            changeProfile.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccent))),getApplicationContext()));
+            resetPassLocal.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor))),getApplicationContext()));
+            logoutButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.blueberryColor))),getApplicationContext()));
+        }
+        else {
+            changeProfile.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccentDarker))),getApplicationContext()));
+            resetPassLocal.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.indigoColor))),getApplicationContext()));
+            logoutButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.denimColor))),getApplicationContext()));
 
-        resetPassLocal.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor))),getApplicationContext()));
-        logoutButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.blueberryColor))),getApplicationContext()));
+        }
 
     }
 
@@ -179,4 +195,13 @@ public class ProfileActivity extends BaseActivity {
         super.onUserLeaveHint();
         saveData(Utility.getTheme(getApplicationContext()));
     }
+
+
+    public void setProfileColors(View view, int color) {
+        StateListDrawable gradientDrawable = (StateListDrawable) view.getBackground();
+        DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
+        assert drawableContainerState != null;
+        Drawable[] children = drawableContainerState.getChildren();
+        GradientDrawable unselectedItem = (GradientDrawable) children[0];
+        unselectedItem.setColor(color);}
 }
