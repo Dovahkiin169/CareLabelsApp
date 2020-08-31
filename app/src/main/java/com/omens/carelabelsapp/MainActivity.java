@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -165,10 +166,22 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
         firebaseUser = firebaseAuth.getCurrentUser();
 
         firebaseFirestore= FirebaseFirestore.getInstance();
-        if(Utility.getTheme(getApplicationContext())<= 1)
-            IconInfoButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor))),getApplicationContext()));
-        else
-            IconInfoButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.indigoColor))),getApplicationContext()));
+        if(Utility.getTheme(getApplicationContext())<= 1) {
+            iconWashing.setBackgroundResource(R.drawable.button_transparent_icon_shape);
+            iconBleach.setBackgroundResource(R.drawable.button_transparent_icon_shape);
+            iconDrying.setBackgroundResource(R.drawable.button_transparent_icon_shape);
+            iconIroning.setBackgroundResource(R.drawable.button_transparent_icon_shape);
+            iconProfessionalCleaning.setBackgroundResource(R.drawable.button_transparent_icon_shape);
+            IconInfoButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#" + Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))), Color.parseColor("#" + Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor))), getApplicationContext()));
+        }else {
+            iconWashing.setBackgroundResource(R.drawable.button_transparent_icon_shape_darker);
+            iconBleach.setBackgroundResource(R.drawable.button_transparent_icon_shape_darker);
+            iconDrying.setBackgroundResource(R.drawable.button_transparent_icon_shape_darker);
+            iconIroning.setBackgroundResource(R.drawable.button_transparent_icon_shape_darker);
+            iconProfessionalCleaning.setBackgroundResource(R.drawable.button_transparent_icon_shape_darker);
+
+            IconInfoButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#" + Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))), Color.parseColor("#" + Integer.toHexString(getApplicationContext().getResources().getColor(R.color.indigoColor))), getApplicationContext()));
+        }
         if(Utility.getTheme(getApplicationContext())<= 1)
             WardrobeButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccent))),getApplicationContext()));
         else
@@ -279,7 +292,8 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
         }
     }
 
-    public void IconSetterForDetails(ImageButton imageButton, HashMap<String, ImageButton>  IconsArray, String Icon) {
+    public void IconSetterForDetails(ImageButton imageButton, HashMap<String, ImageButton>  IconsArray, String
+        Icon) {
         if(!LastButtonNext.equals("LabelInfo")&& !LastButtonNext.equals("Wardrobe") && imageButton != null)
         {
             if(!Icon.contains("_sizer"))
