@@ -92,7 +92,12 @@ public class Login extends BaseActivity {
         forgotTextLink.setOnClickListener(v -> {
 
             final EditText resetMail = new EditText(v.getContext());
-            final AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(v.getContext());
+
+            final AlertDialog.Builder passwordResetDialog;
+                if(Utility.getTheme(getApplicationContext())<= 1)
+                    passwordResetDialog = new AlertDialog.Builder(v.getContext(), R.style.AlertDialogWhite);
+                else
+                    passwordResetDialog = new AlertDialog.Builder(v.getContext(), R.style.AlertDialogDark);
             passwordResetDialog.setTitle("Reset Password ?");
             passwordResetDialog.setMessage("Enter Your Email To Received Reset Link.");
             passwordResetDialog.setView(resetMail);
