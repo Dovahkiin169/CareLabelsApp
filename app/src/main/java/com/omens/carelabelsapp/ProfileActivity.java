@@ -1,6 +1,9 @@
 package com.omens.carelabelsapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -9,21 +12,29 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProfileActivity extends BaseActivity {
     TextView fullName,email,verifyMsg;
@@ -116,6 +127,64 @@ public class ProfileActivity extends BaseActivity {
 
         });
 
+
+        deleteProfile.setOnClickListener(v -> {
+            final AlertDialog.Builder deleteProfileDialog;
+            HashMap<String, Object> Getter = MainActivity.Getter;
+
+
+            if(Utility.getTheme(getApplicationContext())<= 1)
+                deleteProfileDialog = new AlertDialog.Builder(v.getContext(), R.style.AlertDialogWhite);
+            else
+                deleteProfileDialog = new AlertDialog.Builder(v.getContext(), R.style.AlertDialogDark);
+
+            Context context = v.getContext();
+            LinearLayout layout = new LinearLayout(context);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            final EditText login = new EditText(v.getContext());
+            login.setHint("email");
+            layout.addView(login); // Notice this is an add method
+            final EditText password = new EditText(v.getContext());
+            password.setHint("password");
+            layout.addView(password); // Another add method
+            deleteProfileDialog.setTitle("All of your data including clothes will be removed");
+            deleteProfileDialog.setMessage("You need to confirm your credentials");
+            deleteProfileDialog.setView(layout); // Again this is a set method, not add
+            deleteProfileDialog.setNegativeButton("No", (dialog, which) -> { });
+            deleteProfileDialog.setPositiveButton("Yes", (dialog, which) -> user.reauthenticate(EmailAuthProvider.getCredential(String.valueOf(login.getText()), String.valueOf(password.getText())))
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+
+                                for (HashMap.Entry<String, Object> pair : Getter.entrySet()) {
+                                    System.out.println(pair.getKey() + " = " + pair.getValue());
+                                    fStore.collection("clothes").document(pair.getKey()).delete();
+                                }
+                                fStore.collection("users").document(user.getUid()).delete();
+                                user.delete()
+                                        .addOnCompleteListener (new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    startActivity(new Intent(getApplicationContext(),Login.class));
+                                                    finishAffinity();
+                                                } else {
+                                                    Toast.makeText(ProfileActivity.this, "Sorry, There was problem while trying to delete your Profile. Please, try later or check your internet connection",
+                                                            Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
+                            } else {
+                                Toast.makeText(ProfileActivity.this, "Authentication failed, try again or reset password",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }));
+
+            deleteProfileDialog.create().show();
+
+        });
         changeProfile.setOnClickListener(v -> {
             Intent i = new Intent(v.getContext(),EditProfile.class);
             i.putExtra("fullName",fullName.getText().toString());

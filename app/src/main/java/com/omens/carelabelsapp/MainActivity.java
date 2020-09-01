@@ -70,7 +70,7 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
     FirebaseUser firebaseUser;
     FirebaseFirestore firebaseFirestore;
 
-    HashMap<String, Object> Getter;
+    static HashMap<String, Object> Getter;
     ArrayList<ArrayList<String>> GRID_DATA;
 
     int viewNothing =0, viewFirst =1, viewSecond =2, viewThird =3, viewFourth =4, viewFifth =5, viewSixth =6;
