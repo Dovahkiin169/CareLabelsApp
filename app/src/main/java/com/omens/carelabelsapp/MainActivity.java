@@ -592,6 +592,7 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
                 IconSetterForDetails(null,IronIconsArray,"");
                 IconSetterForDetails(null,ProfessionalCleanIconsArray,"");
                 CustomGridView.setVisibility(View.GONE);
+                setValueOfTags(null);
                 afterElementWasAdd();
                 Location = "";
                 LastButtonNext="";
@@ -603,7 +604,6 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
                 CustomGridView.setVisibility(View.GONE);
                 afterElementWasAdd();
                 Location = "";
-                LastButtonNext="";
                 details_info.setText("");
                 break;
             case "Details":
@@ -763,6 +763,8 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
             switch (view.getId()) {
                 case R.id.care_in_main:
                     if (ItemDescription.getVisibility() == View.VISIBLE) {
+                        setValueOfTags(null);
+                        empty = "not_empty";
                         SetClickable(true);
                         setClickabilityAndVisibility(View.GONE,false);
 
