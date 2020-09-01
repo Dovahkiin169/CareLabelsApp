@@ -1,8 +1,6 @@
 package com.omens.carelabelsapp;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -33,6 +31,7 @@ public class ProfileActivity extends BaseActivity {
     FirebaseFirestore fStore;
     String userId;
     Button resendCode;
+    Button deleteProfile;
     Button resetPassLocal,changeProfile,logoutButton;
     FirebaseUser user;
     ColorOperations CO = new ColorOperations();
@@ -63,7 +62,7 @@ public class ProfileActivity extends BaseActivity {
         Auth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
-
+        deleteProfile = findViewById(R.id.deleteProfileButton);
         logoutButton = findViewById(R.id.logoutButton);
         resendCode = findViewById(R.id.resendCode);
         verifyMsg = findViewById(R.id.verifyMsg);
@@ -128,12 +127,13 @@ public class ProfileActivity extends BaseActivity {
             changeProfile.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccent))),getApplicationContext()));
             resetPassLocal.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor))),getApplicationContext()));
             logoutButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.blueberryColor))),getApplicationContext()));
+            deleteProfile.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.brickRedColor))),getApplicationContext()));
         }
         else {
             changeProfile.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccentDarker))),getApplicationContext()));
             resetPassLocal.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.indigoColor))),getApplicationContext()));
             logoutButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.denimColor))),getApplicationContext()));
-
+            deleteProfile.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.maroonColor))),getApplicationContext()));
         }
 
     }
