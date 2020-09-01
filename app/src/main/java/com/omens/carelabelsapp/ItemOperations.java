@@ -5,7 +5,12 @@ import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.google.common.base.CharMatcher;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -40,5 +45,22 @@ public class ItemOperations {
         return null;
     }
 
-
+    public HashMap<String, ImageButton> findViewByIdAndSetListener(String RawData, char separator, View.OnClickListener ClickListener, View view) {
+        String string;
+        HashMap<String, ImageButton> ButtonArray = new HashMap<>();
+        int CharMatchers = CharMatcher.is(separator).countIn(RawData)+1;
+        for(int i=0; i<CharMatchers; i++) {
+            if(RawData.contains(",")) {
+                string = RawData.substring( 0, RawData.indexOf(","));
+                ButtonArray.put(string, (ImageButton) view.findViewById(view.getContext().getResources().getIdentifier(string, "id", view.getContext().getPackageName())));
+                RawData = RawData.substring(RawData.indexOf(",")+1);
+                Objects.requireNonNull(ButtonArray.get(string)).setOnClickListener(ClickListener);
+            }
+            else if(!RawData.contains(",")) {
+                ButtonArray.put(RawData, (ImageButton) view.findViewById(view.getContext().getResources().getIdentifier(RawData, "id", view.getContext().getPackageName())));
+                Objects.requireNonNull(ButtonArray.get(RawData)).setOnClickListener(ClickListener);
+            }
+        }
+        return ButtonArray;
+    }
 }

@@ -33,9 +33,7 @@ import java.util.Objects;
 import static com.omens.carelabelsapp.ColorOperations.getContrastColor;
 
 public class MainActivity extends BaseActivity implements CustomRecyclerViewAdapter.ItemClickListener{
-    HashMap<String, Integer> Clothes;
-    HashMap<String, Integer> Material;
-    HashMap<String, Integer> Colors;
+    HashMap<String, Integer> Clothes, Material, Colors;
 
     String EditItemId="";
     String empty="empty";
@@ -81,6 +79,8 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
 
     Button unShade = null;
     int Tags = 0;
+
+    boolean flagOfDelete = false;
 
     ColorOperations CO = new ColorOperations();
     ItemOperations IO = new ItemOperations();
@@ -142,17 +142,19 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
         WardrobeButton.setOnClickListener(mainClickListener);
         IconInfoButton.setOnClickListener(mainClickListener);
 
-        WashIconsArray = findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.wash_image_buttons_string),',', WashingClickListener);
-        DryIconsArray = findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.dry_image_buttons_string),',', DryingClickListener);
-        BleachIconsArray = findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.bleach_image_buttons_string),',', BleachingClickListener);
-        IronIconsArray = findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.iron_image_buttons_string),',', IroningClickListener);
-        ProfessionalCleanIconsArray = findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.professional_wet_clean_image_buttons_string),',', ProfessionalCleaningIconListener);
+        View rootView = getWindow().getDecorView().getRootView();
+
+        WashIconsArray = IO.findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.wash_image_buttons_string),',', WashingClickListener,rootView);
+        DryIconsArray =  IO.findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.dry_image_buttons_string),',', DryingClickListener,rootView);
+        BleachIconsArray = IO.findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.bleach_image_buttons_string),',', BleachingClickListener,rootView);
+        IronIconsArray = IO.findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.iron_image_buttons_string),',', IroningClickListener,rootView);
+        ProfessionalCleanIconsArray = IO.findViewByIdAndSetListener(getApplicationContext().getResources().getString(R.string.professional_wet_clean_image_buttons_string),',', ProfessionalCleaningIconListener,rootView);
 
 
         setClothesOrMaterialOrColor(clothesTypeAutoCompleteTextView,Clothes,"clothes");
         setClothesOrMaterialOrColor(mainMaterialAutoCompleteTextView,Material,"material");
         setClothesOrMaterialOrColor(colorTextView,Colors,"color");
-        setSeasonType(seasons);
+        setSeasonType(seasons,clothesSeasonSpinner);
 
         CareLabelLayout = findViewById(R.id.care_in_main);
         CareLabelLayout.setOnClickListener(mainClickListener);
@@ -161,49 +163,19 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
-        firebaseFirestore= FirebaseFirestore.getInstance();
-        if(Utility.getTheme(getApplicationContext())<= 1) {
-            iconWashing.setBackgroundResource(R.drawable.button_transparent_icon_shape);
-            iconBleach.setBackgroundResource(R.drawable.button_transparent_icon_shape);
-            iconDrying.setBackgroundResource(R.drawable.button_transparent_icon_shape);
-            iconIroning.setBackgroundResource(R.drawable.button_transparent_icon_shape);
-            iconProfessionalCleaning.setBackgroundResource(R.drawable.button_transparent_icon_shape);
+        if(Utility.getTheme(getApplicationContext())<= 1)
             IconInfoButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#" + Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))), Color.parseColor("#" + Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor))), getApplicationContext()));
-        }else {
-            iconWashing.setBackgroundResource(R.drawable.button_transparent_icon_shape_darker);
-            iconBleach.setBackgroundResource(R.drawable.button_transparent_icon_shape_darker);
-            iconDrying.setBackgroundResource(R.drawable.button_transparent_icon_shape_darker);
-            iconIroning.setBackgroundResource(R.drawable.button_transparent_icon_shape_darker);
-            iconProfessionalCleaning.setBackgroundResource(R.drawable.button_transparent_icon_shape_darker);
-
+        else
             IconInfoButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#" + Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))), Color.parseColor("#" + Integer.toHexString(getApplicationContext().getResources().getColor(R.color.indigoColor))), getApplicationContext()));
-        }
+
         if(Utility.getTheme(getApplicationContext())<= 1)
             WardrobeButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccent))),getApplicationContext()));
         else
             WardrobeButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccentDarker))),getApplicationContext()));
 
         DataGetter();
-    }
-
-    public HashMap<String, ImageButton> findViewByIdAndSetListener(String RawData, char separator, View.OnClickListener ClickListener) {
-        String string;
-        HashMap<String, ImageButton> ButtonArray = new HashMap<>();
-        int CharMatchers = CharMatcher.is(separator).countIn(RawData)+1;
-        for(int i=0; i<CharMatchers; i++) {
-            if(RawData.contains(",")) {
-                string = RawData.substring( 0, RawData.indexOf(","));
-                ButtonArray.put(string, (ImageButton) findViewById(getApplicationContext().getResources().getIdentifier(string, "id", getApplicationContext().getPackageName())));
-                RawData = RawData.substring(RawData.indexOf(",")+1);
-                Objects.requireNonNull(ButtonArray.get(string)).setOnClickListener(ClickListener);
-            }
-            else if(!RawData.contains(",")) {
-                ButtonArray.put(RawData, (ImageButton) findViewById(getApplicationContext().getResources().getIdentifier(RawData, "id", getApplicationContext().getPackageName())));
-                Objects.requireNonNull(ButtonArray.get(RawData)).setOnClickListener(ClickListener);
-            }
-        }
-        return ButtonArray;
     }
 
     private void setClothesOrMaterialOrColor(AutoCompleteTextView textView, HashMap<String, Integer> hashMap, String flag) {
@@ -221,10 +193,10 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
             colorTextView.setOnItemClickListener((parent, view, position, id) -> colorImage.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), Objects.requireNonNull(Colors.get(colorTextView.getText()+"")))));
     }
 
-    private void setSeasonType(String[] cData) {
+    private void setSeasonType(String[] cData, Spinner spinner) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cData);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        clothesSeasonSpinner.setAdapter(adapter);
+        spinner.setAdapter(adapter);
     }
 
     public void SetClickable(boolean data) {
@@ -264,8 +236,7 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
         LayoutArray.add(ProfessionalCleaningLayout);
         LayoutArray.add(DetailsLayout);
 
-        for(int i=0; i<LayoutArray.size();i++)
-        {
+        for(int i=0; i<LayoutArray.size();i++) {
             if((i+1)== numberToView)
                 LayoutArray.get(i).setVisibility(View.VISIBLE);
             else
@@ -280,8 +251,7 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
         ButtonArray.add(iconIroning);
         ButtonArray.add(iconProfessionalCleaning);
 
-        for(int i=0; i<ButtonArray.size();i++)
-        {
+        for(int i=0; i<ButtonArray.size();i++) {
             if((i+1)== itemSetToTrue)
                 ButtonArray.get(i).setSelected(true);
             else
@@ -351,6 +321,7 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
         return (iconWashing.getTag() != null && !iconWashing.getTag().equals(R.id.iconWashing)) && (iconBleach.getTag() != null && !iconBleach.getTag().equals(R.id.iconBleach)) && (iconDrying.getTag() != null && !iconDrying.getTag().equals(R.id.iconDrying))
                 && (iconIroning.getTag() != null && !iconIroning.getTag().equals(R.id.iconIroning)) && (iconProfessionalCleaning.getTag() != null && !iconProfessionalCleaning.getTag().equals(R.id.iconProfessionalCleaning));
     }
+
     public boolean EmptyChecker() {
         int Verifier=0;
         if(TextUtils.isEmpty(clothesTypeAutoCompleteTextView.getText().toString())) {
@@ -643,7 +614,7 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
 
 
 
-boolean flagOfDelete = false;
+
     public void DataGetter() {
         Getter = new HashMap<>();
         progressBarLoading.setVisibility(View.VISIBLE);
