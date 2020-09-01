@@ -415,7 +415,7 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
         else
             ColorOperations.setCareLabelColor(CareLabelLayout,getApplicationContext().getResources().getColor(R.color.colorAccentDarker),false,false);
 
-
+        LastButtonNext="";
         brandTextView.setText("");
         colorTextView.setText("");
         clothesTypeAutoCompleteTextView.setText("");
