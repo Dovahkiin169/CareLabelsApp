@@ -93,17 +93,18 @@ public class Register extends BaseActivity {
                     FirebaseUser FireUser = Auth.getCurrentUser();
                     assert FireUser != null;
                     FireUser.sendEmailVerification().addOnSuccessListener(
-                            aVoid -> Toast.makeText(Register.this, "Verification Email Has been Sent.", Toast.LENGTH_SHORT).show()).addOnFailureListener(
-                                    e -> Toast.makeText(Register.this, "Email not sent", Toast.LENGTH_SHORT).show());
+                            aVoid -> Toast.makeText(Register.this, "Verification Email Has been Sent. User Created.", Toast.LENGTH_SHORT).show()).addOnFailureListener(
+                                    e -> Toast.makeText(Register.this, "Email not sent. User Not Created.", Toast.LENGTH_SHORT).show());
 
-                    Toast.makeText(Register.this, "User Created.", Toast.LENGTH_SHORT).show();
                     userID = Auth.getCurrentUser().getUid();
                     DocumentReference documentReference = FireStore.collection("users").document(userID);
                     Map<String,Object> user = new HashMap<>();
                     user.put("fName",nickname);
                     user.put("email",email);
                     documentReference.set(user);
-                    startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                    progressBar.setVisibility(View.GONE);
+                    FirebaseAuth.getInstance().signOut();
+                    finish();
                 }
                 else {
                     Toast.makeText(Register.this, "Error ! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();

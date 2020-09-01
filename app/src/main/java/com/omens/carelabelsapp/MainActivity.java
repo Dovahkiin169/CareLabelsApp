@@ -174,7 +174,14 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
             WardrobeButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccent))),getApplicationContext()));
         else
             WardrobeButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccentDarker))),getApplicationContext()));
-
+        if(!Objects.requireNonNull(firebaseAuth.getCurrentUser()).isEmailVerified())
+        {
+            firebaseAuth.getCurrentUser().sendEmailVerification().addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Verification Email Has been Sent. You cant use app until email is verified ", Toast.LENGTH_LONG).show())
+                    .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Verification Email NOT Sent. You cant use app until email is verified", Toast.LENGTH_LONG).show());
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(getApplicationContext(),Login.class));
+            finishAffinity();
+        }
         DataGetter();
     }
 

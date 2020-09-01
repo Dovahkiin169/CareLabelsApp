@@ -22,10 +22,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,14 +30,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProfileActivity extends BaseActivity {
-    TextView fullName,email,verifyMsg;
+    TextView fullName,email;
     FirebaseAuth Auth;
     FirebaseFirestore fStore;
     String userId;
-    Button resendCode;
     Button deleteProfile;
     Button resetPassLocal,changeProfile,logoutButton;
     FirebaseUser user;
@@ -75,19 +69,10 @@ public class ProfileActivity extends BaseActivity {
 
         deleteProfile = findViewById(R.id.deleteProfileButton);
         logoutButton = findViewById(R.id.logoutButton);
-        resendCode = findViewById(R.id.resendCode);
-        verifyMsg = findViewById(R.id.verifyMsg);
 
 
         userId = Objects.requireNonNull(Auth.getCurrentUser()).getUid();
         user = Auth.getCurrentUser();
-
-        if(!user.isEmailVerified()){
-            verifyMsg.setVisibility(View.VISIBLE);
-            resendCode.setVisibility(View.VISIBLE);
-            resendCode.setOnClickListener(v -> user.sendEmailVerification().addOnSuccessListener(aVoid -> Toast.makeText(v.getContext(), "Verification Email Has been Sent.", Toast.LENGTH_SHORT).show())
-                                                                           .addOnFailureListener(e -> Toast.makeText(v.getContext(), "Error, Verification Email not Sent.", Toast.LENGTH_SHORT).show()));
-        }
 
 
 
@@ -152,33 +137,26 @@ public class ProfileActivity extends BaseActivity {
             deleteProfileDialog.setView(layout); // Again this is a set method, not add
             deleteProfileDialog.setNegativeButton("No", (dialog, which) -> { });
             deleteProfileDialog.setPositiveButton("Yes", (dialog, which) -> user.reauthenticate(EmailAuthProvider.getCredential(String.valueOf(login.getText()), String.valueOf(password.getText())))
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-
-                                for (HashMap.Entry<String, Object> pair : Getter.entrySet()) {
-                                    System.out.println(pair.getKey() + " = " + pair.getValue());
-                                    fStore.collection("clothes").document(pair.getKey()).delete();
-                                }
-                                fStore.collection("users").document(user.getUid()).delete();
-                                user.delete()
-                                        .addOnCompleteListener (new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    startActivity(new Intent(getApplicationContext(),Login.class));
-                                                    finishAffinity();
-                                                } else {
-                                                    Toast.makeText(ProfileActivity.this, "Sorry, There was problem while trying to delete your Profile. Please, try later or check your internet connection",
-                                                            Toast.LENGTH_LONG).show();
-                                                }
-                                            }
-                                        });
-                            } else {
-                                Toast.makeText(ProfileActivity.this, "Authentication failed, try again or reset password",
-                                        Toast.LENGTH_SHORT).show();
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (HashMap.Entry<String, Object> pair : Getter.entrySet()) {
+                                System.out.println(pair.getKey() + " = " + pair.getValue());
+                                fStore.collection("clothes").document(pair.getKey()).delete();
                             }
+                            fStore.collection("users").document(user.getUid()).delete();
+                            user.delete()
+                                    .addOnCompleteListener (task1 -> {
+                                        if (task1.isSuccessful()) {
+                                            startActivity(new Intent(getApplicationContext(),Login.class));
+                                            finishAffinity();
+                                        } else {
+                                            Toast.makeText(ProfileActivity.this, "Sorry, There was problem while trying to delete your Profile. Please, try later or check your internet connection",
+                                                    Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                        } else {
+                            Toast.makeText(ProfileActivity.this, "Authentication failed, try again or reset password",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }));
 
@@ -192,17 +170,19 @@ public class ProfileActivity extends BaseActivity {
             startActivity(i);
         });
 
+        String colorString = "#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary));
+        String colorStringDarker = "#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker));
         if(Utility.getTheme(getApplicationContext())<= 1) {
-            changeProfile.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccent))),getApplicationContext()));
-            resetPassLocal.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor))),getApplicationContext()));
-            logoutButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.blueberryColor))),getApplicationContext()));
-            deleteProfile.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimary))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.brickRedColor))),getApplicationContext()));
+            changeProfile.setBackground(CO.convertColorIntoBitmap(Color.parseColor(colorString),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccent))),getApplicationContext()));
+            resetPassLocal.setBackground(CO.convertColorIntoBitmap(Color.parseColor(colorString),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.cornflowerColor))),getApplicationContext()));
+            logoutButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor(colorString),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.blueberryColor))),getApplicationContext()));
+            deleteProfile.setBackground(CO.convertColorIntoBitmap(Color.parseColor(colorString),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.brickRedColor))),getApplicationContext()));
         }
         else {
-            changeProfile.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccentDarker))),getApplicationContext()));
-            resetPassLocal.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.indigoColor))),getApplicationContext()));
-            logoutButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.denimColor))),getApplicationContext()));
-            deleteProfile.setBackground(CO.convertColorIntoBitmap(Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorPrimaryDarker))),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.maroonColor))),getApplicationContext()));
+            changeProfile.setBackground(CO.convertColorIntoBitmap(Color.parseColor(colorStringDarker),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.colorAccentDarker))),getApplicationContext()));
+            resetPassLocal.setBackground(CO.convertColorIntoBitmap(Color.parseColor(colorStringDarker),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.indigoColor))),getApplicationContext()));
+            logoutButton.setBackground(CO.convertColorIntoBitmap(Color.parseColor(colorStringDarker),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.denimColor))),getApplicationContext()));
+            deleteProfile.setBackground(CO.convertColorIntoBitmap(Color.parseColor(colorStringDarker),Color.parseColor("#"+Integer.toHexString(getApplicationContext().getResources().getColor(R.color.maroonColor))),getApplicationContext()));
         }
 
     }
