@@ -224,7 +224,7 @@ public class ProfileActivity extends BaseActivity {
         if (Utility.getTheme(getApplicationContext())<= 1)
             menu.getItem(0).setIcon(R.drawable.moon);
         else
-            menu.getItem(0).setIcon(R.drawable.summer_white);
+            menu.getItem(0).setIcon(R.drawable.sun);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -236,7 +236,7 @@ public class ProfileActivity extends BaseActivity {
             recreateActivity();
             }
         else if (item.getItemId() == R.id.change_theme_button && GetStatus()) {
-            item.setIcon(R.drawable.summer_white);
+            item.setIcon(R.drawable.sun);
             saveData(2);
             recreateActivity();
             }
