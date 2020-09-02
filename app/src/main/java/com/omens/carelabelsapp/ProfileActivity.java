@@ -1,8 +1,6 @@
 package com.omens.carelabelsapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,9 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -210,10 +206,8 @@ public class ProfileActivity extends BaseActivity {
     {
         Intent intent = getIntent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            finishAffinity();
-        else
-            finish();
+        finishAffinity();
+
         overridePendingTransition(0, 0);
         startActivity(intent);
         overridePendingTransition(0, 0);

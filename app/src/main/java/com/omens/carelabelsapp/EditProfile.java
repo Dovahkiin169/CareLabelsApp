@@ -29,7 +29,6 @@ public class EditProfile extends BaseActivity {
     FirebaseFirestore fStore;
     FirebaseUser user;
     StorageReference storageReference;
-    ColorOperations CO = new ColorOperations();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

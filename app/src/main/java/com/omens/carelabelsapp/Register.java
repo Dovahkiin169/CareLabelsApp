@@ -1,12 +1,6 @@
 package com.omens.carelabelsapp;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.StateListDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -27,8 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 public class Register extends BaseActivity {
     EditText Nickname, Email, Password;
     Button RegisterButton;
@@ -37,7 +29,6 @@ public class Register extends BaseActivity {
     ProgressBar progressBar;
     FirebaseFirestore FireStore;
     String userID;
-    ColorOperations CO = new ColorOperations();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,10 +117,7 @@ public class Register extends BaseActivity {
     {
         Intent intent = getIntent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            finishAffinity();
-        else
-            finish();
+        finishAffinity();
         overridePendingTransition(0, 0);
         startActivity(intent);
         overridePendingTransition(0, 0);
@@ -164,13 +152,4 @@ public class Register extends BaseActivity {
         super.onUserLeaveHint();
         saveData(Utility.getTheme(getApplicationContext()));
     }
-
-
-    public void setProfileColors(View view, int color) {
-        StateListDrawable gradientDrawable = (StateListDrawable) view.getBackground();
-        DrawableContainer.DrawableContainerState drawableContainerState = (DrawableContainer.DrawableContainerState) gradientDrawable.getConstantState();
-        assert drawableContainerState != null;
-        Drawable[] children = drawableContainerState.getChildren();
-        GradientDrawable unselectedItem = (GradientDrawable) children[0];
-        unselectedItem.setColor(color);}
 }

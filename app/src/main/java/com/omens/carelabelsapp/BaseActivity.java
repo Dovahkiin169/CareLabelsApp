@@ -11,20 +11,16 @@ public class BaseActivity extends AppCompatActivity
     boolean CheckStatus = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-     {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         updateTheme();
      }
-    public void updateTheme()
-     {
-        if (Utility.getTheme(getApplicationContext()) <= THEME_White)
-         {
+    public void updateTheme() {
+        if (Utility.getTheme(getApplicationContext()) <= THEME_White) {
             CheckStatus=true;
             setTheme(R.style.AppTheme);
          }
-        else if (Utility.getTheme(getApplicationContext()) == THEME_Dark)
-         {
+        else if (Utility.getTheme(getApplicationContext()) == THEME_Dark) {
             setTheme(R.style.AppThemeDark);
             CheckStatus=false;
          }

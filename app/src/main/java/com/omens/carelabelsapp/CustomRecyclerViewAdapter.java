@@ -130,11 +130,6 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
         }
     }
 
-    // convenience method for getting data at click position
-    ArrayList<String> getItem(int id) {
-        return gridValues.get(id);
-    }
-
     // allows clicks events to be caught
     void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
