@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CareLabelsApp</string>
+    <string name="app_name">LaundryPlus</string>
     <string name="read_my_laundry_care_label">READ MY LAUNDRY CARE LABEL</string>
     <string name="icon_width_height">55dp</string>
 
@@ -35,7 +35,7 @@
     <string name="email_not_verified">Email Not Verified !</string>
     <string name="verify_now">Verify Now</string>
     <string name="reset_password">Reset Password</string>
-    <string name="full_name">Full Name</string>
+    <string name="full_name">Nickname</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -127,7 +127,6 @@
     <string name="dont_have_clothes">You don\'t have any clothes, try adding one by pressing \"Read My Label\" in main menu</string>
 
     <string name="prefs_theme_key">theme</string>
-    <string name="settings">Settings</string>
     <string name="delete_profile">Delete profile</string>
     <string name="send_activation_email">Send Activation Email</string>
 </resources>

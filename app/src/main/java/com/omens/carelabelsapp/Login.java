@@ -32,7 +32,7 @@ public class Login extends BaseActivity {
         LoginButton = findViewById(R.id.loginButton);
         CreateButton = findViewById(R.id.createAccountText);
         forgotTextLink = findViewById(R.id.forgotPasswordTextView);
-
+        LoginButton.setClickable(true);
         LoginButton.setOnClickListener(v -> {
 
             String email = Email.getText().toString().trim();
@@ -54,7 +54,7 @@ public class Login extends BaseActivity {
             }
 
             progressBar.setVisibility(View.VISIBLE);
-
+            LoginButton.setClickable(false);
             // authenticate the user
 
             Auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
@@ -65,10 +65,12 @@ public class Login extends BaseActivity {
                 }
                 else {
                     Toast.makeText(Login.this, "Error ! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                    LoginButton.setClickable(true);
                     progressBar.setVisibility(View.GONE);
                 }
 
             });
+
         });
 
         CreateButton.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(),Register.class)));

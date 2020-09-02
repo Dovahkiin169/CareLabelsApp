@@ -52,7 +52,7 @@ public class Register extends BaseActivity {
             RegisterButton.setBackgroundResource(R.drawable.button_shape_darker);
         }
 
-
+        RegisterButton.setClickable(true);
         RegisterButton.setOnClickListener(v -> {
             final String email = Email.getText().toString().trim();
             final String password = Password.getText().toString().trim();
@@ -81,6 +81,7 @@ public class Register extends BaseActivity {
 
             Auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
+                    RegisterButton.setClickable(false);
                     FirebaseUser FireUser = Auth.getCurrentUser();
                     assert FireUser != null;
                     FireUser.sendEmailVerification().addOnSuccessListener(
@@ -98,6 +99,7 @@ public class Register extends BaseActivity {
                     finish();
                 }
                 else {
+                    RegisterButton.setClickable(true);
                     Toast.makeText(Register.this, "Error ! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                 }

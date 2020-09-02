@@ -84,3 +84,9 @@ lint/outputs/
 lint/tmp/
 # lint/reports/
 app/src/main/java/com/omens/carelabelsapp/GenericAdapter.java
+app/src/main/java/com/omens/carelabelsapp/Ads.java
+app/src/main/AndroidManifest.xml
+app/src/main/AndroidManifest.xml
+app/src/main/AndroidManifest.xml
+app/src/main/AndroidManifest.xml
+app/src/main/res/layout/activity_main.xml

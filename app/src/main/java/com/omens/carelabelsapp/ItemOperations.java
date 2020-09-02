@@ -17,10 +17,7 @@ import java.util.Objects;
 public class ItemOperations {
     public void showProgress(final boolean show, final Context con, final Activity act, View ProgressView) {
         act.runOnUiThread(() -> {
-
             int shortAnimTime = con.getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-
             ProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             ProgressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {

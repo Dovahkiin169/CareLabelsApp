@@ -21,6 +21,10 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.common.base.CharMatcher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,7 +38,6 @@ import static com.omens.carelabelsapp.ColorOperations.getContrastColor;
 
 public class MainActivity extends BaseActivity implements CustomRecyclerViewAdapter.ItemClickListener{
     HashMap<String, Integer> Clothes, Material, Colors;
-
     String EditItemId="";
     String empty="empty";
     String Location = "";
@@ -183,6 +186,13 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
             finishAffinity();
         }
         DataGetter();
+
+        MobileAds.initialize(this, initializationStatus -> {
+        });
+
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     private void setClothesOrMaterialOrColor(AutoCompleteTextView textView, HashMap<String, Integer> hashMap, String flag) {
@@ -277,9 +287,9 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
             if (empty.equals("") && !Icon.contains("_sizer"))
                 imageButton.setTag(null);
             else if (!empty.equals("") && !Icon.contains("_sizer"))
-                imageButton.setTag(getApplicationContext().getResources().getIdentifier(Icon, "id", getApplicationContext().getPackageName()));
+                imageButton.setTag(Icon);
             else if (!empty.equals("") && Icon.contains("_sizer"))
-                imageButton.setTag(getApplicationContext().getResources().getIdentifier(Icon, "id", getApplicationContext().getPackageName()));
+                imageButton.setTag(Icon);
             if(!empty.equals(""))
                 details_info.setText(getApplicationContext().getResources().getIdentifier(Icon, "string", getApplicationContext().getPackageName()));
             empty = "not_empty";
@@ -310,10 +320,10 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
             if (empty.equals("") && !Icon.contains("_sizer"))
                 imageButton.setTag(null);
             else
-                imageButton.setTag(getApplicationContext().getResources().getIdentifier(Icon, "id", getApplicationContext().getPackageName()));
+                imageButton.setTag(Icon);
 
             if(!empty.equals(""))
-                details_info.setText(getApplicationContext().getResources().getIdentifier(Icon, "string", getApplicationContext().getPackageName()));
+                details_info.setText(Icon);
             empty = "not_empty";
             if (IconChecker())
                 ButtonNext.setVisibility(View.VISIBLE);
@@ -457,11 +467,11 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
             Tag = (int) view.getTag();
             setValueOfTags(String.valueOf(Tag));
             Tags =Tag;
-            IconSetterForDetails(iconWashing, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(6))));
-            IconSetterForDetails(iconBleach, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(7))));
-            IconSetterForDetails(iconDrying, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(8))));
-            IconSetterForDetails(iconIroning, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(9))));
-            IconSetterForDetails(iconProfessionalCleaning, null, getApplicationContext().getResources().getResourceEntryName(Integer.parseInt(GRID_DATA.get(position).get(10))));
+            IconSetterForDetails(iconWashing, null, GRID_DATA.get(position).get(6));
+            IconSetterForDetails(iconBleach, null, GRID_DATA.get(position).get(7));
+            IconSetterForDetails(iconDrying, null, GRID_DATA.get(position).get(8));
+            IconSetterForDetails(iconIroning, null, GRID_DATA.get(position).get(9));
+            IconSetterForDetails(iconProfessionalCleaning, null, GRID_DATA.get(position).get(10));
             details_info.setText("");
         }
         if (view.getId() == R.id.layoutButton) {
@@ -560,13 +570,20 @@ public class MainActivity extends BaseActivity implements CustomRecyclerViewAdap
             specialMarksTextView.setText(GRID_DATA.get(position).get(5));
             EditItemId = GRID_DATA.get(position).get(11);
 
-
-            clothesSeasonSpinner.setSelection(((ArrayAdapter<String>) clothesSeasonSpinner.getAdapter()).getPosition(GRID_DATA.get(position).get(3)));
-
-
-
+            clothesSeasonSpinner.setSelection(getIndex(clothesSeasonSpinner,GRID_DATA.get(position).get(3)));
         }
     }
+
+    private int getIndex(Spinner spinner, String myString){
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
     @Override
     public void onBackPressed() {
         switch (Location) {
