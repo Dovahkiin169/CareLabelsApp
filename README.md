@@ -20,7 +20,6 @@ See screenshots for more details.
      <tr>
      <td><img src="https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/7.png?raw=true" width=288 height=512></td>
      <td><img src="https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/8.png?raw=true" width=288 height=512></td>
+     <td><img src="https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/9.png?raw=true" width=288 height=512></td>
   </tr>
  </table>
-
-![image](https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/8.png?raw=true)
