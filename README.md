@@ -8,9 +8,9 @@ See screenshots for more details.
 
 <table>
   <tr>
-    <td><img src="screenshots/1.png" width=270 height=480></td>
-    <td><img src="screenshots/2.png" width=270 height=480></td>
-    <td><img src="screenshots/3.png" width=270 height=480></td>
+    <td><img src="https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/1.png?raw=true" width=288 height=512></td>
+    <td><img src="https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/2.png?raw=true" width=288 height=512></td>
+    <td><img src="https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/3.png?raw=true" width=288 height=512></td>
   </tr>
  </table>
 
