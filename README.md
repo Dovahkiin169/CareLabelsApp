@@ -11,3 +11,7 @@ In this application you can also read detailed information about all care labels
 ![image](https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/2.png?raw=true)
 ![image](https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/3.png?raw=true)
 ![image](https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/4.png?raw=true)
+![image](https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/5.png?raw=true)
+![image](https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/6.png?raw=true)
+![image](https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/7.png?raw=true)
+![image](https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/8.png?raw=true)
