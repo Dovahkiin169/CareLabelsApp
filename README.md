@@ -7,7 +7,7 @@ In this application you can also read detailed information about all care labels
 
 
 
-![image](https://github.com/Dovahkiin169/HexBinApp/blob/master/Screenshots/1.png?raw=true)
-![image](https://github.com/Dovahkiin169/HexBinApp/blob/master/Screenshots/2.png?raw=true)
-![image](https://github.com/Dovahkiin169/HexBinApp/blob/master/Screenshots/3.png?raw=true)
-![image](https://github.com/Dovahkiin169/HexBinApp/blob/master/Screenshots/4.png?raw=true)
+![image](https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/1.png?raw=true)
+![image](https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/2.png?raw=true)
+![image](https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/3.png?raw=true)
+![image](https://github.com/Dovahkiin169/CareLabelsApp/blob/master/Screenshots/4.png?raw=true)
